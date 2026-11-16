@@ -387,7 +387,23 @@ body { font-family:'Inter', system-ui, -apple-system, sans-serif; margin:0; font
   .kpi { padding:14px 16px; }
   .kpi__value { font-size:19px; }
   .chart-wrap { height:260px; }
-  .stores-dropdown { width:calc(100vw - 32px); left:0; }
+  
+  /* Mobile Bottom Sheet Store Selector */
+  .stores-dropdown { 
+    position: fixed; 
+    top: auto; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    width: 100%; 
+    max-height: 80vh; 
+    border-radius: 20px 20px 0 0; 
+    transform: translateY(100%); 
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    padding: 16px;
+  }
+  .stores-dropdown.open { transform: translateY(0); }
+  .stores-dropdown__list { max-height: 50vh; }
 }
 </style>
 </head>

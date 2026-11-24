@@ -3,2154 +3,1041 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>With Stand Corporate — Dashboard</title>
-
+<title>With Stand — Sales Intelligence</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ==========================================================
-   THEME TOKENS
+   FUTURISTIC CORPORATE THEME TOKENS
    ========================================================== */
-:root, [data-theme="light"] {
-  --brand-900:#10243e; --brand-700:#17395f; --brand-500:#245a91; --brand-400:#3478b8; --brand-300:#5b93de;
-  --accent:#13a88a; --accent-2:#f5a623;
-  --bg:#f3f6fa; --card:#ffffff; --card-2:#f7f9fc;
-  --text:#0f172a; --text-2:#334155; --muted:#64748b;
-  --border:#e4eaf1; --border-2:#d4deea;
-  --topbar-1:#0b1f3a; --topbar-2:#12325b;
-  --topbar-text:#ffffff; --topbar-muted:rgba(255,255,255,.65);
-  --shadow-sm:0 2px 8px rgba(16,36,62,.045);
-  --shadow:0 8px 24px rgba(16,36,62,.075);
-  --shadow-lg:0 12px 32px rgba(15,23,42,.12);
-  --grid-line:#eef2f7; --chart-tick:#64748b;
-  --radius:12px; --radius-sm:8px;
-  --ease:cubic-bezier(.2,.8,.2,1);
-  --success:#16a34a; --danger:#dc2626; --warning:#f59e0b;
-}
-
-[data-theme="dark"] {
-  --brand-900:#0b1f3a; --brand-700:#12325b; --brand-500:#1e5aa8; --brand-400:#2f74d0; --brand-300:#5b93de;
-  --accent:#00c2a8; --accent-2:#f5a623;
-  --bg:#0b1220; --card:#121a2b; --card-2:#182236;
-  --text:#e6ecf5; --text-2:#c3cddd; --muted:#8a98ae;
-  --border:#223049; --border-2:#31425f;
-  --topbar-1:#050b16; --topbar-2:#0d1730;
-  --topbar-text:#e6ecf5; --topbar-muted:rgba(230,236,245,.6);
-  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
-  --shadow:0 4px 14px rgba(0,0,0,.45);
-  --shadow-lg:0 12px 32px rgba(0,0,0,.55);
-  --grid-line:#1f2b42; --chart-tick:#8a98ae;
-  --radius:12px; --radius-sm:8px;
-  --ease:cubic-bezier(.2,.8,.2,1);
-  --success:#22c55e; --danger:#f87171; --warning:#fbbf24;
+:root {
+  --bg-main: #0a0f1c;
+  --bg-panel: #111827;
+  --bg-card: rgba(31, 41, 55, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(0, 194, 168, 0.3);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --brand-primary: #3b82f6;
+  --brand-accent: #00c2a8;
+  --brand-warning: #f59e0b;
+  --brand-danger: #ef4444;
+  
+  --shadow-glow: 0 0 20px rgba(0, 194, 168, 0.15);
+  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { box-sizing: border-box; }
-html, body { background: var(--bg); color: var(--text); transition: background .3s var(--ease), color .3s var(--ease); }
-body { font-family:'Inter', system-ui, -apple-system, sans-serif; margin:0; font-size:13.5px; letter-spacing:.005em; -webkit-font-smoothing:antialiased; min-height:100vh; }
-
-#topProgress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 9999; transition: width 0.3s ease, opacity 0.3s ease; box-shadow: 0 0 10px var(--accent); opacity: 0; }
-
-/* TOPBAR */
-.topbar { position:sticky; top:0; z-index:1000; background:linear-gradient(135deg,var(--topbar-1) 0%,var(--topbar-2) 100%); color:var(--topbar-text); box-shadow:0 3px 14px rgba(12,29,50,.16); transition:background .3s var(--ease); }
-.topbar__inner { display:flex; align-items:center; gap:16px; padding:10px 30px; max-width:1720px; margin:0 auto; min-height:68px; }
-.logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--topbar-text); transition:transform .25s var(--ease); flex-shrink:0; }
-.logo:hover { transform:translateY(-1px); color:var(--topbar-text); }
-.logo__mark { width:40px; height:40px; border-radius:9px; background:#13a88a; display:grid; place-items:center; font-weight:800; font-size:18px; color:#fff; box-shadow:none; position:relative; overflow:hidden; }
-.logo__mark::after { content:''; position:absolute; inset:0; background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%); transform:translateX(-100%); animation:shine 3.5s infinite; }
-@keyframes shine { 0%,60%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-.logo__text { display:flex; flex-direction:column; line-height:1.1; }
-.logo__text strong { font-weight:700; font-size:14px; letter-spacing:.2px; }
-.logo__text small { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--topbar-muted); font-weight:500; }
-
-.topnav { display:flex; gap:3px; margin-left:12px; align-items:center; }
-.topnav__link { padding:9px 12px; border-radius:7px; color:var(--topbar-muted); text-decoration:none; font-weight:500; font-size:12.5px; display:inline-flex; align-items:center; gap:6px; transition:all .2s var(--ease); background:transparent; border:none; cursor:pointer; font-family:inherit; }
-.topnav__link:hover { color:var(--topbar-text); background:rgba(255,255,255,.08); }
-.topnav__link.active { color:var(--topbar-text); background:rgba(255,255,255,.13); box-shadow:inset 0 -2px var(--accent); }
-.topnav__link .caret { font-size:11px; transition:transform .25s var(--ease); }
-.topnav__link[aria-expanded="true"] .caret { transform:rotate(180deg); }
-
-.insights-btn .bulb-icon { transition: all 0.3s ease; color: var(--topbar-muted); }
-.insights-btn:hover .bulb-icon { color: #f5c45e; text-shadow: 0 0 8px rgba(245,196,94,.9), 0 0 16px rgba(245,196,94,.6), 0 0 24px rgba(245,196,94,.3); transform: scale(1.15); }
-
-/* STORES DROPDOWN */
-.stores-dd-wrap { position:relative; }
-.stores-dropdown { position:absolute; top:calc(100% + 10px); left:0; width:360px; background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 45px rgba(12,29,50,.18); padding:0; opacity:0; transform:translateY(-6px) scale(.98); pointer-events:none; transition:all .2s var(--ease); z-index:1200; display:flex; flex-direction:column; max-height:550px; }
-.stores-dropdown.open { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
-.stores-dropdown__head { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); background:var(--card-2); border-radius:12px 12px 0 0; }
-.stores-dropdown__title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
-.stores-dropdown__actions { display:flex; gap:6px; }
-.mini-btn { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid var(--border); background:var(--card); color:var(--text-2); cursor:pointer; font-weight:600; transition:all .15s; }
-.mini-btn:hover { border-color:var(--brand-400); color:var(--brand-400); }
-.stores-dropdown__search { padding:10px 16px; border-bottom:1px solid var(--border); }
-.stores-dropdown__search input { width:100%; padding:8px 12px; font-size:13px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); color:var(--text); outline:none; transition:border-color .15s; }
-.stores-dropdown__search input:focus { border-color:var(--brand-400); }
-.stores-dropdown__list { flex:1; overflow-y:auto; padding:8px 0; scrollbar-width:thin; }
-
-.brand-accordion { border-bottom:1px solid var(--border); }
-.brand-accordion:last-child { border-bottom:none; }
-.brand-accordion__header { display:flex; align-items:center; padding:11px 15px; cursor:pointer; transition:background .1s; user-select:none; }
-.brand-accordion__header:hover { background:var(--card-2); }
-.brand-accordion__checkbox { margin-right:12px; width:16px; height:16px; accent-color:var(--brand-400); cursor:pointer; flex-shrink:0; }
-.brand-accordion__title { flex:1; font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:8px; }
-.brand-accordion__count { font-size:11px; font-weight:500; color:var(--muted); background:var(--card-2); padding:2px 8px; border-radius:999px; }
-.brand-accordion__caret { font-size:12px; color:var(--muted); transition:transform .2s; }
-.brand-accordion.expanded .brand-accordion__caret { transform:rotate(180deg); }
-.brand-accordion.expanded .brand-accordion__header { background:rgba(47,116,208,.06); }
-.brand-accordion__content { display:none; padding:4px 0 8px 0; background:var(--card-2); border-top:1px solid var(--border); }
-.brand-accordion.expanded .brand-accordion__content { display:block; animation:slideDown .2s ease-out; }
-@keyframes slideDown { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
-.store-row { display:flex; align-items:center; gap:10px; padding:9px 16px 9px 46px; cursor:pointer; font-size:13px; color:var(--text-2); transition:background .1s; user-select:none; }
-.store-row:hover { background:rgba(47,116,208,.08); color:var(--text); }
-.store-row.selected { color:var(--brand-400); font-weight:600; }
-.store-row input { width:15px; height:15px; accent-color:var(--brand-400); cursor:pointer; flex-shrink:0; }
-.stores-dropdown__foot { border-top:1px solid var(--border); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--card-2); border-radius:0 0 12px 12px; }
-.stores-dropdown__count { font-size:12px; font-weight:600; color:var(--text-2); }
-.btn-apply-sm { background:var(--brand-500); color:#fff; border:none; padding:8px 16px; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer; transition:background .15s; box-shadow:0 2px 6px rgba(30,90,168,.25); }
-.btn-apply-sm:hover { background:var(--brand-400); }
-
-.theme-switch-wrap { display: flex; align-items: center; gap: 10px; margin-right: 8px; }
-.theme-switch-label { font-size: 11px; font-weight: 700; color: var(--topbar-muted); letter-spacing: 0.5px; transition: color 0.3s; }
-.theme-switch { position: relative; width: 46px; height: 24px; border-radius: 20px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2); cursor: pointer; padding: 0; transition: background 0.3s, border-color 0.3s; display: flex; align-items: center; }
-.theme-switch__thumb { position: absolute; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-[data-theme="dark"] .theme-switch { background: var(--accent); border-color: var(--accent); }
-[data-theme="dark"] .theme-switch__thumb { transform: translateX(22px); background: #04241f; }
-[data-theme="dark"] .theme-switch-label { color: var(--accent); }
-
-.topbar__spacer { flex:1; }
-.user-chip { display:flex; align-items:center; gap:10px; padding:5px 16px 5px 6px; border-radius:999px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); flex-shrink:0; }
-.user-chip__avatar { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#00a5b8); display:grid; place-items:center; font-weight:700; font-size:13px; color:#fff; }
-.user-chip__name { font-size:12.5px; font-weight:600; color:var(--topbar-text); white-space:nowrap; }
-
-/* PAGE HEADER */
-.page-head { max-width:1720px; margin:0 auto; padding:28px 30px 20px; animation:fadeUp .5s var(--ease) both; display:flex; justify-content:space-between; align-items:flex-end; }
-.page-head h1 { font-size:24px; font-weight:800; margin:0; letter-spacing:-.65px; background: linear-gradient(135deg, var(--brand-900) 0%, var(--brand-500) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; position: relative; }
-.page-head h1::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 34px; height: 2px; background: var(--accent); border-radius: 2px; }
-[data-theme="dark"] .page-head h1 { background: linear-gradient(135deg, #ffffff 0%, var(--brand-300) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-/* LAYOUT */
-.layout { max-width:1720px; margin:0 auto; padding:0 30px 44px; display:grid; grid-template-columns:286px minmax(0,1fr); gap:20px; align-items:start; transition:grid-template-columns .25s ease; }
-.panel { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-sm); overflow:hidden; animation:fadeUp .55s var(--ease) both; transition:background .3s var(--ease), border-color .3s var(--ease); }
-.panel__head { padding:13px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--card-2); border-radius: 12px 12px 0 0; }
-.panel__title { margin:0; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); display:flex; align-items:center; gap:8px; }
-.panel__body { padding:16px; }
-.filter-section { margin-bottom:18px; position:relative; }
-.filter-section:last-child { margin-bottom:0; }
-.filter-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
-
-.custom-select { position:relative; user-select:none; width:100%; }
-.custom-select__trigger { position:relative; display:flex; align-items:center; justify-content:space-between; padding:10px 12px; font-size:12.5px; font-weight:500; color:var(--text); background:var(--card-2); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all .2s; }
-.custom-select__trigger:hover { border-color:var(--brand-300); }
-.custom-select.open .custom-select__trigger { border-color:var(--brand-400); box-shadow:0 0 0 3px rgba(47,116,208,.1); }
-.custom-select__options { position:absolute; display:none; top:calc(100% + 4px); left:0; right:0; background:var(--card); border:1px solid var(--border); border-radius:8px; box-shadow:var(--shadow-lg); z-index:100; max-height:250px; overflow-y:auto; }
-.custom-select.open .custom-select__options { display:block; animation:fadeIn .15s; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-.custom-option { display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; color:var(--text-2); cursor:pointer; transition:background .1s; }
-.custom-option:hover { background:var(--card-2); }
-.custom-option input[type="radio"], .custom-option input[type="checkbox"] { accent-color:var(--brand-400); width:16px; height:16px; cursor:pointer; }
-.custom-option.selected { background:rgba(47,116,208,.05); color:var(--brand-400); font-weight:600; }
-.custom-dates-wrap { margin-top:10px; display:block !important; padding:10px; border:1px solid var(--border); border-radius:8px; background:var(--card-2); }
-.custom-dates-wrap:before { content:"Choose a date range (optional)"; display:block; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-
-.btn-reset { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:8px; font-size:11px; font-weight:600; cursor:pointer; transition:all .2s; border:1px solid transparent; }
-.btn-reset.default { background:rgba(22,163,74,.1); color:var(--success); border-color:rgba(22,163,74,.2); }
-.btn-reset.default:hover { background:rgba(22,163,74,.2); }
-.btn-reset.modified { background:rgba(220,38,38,.1); color:var(--danger); border-color:rgba(220,38,38,.2); }
-.btn-reset.modified:hover { background:rgba(220,38,38,.2); }
-
-.btn-brand { background:#245a91; color:#fff; border:none; padding:11px 14px; border-radius:8px; font-weight:600; font-size:12.5px; width:100%; transition:all .2s var(--ease); box-shadow:none; cursor:pointer; display:flex; justify-content:center; align-items:center; gap:8px; }
-.btn-brand:hover { background:#1b4979; transform:translateY(-1px); box-shadow:0 5px 12px rgba(36,90,145,.18); color:#fff; }
-.btn-brand:disabled { opacity:.7; cursor:not-allowed; transform:none; }
-
-/* KPI */
-.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:13px; margin-bottom:18px; }
-.kpi { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:17px 18px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden; transition:transform .25s var(--ease), box-shadow .25s var(--ease); }
-.kpi:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
-.kpi::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--kpi-color,var(--brand-500)); }
-.kpi__icon { width:32px; height:32px; border-radius:8px; display:grid; place-items:center; background:var(--kpi-bg,rgba(47,116,208,.12)); color:var(--kpi-color,var(--brand-400)); font-size:16px; margin-bottom:12px; }
-.kpi__label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); margin-bottom:6px; }
-.kpi__value { font-size:23px; font-weight:700; letter-spacing:-.5px; color:var(--text); font-variant-numeric:tabular-nums; }
-
-.chart-card, .table-card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:18px; overflow:hidden; }
-.chart-card { padding:18px 20px; }
-.chart-card__head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
-.chart-card__title { margin:0; font-size:14px; font-weight:650; color:var(--text); }
-.chart-card__sub { font-size:11.5px; color:var(--muted); margin:2px 0 0; }
-.chart-wrap { position:relative; height:320px; }
-.table-card__head { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:var(--card-2); }
-.table-card__title { margin:0; font-size:14px; font-weight:650; color:var(--text); }
-.table { color:var(--text); margin-bottom:0; }
-.table thead th { font-size:9.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); background:var(--card-2); border-bottom:1px solid var(--border); padding:10px 14px; white-space:nowrap; }
-.table tbody td { padding:12px 14px; font-size:12px; vertical-align:middle; border-color:var(--border); color:var(--text-2); background:transparent; }
-.table tbody tr { transition:background .15s; }
-.table tbody tr:hover td { background:var(--card-2); }
-.table .num { text-align:right; font-variant-numeric:tabular-nums; }
-
-/* PER-STORE CHART CARDS */
-.store-charts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:16px; margin-bottom:20px; }
-.store-chart-card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-sm); overflow:hidden; transition:transform .25s var(--ease), box-shadow .25s var(--ease); animation:fadeUp .4s var(--ease) both; }
-.store-chart-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
-.store-chart-card__head { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:linear-gradient(135deg, rgba(47,116,208,.06), rgba(0,194,168,.06)); border-bottom:1px solid var(--border); gap:8px; }
-.store-chart-card__title { font-size:13.5px; font-weight:600; color:var(--text); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.store-chart-card__body { padding:14px 16px 16px; height:240px; position:relative; }
-.store-chart-card__stats { display:flex; gap:14px; padding:10px 16px 14px; flex-wrap:wrap; border-bottom: 1px solid var(--border); }
-.store-chart-card__stat { display:flex; flex-direction:column; gap:1px; }
-.store-chart-card__stat-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; }
-.store-chart-card__stat-value { font-size:13px; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
-.store-chart-card__stat-value.brand { color:var(--brand-400); }
-.store-chart-card__stat-value.accent { color:var(--accent); }
-
-/* AGGREGATOR PROGRESS BARS */
-.agg-breakdown-bars { padding: 12px 16px 16px; display:flex; flex-direction:column; gap:10px; }
-.agg-bar-row { display:flex; flex-direction:column; gap:4px; }
-.agg-bar-header { display:flex; justify-content:space-between; font-size:11.5px; font-weight:600; color:var(--text); }
-.agg-bar-header span:last-child { font-variant-numeric: tabular-nums; color: var(--brand-400); }
-.agg-bar-track { height:6px; border-radius:4px; background:var(--card-2); overflow:hidden; }
-.agg-bar-fill { height:100%; border-radius:4px; transition:width .6s ease-out; }
-
-/* TODAY */
-.today-card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:18px; overflow:hidden; }
-.today-card__head { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:linear-gradient(135deg, rgba(0,194,168,.06), rgba(47,116,208,.06)); }
-.today-card__title { margin:0; font-size:14px; font-weight:650; color:var(--text); display:flex; align-items:center; gap:8px; }
-.today-card__title i { color:var(--accent); }
-.today-card__badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:var(--accent); color:#04241f; font-size:12px; font-weight:700; }
-.today-table { width:100%; border-collapse:collapse; font-size:13px; }
-.today-table thead th { padding:10px 12px; text-align:left; font-size:9.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); background:var(--card-2); border-bottom:1px solid var(--border); white-space:nowrap; }
-.today-table tbody td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-2); vertical-align:middle; font-size:12px; }
-.today-table tbody tr:hover td { background:var(--card-2); }
-.today-table .num { text-align:right; font-variant-numeric:tabular-nums; }
-.today-empty { padding:40px 20px; text-align:center; color:var(--muted); }
-.today-empty i { font-size:34px; opacity:.35; display:block; margin-bottom:10px; }
-.today-empty h5 { font-size:14px; font-weight:600; color:var(--text); margin:0 0 4px; }
-.today-empty p { font-size:12.5px; margin:0; }
-.today-totals { padding:12px 18px; background:var(--card-2); border-top:1px solid var(--border); display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
-.today-totals__item { display:flex; flex-direction:column; gap:2px; }
-.today-totals__label { font-size:9.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:600; }
-.today-totals__value { font-size:13px; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
-.today-totals__value.accent { color:var(--accent); }
-.today-totals__value.brand { color:var(--brand-400); }
-
-/* COMPACT BREAKDOWN */
-.breakdown-compact { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; padding:16px 18px; }
-.bd-card { border:1px solid var(--border); border-radius:8px; background:var(--card-2); padding:11px 13px; transition:transform .15s, box-shadow .15s; }
-.bd-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); border-color:var(--border-2); }
-.bd-card__store { font-size:12px; font-weight:700; color:var(--text); margin-bottom:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.bd-agg-row { display:flex; align-items:center; justify-content:space-between; gap:6px; padding:3px 0; font-size:11.5px; }
-.bd-agg-row__name { color:var(--text-2); display:flex; align-items:center; gap:6px; text-transform:capitalize; }
-.bd-agg-row__val { font-weight:600; font-variant-numeric:tabular-nums; color:var(--text); }
-.bd-agg-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.bd-agg-dot--keeta { background: #f5a623; }
-.bd-agg-dot--beans { background: #3b82f6; }
-.bd-agg-dot--sonnunu, .bd-agg-dot--snoonu { background: #16a34a; }
-.bd-agg-dot--rafeeq { background: #ec4899; }
-.bd-agg-dot--talabat { background: #dc2626; }
-.bd-agg-dot--direct { background: #64748b; }
-.bd-card__total { margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); display:flex; justify-content:space-between; font-size:12px; font-weight:700; }
-.bd-card__total span:last-child { color:var(--brand-400); }
-
-/* EMPTY */
-.empty-state { padding:60px 20px; text-align:center; color:var(--muted); }
-.empty-state i { font-size:42px; opacity:.35; display:block; margin-bottom:14px; }
-.empty-state h4 { font-size:15px; font-weight:600; color:var(--text); margin:0 0 4px; }
-.empty-state p { font-size:13px; margin:0; }
-
-/* TOAST */
-.toast-stack { position:fixed; bottom:24px; right:24px; z-index:6000; display:flex; flex-direction:column; gap:8px; }
-.toast { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent); padding:12px 16px; border-radius:10px; box-shadow:var(--shadow-lg); font-size:13px; color:var(--text); animation:slideIn .3s var(--ease); min-width:260px; display:flex; align-items:center; gap:10px; }
-.toast.toast--error { border-left-color:var(--danger); }
-.toast.toast--success { border-left-color:var(--success); }
-@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
-
-/* INSIGHTS PANEL */
-.insights-panel { position:fixed; inset:0; background:rgba(11,18,32,.65); backdrop-filter:blur(6px); z-index:2000; display:none; overflow-y:auto; padding:40px 24px; animation:fadeIn .2s; }
-.insights-panel.open { display:block; }
-.insights-panel__inner { max-width:1280px; margin:0 auto; background:var(--card); border-radius:14px; box-shadow:0 24px 70px rgba(0,0,0,.2); padding:28px 32px; animation:fadeUp .35s var(--ease) both; color:var(--text); }
-.insights-panel__head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:20px; }
-.insights-panel__title { margin:0; font-size:19px; font-weight:700; display:flex; align-items:center; gap:10px; }
-.insights-panel__title i { color:var(--accent-2); }
-.insights-panel__sub { margin:4px 0 0; color:var(--muted); font-size:13px; }
-
-.insight-controls { display:flex; align-items:center; gap:16px; margin-bottom:20px; padding:12px 16px; background:var(--card-2); border:1px solid var(--border); border-radius:8px; flex-wrap:wrap; justify-content:space-between; }
-.insight-control-group { display:flex; align-items:center; gap:8px; }
-.insight-control-group label { font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:0.05em; margin:0; white-space:nowrap; }
-
-.insights-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:22px; border-bottom:1px solid var(--border); padding-bottom:14px; }
-.insights-tab { padding:8px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); color:var(--text-2); font-size:13px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all .2s var(--ease); }
-.insights-tab:hover { border-color:var(--brand-300); color:var(--brand-400); }
-.insights-tab.active { background:var(--brand-500); color:#fff; border-color:var(--brand-500); box-shadow:0 4px 10px rgba(30,90,168,.25); }
-[data-theme="dark"] .insights-tab.active { background:var(--brand-400); border-color:var(--brand-400); }
-.insights-body { display:none; }
-.insights-body.active { display:block; animation:fadeUp .3s var(--ease) both; }
-
-.insight-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:22px; }
-.insight-tile { padding:16px 18px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); position:relative; overflow:hidden; transition:transform .2s var(--ease); }
-.insight-tile:hover { transform:translateY(-2px); }
-.insight-tile::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--tile-color,var(--brand-400)); }
-.insight-tile__label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
-.insight-tile__label i { font-size:14px; }
-.insight-tile__value { font-size:17px; font-weight:700; color:var(--text); margin-bottom:2px; line-height:1.2; }
-.insight-tile__detail { font-size:12px; color:var(--muted); margin-top:4px; }
-
-.insight-card { border:1px solid var(--border); border-radius:8px; padding:20px 22px; margin-bottom:18px; background:var(--card); transition:background .3s var(--ease); }
-.insight-card__head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
-.insight-card__head h3 { margin:0; font-size:15px; font-weight:600; }
-.insight-card__sub { font-size:12.5px; color:var(--muted); }
-
-.compare-brand-filter { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:14px; }
-.compare-brand-chip { font-size:11px; padding:5px 12px; border-radius:999px; border:1px solid var(--border); background:var(--card-2); color:var(--text-2); cursor:pointer; font-weight:500; transition:all .15s; }
-.compare-brand-chip:hover { border-color:var(--brand-400); color:var(--brand-400); }
-.compare-brand-chip.active { background:var(--brand-400); color:#fff; border-color:var(--brand-400); }
-
-.compare-selectors { display:flex; align-items:flex-end; gap:14px; margin-bottom:20px; flex-wrap:wrap; }
-.compare-pick { display:flex; flex-direction:column; gap:6px; min-width:200px; flex:1; }
-.compare-pick label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:600; color:var(--muted); }
-.compare-pick select { padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); color:var(--text); font-size:13px; font-family:inherit; }
-.compare-vs { padding:8px 14px; background:var(--brand-500); color:#fff; font-weight:700; border-radius:999px; font-size:12px; letter-spacing:1px; align-self:center; }
-.compare-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:16px; }
-.compare-kpi { padding:14px 16px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); }
-.compare-kpi__label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:600; color:var(--muted); margin-bottom:8px; }
-.compare-kpi__row { display:flex; justify-content:space-between; align-items:center; font-size:13px; padding:3px 0; }
-.compare-kpi__row span:first-child { color:var(--muted); font-size:12px; }
-.compare-kpi__row span:last-child { font-weight:600; font-variant-numeric:tabular-nums; }
-.compare-kpi__winner { font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; margin-top:6px; display:inline-block; }
-.compare-kpi__winner.a { background:rgba(47,116,208,.15); color:var(--brand-400); }
-.compare-kpi__winner.b { background:rgba(0,194,168,.15); color:#00a888; }
-.compare-kpi__winner.tie { background:var(--card); color:var(--muted); }
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-
-/* SETTINGS */
-.settings-panel { position:fixed; inset:0; background:rgba(11,18,32,.55); backdrop-filter:blur(4px); z-index:2100; display:none; overflow-y:auto; padding:40px 24px; animation:fadeIn .2s; }
-.settings-panel.open { display:block; }
-.settings-panel__inner { max-width:720px; margin:0 auto; background:var(--card); border-radius:14px; box-shadow:0 24px 70px rgba(0,0,0,.2); padding:28px 32px; animation:fadeUp .35s var(--ease) both; color:var(--text); }
-.settings-panel__head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:22px; }
-.settings-panel__title { margin:0; font-size:19px; font-weight:700; display:flex; align-items:center; gap:10px; }
-.settings-panel__title i { color:var(--brand-400); }
-.settings-field { margin-bottom:18px; }
-.settings-field label { display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:6px; }
-.settings-field input { width:100%; padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card-2); color:var(--text); font-size:13.5px; font-family:inherit; outline:none; }
-.settings-field input:focus { border-color:var(--brand-400); }
-.settings-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; padding-top:18px; border-top:1px solid var(--border); }
-.settings-status { margin-top:16px; padding:12px 16px; border-radius:8px; font-size:13px; display:none; }
-.settings-status.show { display:block; }
-.settings-status.ok { background:rgba(22,163,74,.12); color:var(--success); border:1px solid rgba(22,163,74,.25); }
-.settings-status.err { background:rgba(220,38,38,.12); color:var(--danger); border:1px solid rgba(220,38,38,.25); }
-
-/* GENERIC GHOST BUTTON */
-.btn-ghost { border:1px solid var(--border); background:var(--card); color:var(--text-2); border-radius:7px; transition:.15s; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; }
-.btn-ghost:hover { border-color:var(--brand-400); color:var(--brand-400); background:var(--card-2); }
-
-.sidebar-toggle { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); background:var(--card); color:var(--text-2); border-radius:7px; padding:6px 9px; font:600 11px Inter,sans-serif; cursor:pointer; }
-.sidebar-toggle:hover { border-color:var(--brand-400); color:var(--brand-400); }
-.layout.sidebar-collapsed { grid-template-columns: minmax(0,1fr); }
-.layout.sidebar-collapsed > .panel { display:none; }
-.mobile-nav-toggle { display:none; align-items:center; justify-content:center; width:36px; height:36px; border:1px solid rgba(255,255,255,.2); border-radius:8px; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
-
-/* DARK OVERRIDES */
-[data-theme="dark"] .panel__head,
-[data-theme="dark"] .today-card__head,
-[data-theme="dark"] .table-card__head,
-[data-theme="dark"] .stores-dropdown__head,
-[data-theme="dark"] .stores-dropdown__foot,
-[data-theme="dark"] .custom-select__trigger { background: var(--card-2); }
-
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline:3px solid rgba(19,168,138,.25); outline-offset:2px; }
-
-/* RESPONSIVE */
-@media(max-width:1100px){
-  .topbar__inner{padding:10px 18px}
-  .topnav{display:flex;flex-wrap:wrap;margin:0;gap:2px}
-  .topnav__link{padding:8px 9px;font-size:11.5px}
-  .layout{grid-template-columns:260px minmax(0,1fr);padding-left:18px;padding-right:18px;gap:14px}
-  .page-head{padding-left:18px;padding-right:18px}
+body { 
+  background: var(--bg-main); color: var(--text-primary); 
+  font-family: var(--font-main); margin: 0; font-size: 14px; 
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
-@media(max-width:820px){
-  .topbar__inner{flex-wrap:wrap;gap:9px;padding:10px 14px}
-  .mobile-nav-toggle{display:inline-flex}
-  .topnav{display:none;order:5;width:100%;margin:4px 0 0;padding:8px;background:rgba(255,255,255,.06);border-radius:9px}
-  .topnav.mobile-open{display:flex}
-  .topnav__link{font-size:12px}
-  .topbar__spacer{flex:1}
-  .theme-switch-wrap{margin-left:auto}
-  .layout{grid-template-columns:1fr;padding:0 14px 32px}
-  .layout>.panel{display:block}
-  .layout.sidebar-collapsed>.panel{display:none}
-  .page-head{padding:22px 14px 18px}
-  .stores-dropdown{width:min(360px,calc(100vw - 28px))}
-  .two-col{grid-template-columns:1fr}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* ==========================================================
+   TOP BAR & NAVIGATION
+   ========================================================== */
+.topbar { 
+  position: sticky; top: 0; z-index: 1000; 
+  background: rgba(10, 15, 28, 0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between;
 }
-@media(max-width:560px){
-  .logo__mark{width:35px;height:35px}
-  .logo__text strong{font-size:13px}
-  .logo__text small{font-size:8px}
-  .user-chip{padding:4px}
-  .user-chip__avatar{width:28px;height:28px}
-  .theme-switch-label{display:none}
-  .topnav.mobile-open{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .topnav__link{justify-content:flex-start}
-  .stores-dd-wrap{position:static}
-  .stores-dropdown{position:fixed;top:115px;left:14px;width:calc(100vw - 28px);max-height:70vh}
-  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-  .kpi{padding:12px}
-  .kpi__value{font-size:18px}
-  .kpi__label{font-size:9px}
-  .kpi__icon{margin-bottom:8px}
-  .chart-card{padding:14px!important}
-  .chart-wrap{height:235px}
-  .today-card__head{align-items:flex-start}
-  .today-totals{gap:12px;justify-content:space-between}
-  .insights-panel{padding:8px}
-  .insights-panel__inner,.settings-panel__inner{padding:15px}
+.logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { 
+  width: 38px; height: 38px; border-radius: var(--radius-sm); 
+  background: linear-gradient(135deg, var(--brand-accent), #00a5b8); 
+  display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #000;
+  box-shadow: 0 0 15px rgba(0, 194, 168, 0.4);
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+.logo-text h1 { margin: 0; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.logo-text p { margin: 0; font-size: 10px; font-weight: 600; color: var(--brand-accent); letter-spacing: 2px; text-transform: uppercase; }
+
+/* Main Navigation Tabs */
+.main-nav { display: flex; gap: 8px; background: var(--bg-panel); padding: 6px; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); }
+.nav-tab { 
+  padding: 8px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 13px; 
+  color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; gap: 8px; border: none; background: transparent;
+}
+.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.nav-tab.active { 
+  background: linear-gradient(135deg, rgba(0,194,168,0.15), rgba(59,130,246,0.15)); 
+  color: var(--brand-accent); box-shadow: inset 0 0 0 1px var(--border-highlight);
+}
+
+/* Page Routing */
+.page-section { display: none; animation: fadeIn 0.4s ease-out forwards; }
+.page-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ==========================================================
+   LAYOUT & PANELS
+   ========================================================== */
+.app-container { max-width: 1600px; margin: 0 auto; padding: 24px; }
+.grid-layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
+
+.panel { 
+  background: var(--bg-card); border: 1px solid var(--border-glass); 
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(10px); overflow: hidden; margin-bottom: 24px;
+}
+.panel-header { 
+  padding: 16px 20px; border-bottom: 1px solid var(--border-glass); 
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.2);
+}
+.panel-title { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+
+/* ==========================================================
+   CONTROLS & FILTERS
+   ========================================================== */
+.filter-group { margin-bottom: 20px; }
+.filter-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+.form-control, .form-select { 
+  background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); 
+  color: var(--text-primary); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px;
+}
+.form-control:focus, .form-select:focus { background: rgba(0,0,0,0.5); border-color: var(--brand-accent); box-shadow: 0 0 0 3px rgba(0,194,168,0.1); color: #fff; }
+
+.btn-primary-glow { 
+  width: 100%; padding: 12px; border-radius: var(--radius-sm); border: none;
+  background: linear-gradient(135deg, var(--brand-accent), #00a5b8);
+  color: #000; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,194,168,0.3);
+}
+.btn-primary-glow:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,194,168,0.5); }
+
+/* Custom Dropdown */
+.custom-select { position: relative; }
+.custom-select-trigger { 
+  width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); 
+  border-radius: var(--radius-sm); color: var(--text-primary); font-size: 13px; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+}
+.custom-select-options { 
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; 
+  background: var(--bg-panel); border: 1px solid var(--border-glass); 
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-panel); z-index: 100; 
+  display: none; padding: 6px; 
+}
+.custom-select.open .custom-select-options { display: block; }
+.custom-option { padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--text-secondary); }
+.custom-option:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.custom-option.selected { background: rgba(0,194,168,0.1); color: var(--brand-accent); font-weight: 600; }
+
+/* Store Brand Accordion */
+.brand-group { margin-bottom: 6px; border: 1px solid var(--border-glass); border-radius: var(--radius-sm); overflow: hidden; }
+.brand-header { padding: 10px 12px; background: rgba(255,255,255,0.03); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+.brand-header:hover { background: rgba(255,255,255,0.06); }
+.brand-content { display: none; padding: 8px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-glass); }
+.brand-group.expanded .brand-content { display: block; }
+.store-item { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+.store-item:hover { background: rgba(255,255,255,0.05); }
+.store-item input { accent-color: var(--brand-accent); width: 14px; height: 14px; }
+.store-item span { font-size: 12px; color: var(--text-secondary); }
+
+/* ==========================================================
+   DASHBOARD VIEW
+   ========================================================== */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { 
+  background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
+  padding: 20px; position: relative; overflow: hidden;
+}
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--kpi-color); }
+.kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.kpi-value { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -1px; }
+.kpi-icon { position: absolute; right: 20px; bottom: 20px; font-size: 32px; color: var(--kpi-color); opacity: 0.2; }
+
+/* Circular Chart */
+.chart-container { height: 400px; position: relative; display: flex; justify-content: center; align-items: center; padding: 20px; }
+#totalSalesChart { max-height: 100%; max-width: 100%; }
+
+/* Breakdown Cards */
+.breakdown-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 20px; }
+.breakdown-card { 
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
+  border-radius: var(--radius-md); padding: 16px; 
+}
+.breakdown-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: #fff; }
+.breakdown-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.breakdown-row span:last-child { font-weight: 600; color: var(--text-primary); }
+.breakdown-total { border-top: 1px dashed var(--border-glass); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; font-size: 13px; color: var(--brand-accent); }
+
+/* ==========================================================
+   DATA ENTRY VIEW
+   ========================================================== */
+.table-responsive { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+.data-table th { 
+  background: rgba(0,0,0,0.3); padding: 12px 16px; text-align: left; 
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+  border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 10;
+}
+.data-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.data-table input { 
+  width: 100%; padding: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
+  border-radius: 4px; color: #fff; font-size: 12px; transition: 0.2s;
+}
+.data-table input:focus { border-color: var(--brand-accent); outline: none; background: rgba(0,0,0,0.4); }
+.data-table tr.row-saved { background: rgba(0, 194, 168, 0.1); }
+.data-table tr.row-invalid { background: rgba(239, 68, 68, 0.1); }
+.data-table tr.row-saving { background: rgba(245, 158, 11, 0.1); }
+.btn-remove { color: var(--brand-danger); background: none; border: none; cursor: pointer; padding: 4px; }
+.btn-remove:hover { background: rgba(239,68,68,0.1); border-radius: 4px; }
+
+/* ==========================================================
+   INSIGHTS & AI TABS
+   ========================================================== */
+.insight-tabs { display: flex; gap: 8px; padding: 16px 20px 0; border-bottom: 1px solid var(--border-glass); flex-wrap: wrap; }
+.insight-tab { 
+  padding: 10px 16px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border: 1px solid transparent; border-bottom: none;
+  background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 13px; cursor: pointer;
+}
+.insight-tab:hover { color: #fff; background: rgba(255,255,255,0.03); }
+.insight-tab.active { 
+  background: var(--bg-panel); border-color: var(--border-glass); border-bottom-color: var(--bg-panel); 
+  color: var(--brand-accent); transform: translateY(1px);
+}
+.insight-pane { display: none; padding: 24px; }
+.insight-pane.active { display: block; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.insight-tile { 
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
+  border-radius: var(--radius-md); padding: 20px; border-left: 4px solid var(--tile-color);
+}
+.insight-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+.insight-value { font-size: 22px; font-weight: 800; color: #fff; margin: 0; }
+.insight-detail { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+.table-dark-custom { width: 100%; border-collapse: collapse; margin-top: 16px; }
+.table-dark-custom th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+.table-dark-custom td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 13px; }
+.table-dark-custom tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Toast */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: var(--bg-panel); border-left: 4px solid var(--brand-accent); padding: 14px 20px; border-radius: var(--radius-sm); box-shadow: var(--shadow-panel); color: #fff; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: slideLeft 0.3s ease-out; }
+.toast.error { border-left-color: var(--brand-danger); }
+@keyframes slideLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+/* Responsive */
+@media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } }
+@media (max-width: 1024px) {
+  .grid-layout { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 0 16px; height: auto; flex-direction: column; gap: 16px; padding-bottom: 16px; }
+  .main-nav { width: 100%; flex-wrap: wrap; justify-content: center; }
+  .nav-tab { flex: 1; justify-content: center; font-size: 12px; padding: 8px 10px; }
+  .kpi-row { grid-template-columns: 1fr; }
+  .chart-container { height: 300px; }
 }
 </style>
 </head>
-
 <body>
-<div id="topProgress"></div>
 
+<!-- TOP NAVIGATION -->
 <header class="topbar">
-  <div class="topbar__inner">
-    <a class="logo" href="#">
-      <div class="logo__mark">WS</div>
-      <div class="logo__text">
-        <strong>With Stand</strong>
-        <small>Corporate</small>
-      </div>
-    </a>
-
-    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation" aria-expanded="false"><i class="bi bi-list"></i></button>
-    <nav class="topnav" id="primaryNav">
-      <a class="topnav__link active" href="#"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-
-      <div class="stores-dd-wrap">
-        <button class="topnav__link" id="storesBtn" aria-expanded="false">
-          <i class="bi bi-shop"></i> Stores
-          <span id="storesCount" class="badge rounded-pill" style="background:var(--accent);color:#04241f;font-size:10.5px;padding:2px 7px;">0</span>
-          <i class="bi bi-chevron-down caret"></i>
-        </button>
-
-        <div class="stores-dropdown" id="storesDropdown" role="menu">
-          <div class="stores-dropdown__head">
-            <span class="stores-dropdown__title">Store Directory</span>
-            <div class="stores-dropdown__actions">
-              <button class="mini-btn" id="selectAllBtn">Select All</button>
-              <button class="mini-btn" id="clearAllBtn">Clear</button>
-            </div>
-          </div>
-          <div class="stores-dropdown__search">
-            <input type="text" id="storeSearch" placeholder="Search locations..." autocomplete="off">
-          </div>
-          <div class="stores-dropdown__list" id="storesList"></div>
-          <div class="stores-dropdown__foot">
-            <span class="stores-dropdown__count" id="storesFoot">0 locations selected</span>
-            <button class="btn-apply-sm" id="applyStoresBtn">Apply Selection</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="topnav__link insights-btn" id="insightsNavBtn">
-        <i class="bi bi-lightbulb bulb-icon"></i> Insights
-      </button>
-
-      <button class="topnav__link" id="settingsNavBtn"><i class="bi bi-gear"></i> Settings</button>
-    </nav>
-
-    <div class="topbar__spacer"></div>
-
-    <div class="theme-switch-wrap">
-      <span class="theme-switch-label" id="themeLabelText">ON</span>
-      <button class="theme-switch" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-        <div class="theme-switch__thumb"></div>
-      </button>
+  <a href="#" class="logo-area">
+    <div class="logo-icon">WS</div>
+    <div class="logo-text">
+      <h1>With Stand</h1>
+      <p>Corporate Intel</p>
     </div>
+  </a>
 
-    <div class="user-chip">
-      <div class="user-chip__avatar">FT</div>
-      <div class="user-chip__name">Finance Team User 1</div>
-    </div>
-  </div>
+  <nav class="main-nav">
+    <button class="nav-tab active" data-target="view-dashboard"><i class="bi bi-grid-1x2-fill"></i> Dashboard</button>
+    <button class="nav-tab" data-target="view-entry"><i class="bi bi-pencil-square"></i> Data Entry</button>
+    <button class="nav-tab" data-target="view-insights"><i class="bi bi-lightning-charge-fill"></i> Insights</button>
+    <button class="nav-tab" data-target="view-ai"><i class="bi bi-stars"></i> AI Evaluator</button>
+    <button class="nav-tab" data-target="view-settings"><i class="bi bi-gear-fill"></i> Settings</button>
+  </nav>
 </header>
 
-<div class="page-head">
-  <h1>Store Performance Dashboard</h1>
-</div>
+<div class="app-container">
 
-<div class="layout">
-
-  <aside class="panel">
-    <div class="panel__head">
-      <h2 class="panel__title"><i class="bi bi-sliders2"></i> Filters</h2>
-      <div class="d-flex align-items-center gap-2">
-        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-expanded="true" title="Collapse filters"><i class="bi bi-layout-sidebar-inset"></i><span>Collapse</span></button>
-        <button class="btn-reset default" id="resetBtn"><i class="bi bi-arrow-clockwise"></i> Reset</button>
-      </div>
-    </div>
-    <div class="panel__body">
-
-      <div class="filter-section">
-        <div class="filter-label"><i class="bi bi-calendar3"></i> Period</div>
-        <div class="custom-select" id="periodSelect">
-          <div class="custom-select__trigger" tabindex="0">
-            <span id="periodLabel">MTD (Month to Date)</span>
-            <i class="bi bi-chevron-down"></i>
+  <!-- ==========================================================
+       VIEW: DASHBOARD
+       ========================================================== -->
+  <section id="view-dashboard" class="page-section active">
+    <div class="grid-layout">
+      
+      <!-- LEFT: FILTERS -->
+      <aside class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="bi bi-funnel"></i> Filters</h2>
+        </div>
+        <div class="panel-body" style="padding: 20px;">
+          
+          <div class="filter-group">
+            <label class="filter-label">Time Period</label>
+            <div class="custom-select" id="periodSelect">
+              <div class="custom-select-trigger"><span id="periodLabel">MTD (Month to Date)</span><i class="bi bi-chevron-down"></i></div>
+              <div class="custom-select-options">
+                <div class="custom-option selected" data-val="mtd">MTD (Month to Date)</div>
+                <div class="custom-option" data-val="today">Today</div>
+                <div class="custom-option" data-val="7d">Last 7 Days</div>
+                <div class="custom-option" data-val="30d">Last 30 Days</div>
+                <div class="custom-option" data-val="custom">Custom Range</div>
+              </div>
+            </div>
           </div>
-          <div class="custom-select__options">
-            <label class="custom-option selected"><input type="radio" name="period" value="mtd" checked> MTD (Month to Date)</label>
-            <label class="custom-option"><input type="radio" name="period" value="today"> Today</label>
-            <label class="custom-option"><input type="radio" name="period" value="7d"> Last 7 Days</label>
-            <label class="custom-option"><input type="radio" name="period" value="30d"> Last 30 Days</label>
-            <label class="custom-option"><input type="radio" name="period" value="custom"> Custom Range</label>
+
+          <div class="filter-group" id="customDateWrap" style="display:none;">
+            <label class="filter-label">Date Range</label>
+            <input type="date" id="dateFrom" class="form-control mb-2">
+            <input type="date" id="dateTo" class="form-control">
+          </div>
+
+          <div class="filter-group">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="filter-label mb-0">Stores</label>
+              <button class="btn btn-sm btn-outline-light" style="font-size:10px; padding:2px 8px;" id="btnSelectAll">Select All</button>
+            </div>
+            <div id="brandAccordion">
+              <!-- Brands populated via JS -->
+            </div>
+          </div>
+
+          <button class="btn-primary-glow mt-4" id="btnApply">Load Data</button>
+        </div>
+      </aside>
+
+      <!-- RIGHT: DATA -->
+      <main>
+        <!-- KPIs -->
+        <div class="kpi-row">
+          <div class="kpi-card" style="--kpi-color: #3b82f6;">
+            <div class="kpi-label">Total Gross Sales</div>
+            <div class="kpi-value" id="kpiGross">0.00</div>
+            <i class="bi bi-graph-up-arrow kpi-icon"></i>
+          </div>
+          <div class="kpi-card" style="--kpi-color: #00c2a8;">
+            <div class="kpi-label">Card Sales</div>
+            <div class="kpi-value" id="kpiCard">0.00</div>
+            <i class="bi bi-credit-card kpi-icon"></i>
+          </div>
+          <div class="kpi-card" style="--kpi-color: #f59e0b;">
+            <div class="kpi-label">Cash Sales</div>
+            <div class="kpi-value" id="kpiCash">0.00</div>
+            <i class="bi bi-cash-stack kpi-icon"></i>
+          </div>
+          <div class="kpi-card" style="--kpi-color: #8b5cf6;">
+            <div class="kpi-label">Total Guests</div>
+            <div class="kpi-value" id="kpiGuests">0</div>
+            <i class="bi bi-people kpi-icon"></i>
           </div>
         </div>
-        <div class="custom-dates-wrap" id="customDates">
-          <label class="filter-label mt-2 mb-1">From</label>
-          <input type="date" class="form-control form-control-sm mb-2" id="dateFrom">
-          <label class="filter-label mb-1">To</label>
-          <input type="date" class="form-control form-control-sm" id="dateTo">
-        </div>
-      </div>
 
-      <button class="btn-brand mt-4" id="applyBtn">
-        <i class="bi bi-funnel-fill"></i> Apply Filters
-      </button>
+        <!-- Circular Chart -->
+        <div class="panel mb-4">
+          <div class="panel-header">
+            <h2 class="panel-title"><i class="bi bi-pie-chart"></i> Total Sales by Store</h2>
+          </div>
+          <div class="chart-container">
+            <canvas id="totalSalesChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Breakdown by Store & Aggregator -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title"><i class="bi bi-list-columns-reverse"></i> Breakdown by Store & Aggregator</h2>
+          </div>
+          <div class="breakdown-grid" id="breakdownGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </main>
+
     </div>
-  </aside>
+  </section>
 
-  <main>
-
-    <div class="today-card" id="todayCard">
-      <div class="today-card__head">
-        <div>
-          <h3 class="today-card__title">
-            <i class="bi bi-calendar-check"></i>
-            Today's Entries
-            <span class="today-card__badge" id="todayBadge">0</span>
-          </h3>
-          <p class="today-card__sub" id="todaySub" style="margin:2px 0 0;font-size:12px;color:var(--muted)">Data loaded from the selected filters</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-ghost" id="todayRefreshBtn" title="Refresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
-          <button class="btn-ghost" id="todayExportBtn" title="Export to PDF"><i class="bi bi-file-pdf"></i> PDF</button>
+  <!-- ==========================================================
+       VIEW: DATA ENTRY
+       ========================================================== -->
+  <section id="view-entry" class="page-section">
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title"><i class="bi bi-pencil-square"></i> Bulk Data Entry</h2>
+        <div class="d-flex gap-2 align-items-center">
+          <input type="date" id="entryDate" class="form-control form-control-sm" style="width: auto;">
+          <button class="btn btn-sm btn-outline-light" id="btnAddRow"><i class="bi bi-plus-lg"></i> Add Row</button>
+          <button class="btn btn-sm btn-outline-light" id="btnFillSelected"><i class="bi bi-shop"></i> Fill Selected</button>
+          <button class="btn-primary-glow" style="width:auto; padding: 6px 16px; font-size:12px; box-shadow:none;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
         </div>
       </div>
-
-      <div class="table-responsive" style="max-height:340px;overflow:auto">
-        <table class="today-table">
+      <div class="table-responsive" style="max-height: 65vh;">
+        <table class="data-table" id="entryTable">
           <thead>
-            <tr>
-              <th>Store</th><th>Date</th>
-              <th class="num">Card</th><th class="num">Cash</th>
-              <th class="num">Free</th><th>Notes</th>
+            <tr id="entryHeadRow">
+              <th style="width: 40px;"></th>
+              <th>Store</th>
+              <!-- Columns injected via JS -->
             </tr>
           </thead>
-          <tbody id="todayBody">
-            <tr><td colspan="6">
-              <div class="today-empty">
-                <i class="bi bi-calendar-x"></i>
-                <h5>No entries for today yet</h5>
-                <p>No data found for the current system date.</p>
-              </div>
-            </td></tr>
+          <tbody id="entryBody">
+            <!-- Rows injected via JS -->
           </tbody>
         </table>
       </div>
-
-      <div class="today-totals" id="todayTotals">
-        <div class="today-totals__item"><span class="today-totals__label">Card</span><span class="today-totals__value brand" id="todayCardSum">0.00</span></div>
-        <div class="today-totals__item"><span class="today-totals__label">Cash</span><span class="today-totals__value accent" id="todayCashSum">0.00</span></div>
-        <div class="today-totals__item"><span class="today-totals__label">Total</span><span class="today-totals__value" id="todayTotalSum">0.00</span></div>
-        <div class="today-totals__item"><span class="today-totals__label">Free meals</span><span class="today-totals__value" id="todayFreeSum">0</span></div>
-      </div>
     </div>
+  </section>
 
-    <div class="kpi-grid">
-      <div class="kpi" style="--kpi-color:#f5a623;--kpi-bg:rgba(245,166,35,.12);">
-        <div class="kpi__icon"><i class="bi bi-graph-up-arrow"></i></div>
-        <div class="kpi__label">Gross Sales</div>
-        <div class="kpi__value" id="kpiGross">0.00</div>
+  <!-- ==========================================================
+       VIEW: INSIGHTS
+       ========================================================== -->
+  <section id="view-insights" class="page-section">
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title"><i class="bi bi-lightning-charge"></i> Performance Insights</h2>
       </div>
-      <div class="kpi" style="--kpi-color:#2f74d0;--kpi-bg:rgba(47,116,208,.12);">
-        <div class="kpi__icon"><i class="bi bi-credit-card-2-front"></i></div>
-        <div class="kpi__label">Card Sales</div>
-        <div class="kpi__value" id="kpiCard">0.00</div>
+      
+      <div class="insight-tabs">
+        <button class="insight-tab active" data-pane="ov">Overview</button>
+        <button class="insight-tab" data-pane="compare">Store vs Store</button>
+        <button class="insight-tab" data-pane="agg">Aggregator Breakdown</button>
+        <button class="insight-tab" data-pane="cash">Cash vs Card</button>
       </div>
-      <div class="kpi" style="--kpi-color:#00a888;--kpi-bg:rgba(0,168,136,.12);">
-        <div class="kpi__icon"><i class="bi bi-cash-stack"></i></div>
-        <div class="kpi__label">Cash Sales</div>
-        <div class="kpi__value" id="kpiCash">0.00</div>
-      </div>
-      <div class="kpi" style="--kpi-color:#7c3aed;--kpi-bg:rgba(124,58,237,.12);">
-        <div class="kpi__icon"><i class="bi bi-people"></i></div>
-        <div class="kpi__label">Total Guests</div>
-        <div class="kpi__value" id="kpiGuests">0</div>
-      </div>
-    </div>
 
-    <div class="chart-card" id="storeChartsSection" style="padding:20px 22px;">
-      <div class="chart-card__head">
-        <div>
-          <h3 class="chart-card__title">Sales & Volume Trend — Per Store</h3>
-          <p class="chart-card__sub" id="chartSub">Clean overview: Card, Cash, Total (bars) + Aggregator contribution (progress bars)</p>
-        </div>
-        <div class="custom-select" id="chartTypeSelect" style="width:120px;">
-          <div class="custom-select__trigger" tabindex="0" style="padding:6px 12px;font-size:12px;">
-            <span id="chartTypeLabel">Bar Chart</span>
-            <i class="bi bi-chevron-down"></i>
+      <!-- Pane: Overview -->
+      <div class="insight-pane active" id="pane-ov">
+        <div class="grid-2">
+          <div class="insight-tile" style="--tile-color: #3b82f6;">
+            <div class="insight-label"><i class="bi bi-trophy"></i> Top Gross Store</div>
+            <div class="insight-value" id="ovTopStore">-</div>
+            <div class="insight-detail" id="ovTopStoreVal">-</div>
           </div>
-          <div class="custom-select__options">
-            <label class="custom-option selected"><input type="radio" name="chartType" value="bar" checked> Bar Chart</label>
-            <label class="custom-option"><input type="radio" name="chartType" value="line"> Line Chart</label>
+          <div class="insight-tile" style="--tile-color: #8b5cf6;">
+            <div class="insight-label"><i class="bi bi-people"></i> Most Guests</div>
+            <div class="insight-value" id="ovTopGuest">-</div>
+            <div class="insight-detail" id="ovTopGuestVal">-</div>
           </div>
         </div>
+        <table class="table-dark-custom">
+          <thead><tr><th>#</th><th>Store</th><th>Gross Sales</th><th>Guests</th><th>Avg Check</th></tr></thead>
+          <tbody id="ovLeaderboard"></tbody>
+        </table>
       </div>
-      <div class="store-charts-grid" id="storeChartsGrid">
-        <div class="empty-state" style="grid-column:1/-1">
-          <i class="bi bi-bar-chart-line"></i>
-          <h4>No store charts yet</h4>
-          <p>Apply filters to load per-store charts</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="table-card">
-      <div class="table-card__head">
-        <h3 class="table-card__title">Breakdown by store &amp; aggregator (Gross basis)</h3>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span style="font-size:12.5px;color:var(--muted)" id="tableSub">—</span>
-          <button class="btn-ghost" id="breakdownExportBtn"><i class="bi bi-file-pdf"></i> PDF</button>
+      <!-- Pane: Store vs Store -->
+      <div class="insight-pane" id="pane-compare">
+        <div class="d-flex gap-3 mb-4">
+          <select id="cmpStoreA" class="form-select w-50"></select>
+          <select id="cmpStoreB" class="form-select w-50"></select>
         </div>
-      </div>
-      <div id="breakdownCompactWrap">
-        <div class="breakdown-compact" id="breakdownCompact">
-          <div class="empty-state" style="grid-column:1/-1">
-            <i class="bi bi-inbox"></i>
-            <h4>No data loaded</h4>
-            <p>Select filters and click Apply to fetch real-time data</p>
+        <div class="grid-2">
+          <div class="insight-tile" style="--tile-color:#3b82f6">
+            <div class="insight-label">Store A Gross</div><div class="insight-value" id="cmpValA">0</div>
+          </div>
+          <div class="insight-tile" style="--tile-color:#00c2a8">
+            <div class="insight-label">Store B Gross</div><div class="insight-value" id="cmpValB">0</div>
           </div>
         </div>
+        <div class="chart-container" style="height: 300px; margin-top:20px;"><canvas id="compareChart"></canvas></div>
+      </div>
+
+      <!-- Pane: Aggregators -->
+      <div class="insight-pane" id="pane-agg">
+        <div class="grid-2">
+          <div class="chart-container" style="height: 250px;"><canvas id="aggTotalChart"></canvas></div>
+          <div class="chart-container" style="height: 250px;"><canvas id="aggGroupedChart"></canvas></div>
+        </div>
+        <table class="table-dark-custom mt-4">
+          <thead><tr><th>Aggregator</th><th>Total Sales</th><th>Avg per Store</th><th>Share</th></tr></thead>
+          <tbody id="aggTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pane: Cash vs Card -->
+      <div class="insight-pane" id="pane-cash">
+        <div class="chart-container" style="height: 300px;"><canvas id="cashCardChart"></canvas></div>
+        <table class="table-dark-custom mt-4">
+          <thead><tr><th>Store</th><th>Card</th><th>Cash</th><th>Gross</th><th>Cash Ratio</th></tr></thead>
+          <tbody id="cashTableBody"></tbody>
+        </table>
       </div>
     </div>
+  </section>
 
-  </main>
+  <!-- ==========================================================
+       VIEW: AI EVALUATOR
+       ========================================================== -->
+  <section id="view-ai" class="page-section">
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title"><i class="bi bi-stars"></i> AI Evaluator & Recommendations</h2>
+        <button class="btn btn-sm btn-outline-light" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
+      </div>
+      <div class="modal-body" id="aiContent" style="padding: 32px;">
+        <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:40px;"></i><br>Initializing AI Analysis...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       VIEW: SETTINGS
+       ========================================================== -->
+  <section id="view-settings" class="page-section">
+    <div class="panel" style="max-width: 600px;">
+      <div class="panel-header">
+        <h2 class="panel-title"><i class="bi bi-gear"></i> Settings</h2>
+      </div>
+      <div class="modal-body">
+        <div class="filter-group">
+          <label class="filter-label">Google Apps Script Web App URL</label>
+          <input type="text" id="apiUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+        <div class="d-flex gap-2 mt-4">
+          <button class="btn-primary-glow" style="width:auto; padding:10px 24px;" id="btnSaveSettings">Save Connection</button>
+          <button class="btn btn-outline-light" id="btnTestConnection">Test Connection</button>
+        </div>
+        <div id="settingsStatus" class="mt-3 font-weight-bold text-success" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<div class="toast-stack" id="toastStack"></div>
-
-<!-- INSIGHTS PANEL -->
-<section id="insightsPanel" class="insights-panel">
-  <div class="insights-panel__inner">
-    <div class="insights-panel__head">
-      <div>
-        <h2 class="insights-panel__title"><i class="bi bi-lightbulb"></i> Insights &amp; Comparisons</h2>
-        <p class="insights-panel__sub">Analyze performance across stores and aggregators for the current date range.</p>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-ghost" id="insightExportBtn"><i class="bi bi-file-pdf"></i> Export PDF</button>
-        <button class="btn-ghost" id="closeInsights"><i class="bi bi-x-lg"></i> Close</button>
-      </div>
-    </div>
-
-    <div class="insight-controls">
-      <div class="insight-control-group">
-        <label><i class="bi bi-funnel"></i> Active filters:</label>
-        <span id="insightFilterSummary" style="font-size:13px;color:var(--text-2);font-weight:600;">—</span>
-      </div>
-      <div class="insight-control-group">
-        <label><i class="bi bi-shop"></i> Stores:</label>
-        <span id="insightStoresLabel" style="font-size:13px;color:var(--text-2);font-weight:600;">—</span>
-      </div>
-    </div>
-
-    <div class="insights-tabs">
-      <button class="insights-tab active" data-tab="overview"><i class="bi bi-speedometer2"></i> Overview</button>
-      <button class="insights-tab" data-tab="store-vs-store"><i class="bi bi-shop-window"></i> Store vs Store</button>
-      <button class="insights-tab" data-tab="agg-vs-agg"><i class="bi bi-diagram-3"></i> Aggregator Breakdown</button>
-      <button class="insights-tab" data-tab="cash-card"><i class="bi bi-cash-coin"></i> Cash vs Card</button>
-    </div>
-
-    <div class="insights-body active" data-panel="overview">
-      <div class="insight-grid" id="insightWinnerGrid"></div>
-      <div class="insight-card">
-        <div class="insight-card__head">
-          <h3>Store leaderboard</h3>
-          <span class="insight-card__sub">Ranked by gross sales — Avg Check = Gross ÷ Guests</span>
-        </div>
-        <div class="table-responsive">
-          <table class="table mb-0">
-            <thead><tr><th>#</th><th>Store</th><th class="num">Gross Sales</th><th class="num">Guests</th><th class="num">Avg Check</th></tr></thead>
-            <tbody id="storeLeaderboard"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="insights-body" data-panel="store-vs-store">
-      <div class="insight-card">
-        <div class="insight-card__head">
-          <h3>Store comparison</h3>
-          <span class="insight-card__sub">Filter by brand and compare up to 4 stores side-by-side</span>
-        </div>
-        <div class="compare-brand-filter" id="compareBrandFilter"></div>
-        <div class="compare-selectors" id="compareSelectors">
-          <div class="compare-pick"><label>Store A</label><select class="form-select form-select-sm" id="compareStoreA"></select></div>
-          <div class="compare-vs">VS</div>
-          <div class="compare-pick"><label>Store B</label><select class="form-select form-select-sm" id="compareStoreB"></select></div>
-          <div class="compare-pick" id="compareExtraC" style="display:none;"><label>Store C <span style="font-weight:400;text-transform:none;color:var(--muted);">(optional)</span></label><select class="form-select form-select-sm" id="compareStoreC"><option value="">—</option></select></div>
-          <div class="compare-pick" id="compareExtraD" style="display:none;"><label>Store D <span style="font-weight:400;text-transform:none;color:var(--muted);">(optional)</span></label><select class="form-select form-select-sm" id="compareStoreD"><option value="">—</option></select></div>
-          <button class="mini-btn" id="addCompareStoreBtn" style="align-self:center;padding:8px 14px;font-size:12px;">+ Add store</button>
-        </div>
-        <div class="compare-grid" id="compareKpis"></div>
-        <div class="chart-wrap" style="height:300px;margin-top:8px"><canvas id="compareChart"></canvas></div>
-      </div>
-    </div>
-
-    <div class="insights-body" data-panel="agg-vs-agg">
-      <div class="insight-card">
-        <div class="insight-card__head">
-          <h3>Aggregator Performance Breakdown</h3>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span class="insight-card__sub">Comparing aggregator volume across all currently selected stores (gross basis)</span>
-            <button class="btn-ghost" id="aggExportBtn"><i class="bi bi-file-pdf"></i> PDF</button>
-          </div>
-        </div>
-        <div class="two-col">
-          <div class="chart-wrap" style="height:300px"><canvas id="aggTotalChart"></canvas></div>
-          <div class="chart-wrap" style="height:300px"><canvas id="aggGroupedChart"></canvas></div>
-        </div>
-        <div class="table-responsive mt-3">
-          <table class="table mb-0">
-            <thead><tr><th>Aggregator</th><th class="num">Total Sales</th><th class="num">Avg per Store</th><th class="num">Share of Agg. Total</th></tr></thead>
-            <tbody id="aggCompareBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="insight-card" id="aggPerStoreCard">
-        <div class="insight-card__head">
-          <h3>Per-Store Aggregator Composition</h3>
-          <span class="insight-card__sub">Individual aggregator breakdown for each selected store (Direct = Gross − Aggregators)</span>
-        </div>
-        <div class="store-charts-grid" id="aggPerStoreGrid"></div>
-      </div>
-    </div>
-
-    <div class="insights-body" data-panel="cash-card">
-      <div class="insight-card">
-        <div class="insight-card__head">
-          <h3>Cash vs Card analysis</h3>
-          <span class="insight-card__sub">Which stores rely on cash, which on card — and where it's shifting</span>
-        </div>
-        <div class="chart-wrap" style="height:340px"><canvas id="cashCardChart"></canvas></div>
-        <div class="table-responsive mt-3">
-          <table class="table mb-0">
-            <thead><tr><th>Store</th><th class="num">Card</th><th class="num">Cash</th><th class="num">Gross</th><th class="num">Avg Check</th><th>Cash ratio</th></tr></thead>
-            <tbody id="cashCardBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SETTINGS PANEL -->
-<section id="settingsPanel" class="settings-panel">
-  <div class="settings-panel__inner">
-    <div class="settings-panel__head">
-      <div>
-        <h2 class="settings-panel__title"><i class="bi bi-gear"></i> Settings</h2>
-        <p style="margin:4px 0 0;color:var(--muted);font-size:13px;">Configure the Google Apps Script connection.</p>
-      </div>
-      <button class="btn-ghost" id="closeSettings"><i class="bi bi-x-lg"></i> Close</button>
-    </div>
-    <div class="settings-field">
-      <label>Google Apps Script Web App URL</label>
-      <input type="text" id="settingsApiUrl" placeholder="https://script.google.com/macros/s/.../exec">
-    </div>
-    <div class="settings-actions">
-      <button class="btn-brand" style="width:auto;padding:10px 20px;" id="saveSettingsBtn"><i class="bi bi-check-lg me-1"></i> Save</button>
-      <button class="btn-ghost" id="testConnectionBtn"><i class="bi bi-plug me-1"></i> Test Connection</button>
-    </div>
-    <div class="settings-status" id="settingsStatus"></div>
-  </div>
-</section>
+<div class="toast-container" id="toastContainer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<script>
-/* ==========================================================
-   NAV CONTROLS
-   ========================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-  const layout = document.querySelector('.layout');
-  const sidebarBtn = document.getElementById('sidebarToggle');
-  const navBtn = document.getElementById('mobileNavToggle');
-  const nav = document.getElementById('primaryNav');
-
-  if (sidebarBtn && layout) {
-    sidebarBtn.addEventListener('click', () => {
-      const collapsed = layout.classList.toggle('sidebar-collapsed');
-      sidebarBtn.setAttribute('aria-expanded', String(!collapsed));
-      sidebarBtn.title = collapsed ? 'Expand filters' : 'Collapse filters';
-      sidebarBtn.innerHTML = collapsed
-        ? '<i class="bi bi-layout-sidebar"></i><span>Expand filters</span>'
-        : '<i class="bi bi-layout-sidebar-inset"></i><span>Collapse</span>';
-    });
-  }
-
-  if (navBtn && nav) {
-    navBtn.addEventListener('click', () => {
-      const open = nav.classList.toggle('mobile-open');
-      navBtn.setAttribute('aria-expanded', String(open));
-      navBtn.innerHTML = open ? '<i class="bi bi-x-lg"></i>' : '<i class="bi bi-list"></i>';
-    });
-    nav.querySelectorAll('button,a').forEach(item => item.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 820px)').matches && !item.closest('.stores-dd-wrap')) {
-        nav.classList.remove('mobile-open');
-        navBtn.setAttribute('aria-expanded', 'false');
-        navBtn.innerHTML = '<i class="bi bi-list"></i>';
-      }
-    }));
-  }
-});
-</script>
 
 <script>
 /* ==========================================================
    CONFIG & STATE
    ========================================================== */
 const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwAj5M-ZKMfYiNXfNdbhOJjj5lN_bnL1p71nKs_FnSMuPPBkFcd4r0U3knELacC6L5i0A/exec';
-const API_URL_KEY = 'ws-api-url';
-let API_URL = localStorage.getItem(API_URL_KEY) || DEFAULT_API_URL;
+let API_URL = localStorage.getItem('ws-api-url') || DEFAULT_API_URL;
 
-const RAW_STORE_LIST = [
-  "Blackout - Muaither","Blackout - Mall of Qatar","Blackout - West Bay","Blackout - Festival",
-  "Blackout - West Walk","Blackout - Vendome Mall","Blackout - Old Doha Port","Blackout - Landmark",
-  "Wrap & GO -West Walk","Wrap & Go - Bani Hajer","Wrap & Go-The Gate Mall","Wrap & Go- Al-Mashaf","Wrap & Go - Iconic 2022",
-  "Sibon Chocolate - West Walk","Sibon Chocolate - Al Hazam","Sibon Chocolate -Vendome Mall",
-  "Asmar - Al Aziziyah","Asmar - Um Slal","Asmar-Bani Hajer","Juno -West Walk","Original- Downtown",
-  "Sareea - West Walk","Someday -Gewan","Roastery asame","Catering","Sibon - Catering","Sibon tray",
-  "Mopo -The Gate Mall","Qure - The Gate Mall"
-];
-
-function parseStore(raw) {
-  const lower = raw.toLowerCase().trim();
-  if (lower.includes('wrap')) return { name: raw, brand: 'Wrap & Go' };
-  if (lower.includes('sibon')) return { name: raw, brand: 'Sibon' };
-  if (lower.includes('asmar')) return { name: raw, brand: 'Asmar' };
-  if (lower.includes('blackout')) return { name: raw, brand: 'Blackout' };
-  if (lower.includes('juno')) return { name: raw, brand: 'Juno' };
-  if (lower.includes('original')) return { name: raw, brand: 'Original' };
-  if (lower.includes('sareea')) return { name: raw, brand: 'Sareea' };
-  if (lower.includes('someday')) return { name: raw, brand: 'Someday' };
-  if (lower.includes('roastery')) return { name: raw, brand: 'Roastery' };
-  if (lower.includes('catering')) return { name: raw, brand: 'Catering' };
-  if (lower.includes('mopo')) return { name: raw, brand: 'Mopo' };
-  if (lower.includes('qure')) return { name: raw, brand: 'Qure' };
-  return { name: raw, brand: 'Other' };
-}
-
-const STORE_META = RAW_STORE_LIST.map(parseStore);
-const STORES = STORE_META.map(s => s.name);
-const BRANDS = [...new Set(STORE_META.map(s => s.brand))].sort();
-
-let FILTERED_DATA = [];
-
-/* ==========================================================
-   AGGREGATOR CONFIG
-   ========================================================== */
-const KNOWN_AGGREGATORS = ['keeta', 'beans', 'snoonu', 'rafeeq', 'talabat'];
-const AGG_LABELS = {
-  keeta: 'Keeta', beans: 'Beans', snoonu: 'Snoonu', sonnunu: 'Snoonu',
-  rafeeq: 'Rafeeq', talabat: 'Talabat', direct: 'Direct'
-};
-const AGG_COLORS = {
-  keeta: '#f5a623', beans: '#3b82f6', snoonu: '#16a34a',
-  rafeeq: '#ec4899', talabat: '#dc2626', direct: '#64748b'
-};
-const NON_AGG_FIELDS = new Set([
-  'net','netsales','netamount','netamountsales',
-  'discount','discounts','vat','tax','commission','fees','fee','delivery','subtotal',
-  'total','totalsales','gross','grosssales',
-  'card','cardsales','cash','cashsales',
-  'guests','guest','guestcount','covers','free','notes','note',
-  'date','businessdate','store','storename',
-  'id','sno','serial','aggregators','aggregatorsales','aggregator'
-]);
-const CORE_FIELD_KEYS = new Set([...NON_AGG_FIELDS, 'net','netsales']);
+const AGG_KEYS = ['qlub','skipCash','beans','snoonu','talabat','rafeeq','keeta','roastery'];
+const AGG_LABELS = { qlub:'Qlub', skipCash:'Skip Cash', beans:'Beans', snoonu:'Snoonu', talabat:'Talabat', rafeeq:'Rafeeq', keeta:'Keeta', roastery:'Roastery' };
+const CHART_COLORS = ['#3b82f6', '#00c2a8', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#10b981'];
 
 const state = {
   stores: new Set(),
-  pendingStores: new Set(),
   period: 'mtd',
   dateFrom: null,
-  dateTo: null,
-  chartType: 'bar',
-  compareBrandFilters: new Set(BRANDS)
+  dateTo: null
 };
 
-const expandedBrands = new Set();
-const storeChartInstances = new Map();
-let perStoreChartType = 'bar';
+let ALL_STORES = [];
+let STORES_BY_BRAND = {};
+let FILTERED_DATA = [];
+let BULK_TEMPLATE = null;
+const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null };
 
 /* ==========================================================
    HELPERS
    ========================================================== */
 function $(id) { return document.getElementById(id); }
-function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function money(n) { return Number(n || 0).toFixed(2); }
-
+function money(n) { return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function num(n) { return Number(n || 0); }
+function toast(msg, isError = false) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (isError ? ' error' : '');
+  el.innerHTML = `<i class="bi ${isError ? 'bi-exclamation-circle' : 'bi-check-circle'}"></i> ${msg}`;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
+}
 function getBusinessDate() {
   const now = new Date();
-  if (now.getHours() < 4) {
-    const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
-    return yesterday;
-  }
+  if (now.getHours() < 4) { const y = new Date(now); y.setDate(y.getDate() - 1); return y; }
   return now;
 }
-function todayStr() {
-  const d = getBusinessDate();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-function iso(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+function iso(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function todayStr() { return iso(getBusinessDate()); }
 
-function toast(message, kind = '') {
-  const stack = $('toastStack');
-  const el = document.createElement('div');
-  el.className = 'toast ' + (kind ? 'toast--' + kind : '');
-  const icon = kind === 'error' ? 'bi-exclamation-circle' : kind === 'success' ? 'bi-check-circle' : 'bi-info-circle';
-  el.innerHTML = `<i class="bi ${icon}"></i> <span>${escapeHtml(message)}</span>`;
-  stack.appendChild(el);
-  setTimeout(() => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(20px)';
-    el.style.transition = 'all .3s';
-    setTimeout(() => el.remove(), 300);
-  }, 3000);
-}
-
-function setProgress(percent, visible) {
-  const bar = $('topProgress');
-  bar.style.opacity = visible ? '1' : '0';
-  bar.style.width = percent + '%';
-}
-
-/* ==========================================================
-   PDF EXPORT HELPERS
-   ========================================================== */
-async function exportToPDF(elementId, filename, title) {
-  const el = document.getElementById(elementId);
-  if (!el) return toast('Element not found', 'error');
-  
-  document.getElementById('topProgress').style.opacity = '1';
-  document.getElementById('topProgress').style.width = '50%';
-  
-  try {
-    const canvas = await html2canvas(el, { 
-      scale: 2, 
-      useCORS: true, 
-      backgroundColor: getComputedStyle(document.body).backgroundColor 
-    });
-    
-    const imgData = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    
-    pdf.setFontSize(16);
-    pdf.text(title, 14, 15);
-    pdf.setFontSize(10);
-    pdf.text(`Generated: ${new Date().toLocaleString()}`, 14, 22);
-    
-    pdf.addImage(imgData, 'PNG', 0, 28, pdfWidth, pdfHeight);
-    pdf.save(filename);
-    toast('PDF downloaded successfully.', 'success');
-  } catch(e) {
-    console.error(e);
-    toast('Failed to generate PDF', 'error');
-  } finally {
-    document.getElementById('topProgress').style.opacity = '0';
-    document.getElementById('topProgress').style.width = '0%';
-  }
-}
-
-/* ==========================================================
-   THEME
-   ========================================================== */
-let chartTheme = { tick: '#8a98ae', grid: '#1f2b42', text: '#e6ecf5' };
-function readChartTheme() {
-  const cs = getComputedStyle(document.documentElement);
-  chartTheme = {
-    tick: cs.getPropertyValue('--chart-tick').trim() || '#8a98ae',
-    grid: cs.getPropertyValue('--grid-line').trim() || '#1f2b42',
-    text: cs.getPropertyValue('--text').trim() || '#e6ecf5',
-  };
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('ws-theme', theme);
-  const label = document.getElementById('themeLabelText');
-  if (label) label.textContent = theme === 'light' ? 'OFF' : 'ON';
-  readChartTheme();
-  if (typeof FILTERED_DATA !== 'undefined' && FILTERED_DATA.length) {
-    try {
-      renderPerStoreCharts();
-      renderBreakdown(scopedData());
-      if ($('insightsPanel')?.classList.contains('open')) renderInsights();
-    } catch(e) { /* ignore if not ready */ }
-  }
-}
-
-function initTheme() {
-  const saved = localStorage.getItem('ws-theme') || 'dark';
-  applyTheme(saved);
-
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme');
-    applyTheme(cur === 'dark' ? 'light' : 'dark');
-  });
-}
-
-/* ==========================================================
-   AGGREGATOR FUNCTIONS
-   ========================================================== */
-function aggKey(raw) {
-  let k = String(raw || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-  if (k.startsWith('aggregator') && k.length > 10) k = k.slice(10);
-  if (k === 'snoonu' || k === 'sonnunu') return 'snoonu';
-  return k;
-}
-
-function aggLabel(key) {
-  if (AGG_LABELS[key]) return AGG_LABELS[key];
-  return String(key).replace(/([a-z])([0-9])/ig, '$1 $2').replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
-
-/* ==========================================================
-   CUSTOM SELECTS
-   ========================================================== */
-function initCustomSelects() {
-  document.querySelectorAll('.custom-select__trigger').forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const parent = trigger.closest('.custom-select');
-      document.querySelectorAll('.custom-select').forEach(c => { if (c !== parent) c.classList.remove('open'); });
-      parent.classList.toggle('open');
-    });
-  });
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.custom-select').forEach(c => c.classList.remove('open'));
-  });
-
-  document.querySelectorAll('input[name="period"]').forEach(opt => {
-    opt.addEventListener('change', (e) => {
-      document.querySelectorAll('input[name="period"]').forEach(r => r.closest('.custom-option').classList.remove('selected'));
-      e.target.closest('.custom-option').classList.add('selected');
-      state.period = e.target.value;
-      const labels = { mtd: 'MTD (Month to Date)', today: 'Today', '7d': 'Last 7 Days', '30d': 'Last 30 Days', custom: 'Custom Range' };
-      $('periodLabel').textContent = labels[state.period];
-      $('customDates').classList.add('show');
-      checkResetButtonState();
-    });
-  });
-
-  document.querySelectorAll('input[name="chartType"]').forEach(opt => {
-    opt.addEventListener('change', (e) => {
-      document.querySelectorAll('input[name="chartType"]').forEach(r => r.closest('.custom-option').classList.remove('selected'));
-      e.target.closest('.custom-option').classList.add('selected');
-      state.chartType = e.target.value;
-      perStoreChartType = state.chartType;
-      $('chartTypeLabel').textContent = state.chartType === 'bar' ? 'Bar Chart' : 'Line Chart';
-      renderPerStoreCharts();
-    });
-  });
-
-  $('dateFrom').addEventListener('change', (e) => { state.dateFrom = e.target.value; if (e.target.value) setCustomPeriod(); checkResetButtonState(); });
-  $('dateTo').addEventListener('change', (e) => { state.dateTo = e.target.value; if (e.target.value) setCustomPeriod(); checkResetButtonState(); });
-}
-
-function setCustomPeriod() {
-  state.period = 'custom';
-  document.querySelectorAll('input[name="period"]').forEach(r => { r.checked = r.value === 'custom'; r.closest('.custom-option').classList.toggle('selected', r.value === 'custom'); });
-  $('periodLabel').textContent = 'Custom Range';
-  $('customDates').classList.add('show');
-}
-
-function checkResetButtonState() {
-  const isDefault = state.period === 'mtd';
-  const btn = $('resetBtn');
-  btn.className = isDefault ? 'btn-reset default' : 'btn-reset modified';
-}
-
-function resetFilters() {
-  state.period = 'mtd';
-  state.dateFrom = null;
-  state.dateTo = null;
-
-  document.querySelector('input[name="period"][value="mtd"]').checked = true;
-  document.querySelectorAll('input[name="period"]').forEach(r => r.closest('.custom-option').classList.remove('selected'));
-  document.querySelector('input[name="period"][value="mtd"]').closest('.custom-option').classList.add('selected');
-  $('periodLabel').textContent = 'MTD (Month to Date)';
-  $('customDates').classList.add('show');
-
-  $('dateFrom').value = '';
-  $('dateTo').value = '';
-
-  state.pendingStores = new Set(state.stores);
-  renderStoresList();
-  checkResetButtonState();
-
-  if (state.stores.size) applyFilters();
-  else {
-    FILTERED_DATA = [];
-    renderDashboardEmptyState();
-  }
-}
-
-/* ==========================================================
-   DATE & FETCHING
-   ========================================================== */
-function getDateRange() {
-  const bizDate = getBusinessDate();
-  bizDate.setHours(23, 59, 59, 999);
-  switch (state.period) {
-    case 'today': { const d = getBusinessDate(); return { from: iso(d), to: iso(d) }; }
-    case '7d':  { const f = new Date(bizDate); f.setDate(f.getDate() - 6); return { from: iso(f), to: iso(bizDate) }; }
-    case '30d': { const f = new Date(bizDate); f.setDate(f.getDate() - 29); return { from: iso(f), to: iso(bizDate) }; }
-    case 'mtd': { const f = new Date(bizDate.getFullYear(), bizDate.getMonth(), 1); return { from: iso(f), to: iso(bizDate) }; }
-    case 'custom': return { from: state.dateFrom, to: state.dateTo };
-    default: return { from: null, to: null };
-  }
-}
-
-function mapRows(rows) {
-  const mapped = rows.map(r => {
-    const nested = r.aggregators || r.aggregator || r.aggregatorSales ||
-                   r.aggregator_sales || r.aggregatorBreakdown || r.aggregator_breakdown || {};
-    const aggs = {};
-
-    KNOWN_AGGREGATORS.forEach(k => { aggs[k] = 0; });
-
-    Object.entries(nested).forEach(([k, v]) => {
-      const key = aggKey(k);
-      if (!key || CORE_FIELD_KEYS.has(key) || NON_AGG_FIELDS.has(key)) return;
-      aggs[key] = Number(v) || 0;
-    });
-
-    Object.entries(r).forEach(([k, v]) => {
-      const key = aggKey(k);
-      if (!key || CORE_FIELD_KEYS.has(key) || NON_AGG_FIELDS.has(key)) return;
-      if (v === '' || v == null || !Number.isFinite(Number(v))) return;
-      if (KNOWN_AGGREGATORS.includes(key) || /^(keeta|beans|snoonu|sonnunu|rafeeq|talabat)/i.test(k)) {
-        aggs[key] = Number(v) || 0;
-      }
-    });
-
-    return {
-      date: r.date || r.businessDate || r.business_date || '',
-      store: r.store || r.storeName || r.store_name || '',
-      cardSales: Number(r.card ?? r.cardSales ?? r.card_sales) || 0,
-      cashSales: Number(r.cash ?? r.cashSales ?? r.cash_sales) || 0,
-      totalSales: Number(r.total ?? r.totalSales ?? r.total_sales) ||
-                  ((Number(r.card ?? r.cardSales ?? r.card_sales) || 0) +
-                   (Number(r.cash ?? r.cashSales ?? r.cash_sales) || 0)),
-      gross: Number(r.gross ?? r.grossSales ?? r.gross_sales) || 0,
-      guests: Number(r.guests ?? r.guestCount ?? r.guest_count ?? r.covers) || 0,
-      free: Number(r.free) || 0,
-      notes: r.notes || r.note || '',
-      aggregators: aggs
-    };
-  });
-
-  return mapped;
-}
-
-async function fetchData(stores, from, to) {
-  const storesString = stores.join(',');
-  const url = `${API_URL}?action=batch&startDate=${from}&endDate=${to}&stores=${encodeURIComponent(storesString)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('HTTP ' + res.status);
+async function apiGet(params) {
+  const qs = Object.entries(params).map(([k,v]) => `${k}=${encodeURIComponent(v ?? '')}`).join('&');
+  const res = await fetch(API_URL + '?' + qs);
   const json = await res.json();
-  if (!json.success) throw new Error(json.message || 'API error');
-  return mapRows(json.rows || []);
+  if (!json.success) throw new Error(json.message || 'API Error');
+  return json;
 }
-
-function scopedData() {
-  return FILTERED_DATA.filter(r => state.stores.has(r.store));
-}
-
-async function applyFilters() {
-  if (state.stores.size === 0) {
-    toast('Please select at least one store.', 'error');
-    return;
-  }
-
-  const range = getDateRange();
-  if (state.period === 'custom' && (!range.from || !range.to)) {
-    toast('Please select both From and To dates.', 'error'); return;
-  }
-  if (state.period === 'custom' && range.from > range.to) { toast('From date must be on or before To date.', 'error'); return; }
-
-  setProgress(10, true);
-  $('applyBtn').disabled = true;
-
-  try {
-    FILTERED_DATA = await fetchData([...state.stores], range.from, range.to);
-    setProgress(80, true);
-    renderDashboard();
-    setProgress(100, true);
-    toast('Data loaded successfully.', 'success');
-    if ($('insightsPanel')?.classList.contains('open')) renderInsights();
-  } catch (err) {
-    console.error(err);
-    toast('Failed to fetch data: ' + err.message, 'error');
-  } finally {
-    setTimeout(() => setProgress(0, false), 500);
-    $('applyBtn').disabled = false;
-  }
+async function apiPost(payload) {
+  const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'API Error');
+  return json;
 }
 
 /* ==========================================================
-   DASHBOARD RENDERING
+   NAVIGATION & UI LOGIC
    ========================================================== */
-function renderDashboardEmptyState() {
-  storeChartInstances.forEach(inst => inst.destroy());
-  storeChartInstances.clear();
-  $('todayBadge').textContent = '0';
-  $('todayBody').innerHTML = `<tr><td colspan="6"><div class="today-empty"><i class="bi bi-shop"></i><h5>Select a store to begin</h5><p>No sheet data is loaded until you choose a store and click Apply.</p></div></td></tr>`;
-  ['todayCardSum','todayCashSum','todayTotalSum','todayFreeSum'].forEach(id => $(id).textContent = '0.00');
-  ['kpiGross','kpiCard','kpiCash','kpiGuests'].forEach(id => $(id).textContent = '0.00');
-  $('storeChartsGrid').innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-shop"></i><h4>No stores selected</h4><p>Choose one or more stores from the Stores menu, then click Apply Selection.</p></div>`;
-  $('breakdownCompact').innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-inbox"></i><h4>Waiting for store selection</h4><p>Select stores to load their worksheet records.</p></div>`;
-  $('tableSub').textContent = 'No stores selected';
-  $('chartSub').textContent = 'Select stores to load one combined chart per store';
-}
-
-function renderDashboard() {
-  const scoped = scopedData();
-  renderTodayEntries(scoped);
-  renderKpis(summarize(scoped));
-  renderPerStoreCharts();
-  renderBreakdown(scoped);
-}
-
-function summarize(data) {
-  let card = 0, cash = 0, gross = 0, guests = 0;
-  data.forEach(r => {
-    card += r.cardSales; cash += r.cashSales; gross += r.gross; guests += r.guests;
-  });
-  return { card, cash, total: card + cash, gross, guests, count: data.length };
-}
-
-function renderKpis(sum) {
-  $('kpiGross').textContent  = sum.gross.toFixed(2);
-  $('kpiCard').textContent  = sum.card.toFixed(2);
-  $('kpiCash').textContent  = sum.cash.toFixed(2);
-  $('kpiGuests').textContent = Math.round(sum.guests).toLocaleString();
-}
-
-/* ==========================================================
-   PER-STORE CHARTS
-   ========================================================== */
-function getStoreData(storeName, data = null) {
-  const src = data || scopedData();
-  const rows = src.filter(r => r.store === storeName);
-  const byDay = new Map();
-  rows.forEach(r => {
-    const d = byDay.get(r.date) || { card: 0, cash: 0, gross: 0, guests: 0, aggs: {} };
-    d.card += r.cardSales; d.cash += r.cashSales; d.gross += r.gross; d.guests += r.guests;
-    Object.entries(r.aggregators).forEach(([k, v]) => { d.aggs[k] = (d.aggs[k] || 0) + v; });
-    byDay.set(r.date, d);
-  });
-  return { rows, byDay };
-}
-
-function renderPerStoreCharts() {
-  const grid = $('storeChartsGrid');
-  const selectedStores = [...state.stores];
-
-  storeChartInstances.forEach(inst => inst.destroy());
-  storeChartInstances.clear();
-
-  if (!selectedStores.length) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-shop"></i><h4>No stores selected</h4><p>Select stores and click Apply Selection to load charts.</p></div>`;
-    $('chartSub').textContent = 'No stores selected';
-    return;
-  }
-
-  grid.innerHTML = selectedStores.map(storeName => {
-    const safeId = 'sc-' + storeName.replace(/[^a-zA-Z0-9]/g, '_');
-    return `
-      <div class="store-chart-card">
-        <div class="store-chart-card__head">
-          <h4 class="store-chart-card__title" title="${escapeHtml(storeName)}">${escapeHtml(storeName)}</h4>
-        </div>
-        <div class="store-chart-card__body">
-          <canvas id="sc-canvas-${safeId}"></canvas>
-        </div>
-        <div class="store-chart-card__stats" id="sc-stats-${safeId}"></div>
-        <div class="agg-breakdown-bars" id="sc-aggs-${safeId}"></div>
-      </div>
-    `;
-  }).join('');
-
-  selectedStores.forEach(store => drawStoreChart(store));
-  $('chartSub').textContent = `${selectedStores.length} store(s) · clean Card/Cash/Total trend with aggregator progress bars below`;
-}
-
-function drawStoreChart(storeName) {
-  const safeId = 'sc-' + storeName.replace(/[^a-zA-Z0-9]/g, '_');
-  const canvas = $('sc-canvas-' + safeId);
-  if (!canvas) return;
-
-  const { byDay } = getStoreData(storeName);
-  const days = [...byDay.keys()].sort();
-  const labels = days.map(d => d.slice(5));
-
-  const series = [
-    { key: 'card', label: 'Card', color: '#2f74d0', values: days.map(d => byDay.get(d).card) },
-    { key: 'cash', label: 'Cash', color: '#00a888', values: days.map(d => byDay.get(d).cash) },
-    { key: 'gross', label: 'Gross', color: '#f5a623', values: days.map(d => byDay.get(d).gross) }
-  ];
-
-  const datasets = series.map(item => perStoreChartType === 'line'
-    ? {
-        label: item.label, data: item.values, borderColor: item.color,
-        backgroundColor: item.color + '22', fill: false, tension: .25,
-        borderWidth: 2, pointRadius: 2.5, pointBackgroundColor: item.color
-      }
-    : {
-        label: item.label, data: item.values, backgroundColor: item.color,
-        borderColor: item.color, borderWidth: 0, borderRadius: 3,
-        maxBarThickness: 24
-      });
-
-  if (storeChartInstances.has(storeName)) storeChartInstances.get(storeName).destroy();
-  const inst = new Chart(canvas.getContext('2d'), {
-    type: perStoreChartType,
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: { duration: 450, easing: 'easeOutQuart' },
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          display: true, position: 'bottom',
-          labels: { color: chartTheme.text, boxWidth: 10, boxHeight: 10, padding: 12, font: { family: 'Inter', size: 10 } }
-        },
-        tooltip: {
-          backgroundColor: '#0b1f3a', padding: 10, cornerRadius: 8,
-          titleFont: { family: 'Inter', size: 11, weight: '600' },
-          bodyFont: { family: 'Inter', size: 11 },
-          callbacks: { label: c => ` ${c.dataset.label}: ${Number(c.parsed.y || 0).toFixed(2)}` }
-        }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 9 }, color: chartTheme.tick, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
-        y: { beginAtZero: true, grid: { color: chartTheme.grid }, ticks: { font: { family: 'Inter', size: 9 }, color: chartTheme.tick, callback: v => v >= 1000 ? (v/1000).toFixed(1)+'k' : v } }
-      }
-    }
-  });
-  storeChartInstances.set(storeName, inst);
-
-  const totals = arr => arr.reduce((a, b) => a + b, 0);
-  const cardTotal = totals(days.map(d => byDay.get(d).card));
-  const cashTotal = totals(days.map(d => byDay.get(d).cash));
-  const grossTotal = totals(days.map(d => byDay.get(d).gross));
-  const guestTotal = totals(days.map(d => byDay.get(d).guests));
-  const cardCashTotal = cardTotal + cashTotal;
-
-  const statsEl = $('sc-stats-' + safeId);
-  if (statsEl) {
-    statsEl.innerHTML = `
-      <div class="store-chart-card__stat"><span class="store-chart-card__stat-label">Gross</span><span class="store-chart-card__stat-value brand">${money(grossTotal)}</span></div>
-      <div class="store-chart-card__stat"><span class="store-chart-card__stat-label">Card</span><span class="store-chart-card__stat-value">${money(cardTotal)}</span></div>
-      <div class="store-chart-card__stat"><span class="store-chart-card__stat-label">Cash</span><span class="store-chart-card__stat-value accent">${money(cashTotal)}</span></div>
-      <div class="store-chart-card__stat"><span class="store-chart-card__stat-label">Card+Cash</span><span class="store-chart-card__stat-value">${money(cardCashTotal)}</span></div>
-    `;
-  }
-
-  const aggTotals = {};
-  days.forEach(d => {
-    Object.entries(byDay.get(d).aggs).forEach(([k, v]) => {
-      aggTotals[k] = (aggTotals[k] || 0) + v;
-    });
-  });
-
-  // Direct = Gross − Aggregators (gross basis)
-  const aggSum = Object.values(aggTotals).reduce((a, b) => a + b, 0);
-  const direct = Math.max(0, grossTotal - aggSum);
-  if (direct > 0) aggTotals['direct'] = direct;
-
-  const barsEl = $('sc-aggs-' + safeId);
-  if (barsEl) {
-    const sortedAggs = Object.entries(aggTotals).filter(([,v]) => v > 0).sort((a,b) => b[1] - a[1]);
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    $(tab.dataset.target).classList.add('active');
     
-    if (sortedAggs.length === 0) {
-      barsEl.innerHTML = '<div style="font-size:11px;color:var(--muted);text-align:center;">No aggregator data</div>';
-    } else {
-      const maxVal = Math.max(...sortedAggs.map(([,v]) => v), 1);
-      barsEl.innerHTML = sortedAggs.map(([key, val]) => {
-        const pct = (val / maxVal) * 100;
-        const color = AGG_COLORS[key] || '#8b5cf6';
-        return `
-          <div class="agg-bar-row">
-            <div class="agg-bar-header">
-              <span>${escapeHtml(aggLabel(key))}</span>
-              <span>${money(val)}</span>
-            </div>
-            <div class="agg-bar-track">
-              <div class="agg-bar-fill" style="width: ${pct}%; background-color: ${color};"></div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-  }
-}
-
-/* ==========================================================
-   COMPACT BREAKDOWN (GROSS BASIS)
-   ========================================================== */
-function renderBreakdown(data) {
-  const container = $('breakdownCompact');
-  const selectedStores = state.stores;
-  const rows = (data || []).filter(r => selectedStores.has(r.store));
-
-  if (!rows.length) {
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-inbox"></i><h4>No data</h4><p>Adjust filters and click Apply</p></div>`;
-    $('tableSub').textContent = '0 stores · 0 entries';
-    return;
-  }
-
-  const storeMap = new Map();
-  rows.forEach(r => {
-    if (!storeMap.has(r.store)) {
-      storeMap.set(r.store, { store: r.store, aggs: {}, gross: 0, card: 0, cash: 0, count: 0 });
-    }
-    const s = storeMap.get(r.store);
-    s.count++;
-    s.gross += r.gross;
-    s.card  += r.cardSales;
-    s.cash  += r.cashSales;
-
-    Object.entries(r.aggregators).forEach(([k, v]) => {
-      s.aggs[k] = (s.aggs[k] || 0) + v;
-    });
-
-    // Direct = Gross − Aggregator sum (only if positive)
-    const aggSum = Object.values(r.aggregators).reduce((a, b) => a + b, 0);
-    const direct = Math.max(0, r.gross - aggSum);
-    if (direct > 0) s.aggs['direct'] = (s.aggs['direct'] || 0) + direct;
+    if (tab.dataset.target === 'view-insights') renderInsights();
+    if (tab.dataset.target === 'view-ai') loadAI();
+    if (tab.dataset.target === 'view-settings') $('apiUrlInput').value = API_URL;
   });
+});
 
-  const cards = [...storeMap.values()]
-    .sort((a, b) => b.gross - a.gross)
-    .map(s => {
-      const aggRows = Object.entries(s.aggs)
-        .filter(([, v]) => v > 0)
-        .sort((a, b) => b[1] - a[1])
-        .map(([name, val]) => `
-          <div class="bd-agg-row">
-            <span class="bd-agg-row__name"><span class="bd-agg-dot bd-agg-dot--${name}"></span>${escapeHtml(aggLabel(name))}</span>
-            <span class="bd-agg-row__val">${val.toFixed(2)}</span>
-          </div>`).join('');
-
-      return `
-        <div class="bd-card">
-          <div class="bd-card__store" title="${escapeHtml(s.store)}">${escapeHtml(s.store)}</div>
-          ${aggRows || '<div style="font-size:11px;color:var(--muted)">No aggregator data</div>'}
-          <div class="bd-card__total"><span>Gross Total</span><span>${s.gross.toFixed(2)}</span></div>
-        </div>`;
-    }).join('');
-
-  container.innerHTML = cards;
-  $('tableSub').textContent = `${storeMap.size} store${storeMap.size !== 1 ? 's' : ''} · ${rows.length} entr${rows.length === 1 ? 'y' : 'ies'} · gross basis`;
-}
-
-/* ==========================================================
-   TODAY ENTRIES
-   ========================================================== */
-function renderTodayEntries(scoped) {
-  const today = todayStr();
-  const src = scoped || scopedData();
-  const todayRows = src.filter(r => r.date === today && state.stores.has(r.store));
-  const tbody = $('todayBody');
-  $('todayBadge').textContent = todayRows.length;
-
-  const now = new Date();
-  const isEarly = now.getHours() < 4;
-  $('todaySub').textContent = isEarly
-    ? `Business day not closed (before 4 AM) — showing ${today}`
-    : `Showing entries for ${today}`;
-
-  if (!todayRows.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="today-empty"><i class="bi bi-calendar-x"></i><h5>No entries for today</h5><p>No data found for the current business date (${today}).</p></div></td></tr>`;
-    $('todayCardSum').textContent = '0.00'; $('todayCashSum').textContent = '0.00';
-    $('todayTotalSum').textContent = '0.00'; $('todayFreeSum').textContent = '0';
-    return;
-  }
-
-  let card = 0, cash = 0, free = 0;
-  tbody.innerHTML = todayRows.map(r => {
-    card += r.cardSales; cash += r.cashSales; free += r.free || 0;
-    return `
-      <tr>
-        <td>${escapeHtml(r.store)}</td>
-        <td>${r.date}</td>
-        <td class="num">${r.cardSales.toFixed(2)}</td>
-        <td class="num">${r.cashSales.toFixed(2)}</td>
-        <td class="num">${r.free || 0}</td>
-        <td>${escapeHtml(r.notes || '—')}</td>
-      </tr>
-    `;
-  }).join('');
-
-  $('todayCardSum').textContent = card.toFixed(2);
-  $('todayCashSum').textContent = cash.toFixed(2);
-  $('todayTotalSum').textContent = (card + cash).toFixed(2);
-  $('todayFreeSum').textContent = free;
-}
-
-/* ==========================================================
-   STORES DROPDOWN
-   ========================================================== */
-function renderStoresList() {
-  const list = $('storesList');
-  const search = ($('storeSearch').value || '').toLowerCase().trim();
-
-  const byBrand = new Map();
-  STORE_META.forEach(s => {
-    if (search && !s.name.toLowerCase().includes(search)) return;
-    if (!byBrand.has(s.brand)) byBrand.set(s.brand, []);
-    byBrand.get(s.brand).push(s.name);
+// Custom Select
+const selectTrigger = document.querySelector('#periodSelect .custom-select-trigger');
+const selectOptions = document.querySelectorAll('#periodSelect .custom-option');
+selectTrigger.addEventListener('click', () => $('periodSelect').classList.toggle('open'));
+document.addEventListener('click', e => { if (!e.target.closest('#periodSelect')) $('periodSelect').classList.remove('open'); });
+selectOptions.forEach(opt => {
+  opt.addEventListener('click', () => {
+    selectOptions.forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    state.period = opt.dataset.val;
+    $('periodLabel').textContent = opt.textContent;
+    $('customDateWrap').style.display = state.period === 'custom' ? 'block' : 'none';
+    $('periodSelect').classList.remove('open');
   });
+});
 
-  const brands = [...byBrand.keys()].sort();
+// Insight Tabs
+document.querySelectorAll('.insight-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.insight-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.insight-pane').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    $(`pane-${tab.dataset.pane}`).classList.add('active');
+    if (tab.dataset.pane === 'compare') drawCompareChart();
+  });
+});
 
-  if (brands.length === 0) {
-    list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:12.5px;">No stores match your search</div>';
-    updateStoresCount();
-    return;
+function getDateRange() {
+  const d = getBusinessDate(); d.setHours(23,59,59,999);
+  switch(state.period) {
+    case 'today': { const t = getBusinessDate(); return { from: iso(t), to: iso(t) }; }
+    case '7d': { const f = new Date(d); f.setDate(f.getDate()-6); return { from: iso(f), to: iso(d) }; }
+    case '30d': { const f = new Date(d); f.setDate(f.getDate()-29); return { from: iso(f), to: iso(d) }; }
+    case 'mtd': { const f = new Date(d.getFullYear(), d.getMonth(), 1); return { from: iso(f), to: iso(d) }; }
+    case 'custom': return { from: $('dateFrom').value, to: $('dateTo').value };
   }
+}
 
-  list.innerHTML = brands.map(brand => {
-    const stores = byBrand.get(brand);
-    const selectedCount = stores.filter(s => state.pendingStores.has(s)).length;
-    const allSelected = selectedCount === stores.length && stores.length > 0;
-    const someSelected = selectedCount > 0 && !allSelected;
-    const expanded = expandedBrands.has(brand);
-
+/* ==========================================================
+   STORE DROPDOWN & ACCORDION
+   ========================================================== */
+function renderStoreAccordion() {
+  const container = $('brandAccordion');
+  const brands = Object.keys(STORES_BY_BRAND).sort();
+  
+  container.innerHTML = brands.map(brand => {
+    const stores = STORES_BY_BRAND[brand];
     return `
-      <div class="brand-accordion ${expanded ? 'expanded' : ''}" data-brand="${escapeHtml(brand)}">
-        <div class="brand-accordion__header">
-          <input type="checkbox" class="brand-accordion__checkbox" ${allSelected ? 'checked' : ''} data-brand="${escapeHtml(brand)}" data-indeterminate="${someSelected}">
-          <div class="brand-accordion__title">
-            ${escapeHtml(brand)}
-            <span class="brand-accordion__count">${selectedCount}/${stores.length}</span>
-          </div>
-          <i class="bi bi-chevron-down brand-accordion__caret"></i>
+      <div class="brand-group" data-brand="${brand}">
+        <div class="brand-header" onclick="toggleBrand(this)">
+          <span>${brand}</span>
+          <i class="bi bi-chevron-down" style="font-size:12px; transition:0.2s;"></i>
         </div>
-        <div class="brand-accordion__content">
-          ${stores.map(store => `
-            <label class="store-row ${state.pendingStores.has(store) ? 'selected' : ''}">
-              <input type="checkbox" ${state.pendingStores.has(store) ? 'checked' : ''} data-store="${escapeHtml(store)}">
-              ${escapeHtml(store)}
+        <div class="brand-content">
+          ${stores.map(s => `
+            <label class="store-item">
+              <input type="checkbox" value="${s}" onchange="updateStoreSelection(this)">
+              <span>${s}</span>
             </label>
           `).join('')}
         </div>
       </div>
     `;
   }).join('');
-
-  list.querySelectorAll('.brand-accordion__checkbox').forEach(cb => {
-    if (cb.dataset.indeterminate === 'true') cb.indeterminate = true;
-    cb.addEventListener('change', (e) => {
-      e.stopPropagation();
-      const brand = cb.dataset.brand;
-      const stores = STORE_META.filter(s => s.brand === brand).map(s => s.name);
-      if (cb.checked) stores.forEach(s => state.pendingStores.add(s));
-      else stores.forEach(s => state.pendingStores.delete(s));
-      renderStoresList();
-    });
-  });
-
-  list.querySelectorAll('.brand-accordion__header').forEach(h => {
-    h.addEventListener('click', (e) => {
-      if (e.target.matches('input')) return;
-      const brand = h.closest('.brand-accordion').dataset.brand;
-      if (expandedBrands.has(brand)) expandedBrands.delete(brand);
-      else expandedBrands.add(brand);
-      h.closest('.brand-accordion').classList.toggle('expanded');
-    });
-  });
-
-  list.querySelectorAll('.store-row input[data-store]').forEach(cb => {
-    cb.addEventListener('change', () => {
-      const store = cb.dataset.store;
-      if (cb.checked) state.pendingStores.add(store);
-      else state.pendingStores.delete(store);
-      renderStoresList();
-    });
-  });
-
-  updateStoresCount();
 }
 
-function updateStoresCount() {
-  $('storesCount').textContent = state.stores.size;
-  const n = state.pendingStores.size;
-  $('storesFoot').textContent = `${n} location${n !== 1 ? 's' : ''} selected`;
-}
+window.toggleBrand = function(header) {
+  const group = header.closest('.brand-group');
+  group.classList.toggle('expanded');
+  const icon = header.querySelector('i');
+  icon.style.transform = group.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0)';
+};
 
-function initStoresDropdown() {
-  const btn       = $('applyStoresBtn');
-  const storesBtn = $('storesBtn');
-  const dropdown  = $('storesDropdown');
-  const selectAll = $('selectAllBtn');
-  const clearAll  = $('clearAllBtn');
-  const search    = $('storeSearch');
-
-  storesBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = dropdown.classList.toggle('open');
-    storesBtn.setAttribute('aria-expanded', String(open));
-    if (open) {
-      state.pendingStores = new Set(state.stores);
-      renderStoresList();
-    }
-  });
-
-  dropdown.addEventListener('click', (e) => e.stopPropagation());
-
-  btn.addEventListener('click', () => {
-    if (state.pendingStores.size === 0) {
-      toast('Select at least one store before applying.', 'error');
-      return;
-    }
-    state.stores = new Set(state.pendingStores);
-    updateStoresCount();
-    dropdown.classList.remove('open');
-    storesBtn.setAttribute('aria-expanded', 'false');
-    toast(`${state.stores.size} store(s) applied.`, 'success');
-    applyFilters();
-  });
-
-  selectAll.addEventListener('click', (e) => {
-    e.stopPropagation();
-    state.pendingStores = new Set(STORES);
-    renderStoresList();
-  });
-
-  clearAll.addEventListener('click', (e) => {
-    e.stopPropagation();
-    state.pendingStores.clear();
-    renderStoresList();
-  });
-
-  search.addEventListener('input', renderStoresList);
-}
+window.updateStoreSelection = function(cb) {
+  if (cb.checked) state.stores.add(cb.value);
+  else state.stores.delete(cb.value);
+};
 
 /* ==========================================================
-   INSIGHTS — FULL FUNCTIONALITY
-   Uses the SAME stores + date range as the main dashboard.
-   All financial calculations are on GROSS basis.
+   DASHBOARD DATA & RENDER
    ========================================================== */
-
-let insightCharts = { compare: null, aggTotal: null, aggGrouped: null, cashCard: null };
-let insightActiveTab = 'overview';
-
-/* ---- Tab switching ---- */
-function initInsightTabs() {
-  document.querySelectorAll('.insights-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.insights-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.insights-body').forEach(b => b.classList.remove('active'));
-      tab.classList.add('active');
-      insightActiveTab = tab.dataset.tab;
-      const panel = document.querySelector(`.insights-body[data-panel="${insightActiveTab}"]`);
-      if (panel) panel.classList.add('active');
-      renderInsightTab();
-    });
-  });
-}
-
-/* ---- Summary bar ---- */
-function updateInsightSummary() {
+async function loadDashboardData() {
+  if (!state.stores.size) return toast('Select at least one store', true);
   const range = getDateRange();
-  const label = $('insightFilterSummary');
-  if (label) {
-    const periodLabels = { mtd:'MTD', today:'Today', '7d':'Last 7 days', '30d':'Last 30 days', custom:'Custom' };
-    label.textContent = `${periodLabels[state.period] || state.period} · ${range.from || '—'} → ${range.to || '—'}`;
-  }
-  const storesLabel = $('insightStoresLabel');
-  if (storesLabel) {
-    const n = state.stores.size;
-    storesLabel.textContent = n === 0 ? 'No stores selected' : (n === 1 ? [...state.stores][0] : `${n} stores selected`);
-  }
+  if (state.period === 'custom' && (!range.from || !range.to)) return toast('Select custom dates', true);
+
+  $('btnApply').disabled = true;
+  $('btnApply').textContent = 'Loading...';
+
+  try {
+    const res = await apiGet({ action: 'batch', startDate: range.from, endDate: range.to, stores: [...state.stores].join(',') });
+    FILTERED_DATA = res.rows || [];
+    renderKPIs();
+    renderTotalSalesChart();
+    renderBreakdown();
+    toast('Data loaded successfully');
+  } catch(e) { toast(e.message, true); }
+  finally { $('btnApply').disabled = false; $('btnApply').textContent = 'Load Data'; }
 }
 
-/* ---- Main render entry ---- */
-function renderInsights() {
-  updateInsightSummary();
-  renderInsightTab();
+function renderKPIs() {
+  let g=0, c=0, ca=0, gu=0;
+  FILTERED_DATA.forEach(r => { g += num(r.gross); c += num(r.card); ca += num(r.cash); gu += num(r.guests); });
+  $('kpiGross').textContent = money(g);
+  $('kpiCard').textContent = money(c);
+  $('kpiCash').textContent = money(ca);
+  $('kpiGuests').textContent = Math.round(gu).toLocaleString();
 }
 
-function renderInsightTab() {
-  const data = scopedData();
-  if (!data.length) {
-    if (insightActiveTab === 'overview') renderOverviewEmpty();
-    if (insightActiveTab === 'store-vs-store') renderCompareEmpty();
-    if (insightActiveTab === 'agg-vs-agg') renderAggEmpty();
-    if (insightActiveTab === 'cash-card') renderCashCardEmpty();
-    return;
-  }
-  if (insightActiveTab === 'overview') renderInsightOverview(data);
-  if (insightActiveTab === 'store-vs-store') renderInsightCompare(data);
-  if (insightActiveTab === 'agg-vs-agg') renderInsightAggregators(data);
-  if (insightActiveTab === 'cash-card') renderInsightCashCard(data);
-}
-
-/* ==========================================================
-   TAB: OVERVIEW (Gross basis + Avg Check = Gross / Guests)
-   ========================================================== */
-function computeStoreTotals(data) {
-  const map = new Map();
-  data.forEach(r => {
-    if (!map.has(r.store)) {
-      map.set(r.store, { store: r.store, card:0, cash:0, total:0, gross:0, guests:0, count:0, aggs:{} });
-    }
-    const s = map.get(r.store);
-    s.card += r.cardSales; s.cash += r.cashSales;
-    s.gross += r.gross; s.guests += r.guests; s.count++;
-    s.total += (r.cardSales + r.cashSales);
-    Object.entries(r.aggregators).forEach(([k,v]) => { s.aggs[k] = (s.aggs[k]||0) + v; });
+function renderTotalSalesChart() {
+  const storeMap = new Map();
+  FILTERED_DATA.forEach(r => {
+    storeMap.set(r.store, (storeMap.get(r.store) || 0) + num(r.gross));
   });
-  return [...map.values()];
-}
-
-function renderInsightOverview(data) {
-  const stores = computeStoreTotals(data);
-  if (!stores.length) return renderOverviewEmpty();
-
-  const totalGross  = stores.reduce((a,b) => a + b.gross, 0);
-  const totalGuests = stores.reduce((a,b) => a + b.guests, 0);
-  const avgCheck    = totalGuests ? totalGross / totalGuests : 0;
-
-  const topStore  = stores.reduce((a,b)=> b.gross > a.gross ? b : a, stores[0]);
-  const topCard   = stores.reduce((a,b)=> b.card  > a.card  ? b : a, stores[0]);
-  const topCash   = stores.reduce((a,b)=> b.cash  > a.cash  ? b : a, stores[0]);
-  const topGuests = stores.reduce((a,b)=> b.guests> a.guests? b : a, stores[0]);
-
-  const tile = (label, icon, value, detail, color) => `
-    <div class="insight-tile" ${color ? `style="--tile-color:${color}"` : ''}>
-      <div class="insight-tile__label"><i class="bi ${icon}"></i>${label}</div>
-      <div class="insight-tile__value">${value}</div>
-      <div class="insight-tile__detail">${detail}</div>
-    </div>`;
-
-  $('insightWinnerGrid').innerHTML =
-    tile('Average Check', 'bi-receipt', money(avgCheck),
-         `Gross ${money(totalGross)} ÷ ${Math.round(totalGuests).toLocaleString()} guests`, '#f5a623') +
-    tile('Top Store (Gross)', 'bi-trophy', escapeHtml(topStore.store),
-         `Gross ${money(topStore.gross)}`, '#2f74d0') +
-    tile('Top Card Store', 'bi-credit-card', escapeHtml(topCard.store),
-         `Card ${money(topCard.card)}`, '#3b82f6') +
-    tile('Top Cash Store', 'bi-cash-stack', escapeHtml(topCash.store),
-         `Cash ${money(topCash.cash)}`, '#00a888') +
-    tile('Most Guests', 'bi-people', escapeHtml(topGuests.store),
-         `${Math.round(topGuests.guests).toLocaleString()} guests`, '#8b5cf6');
-
-  // Leaderboard ranked by GROSS, with avg check = gross / guests
-  const ranked = [...stores].sort((a,b)=> b.gross - a.gross);
-  $('storeLeaderboard').innerHTML = ranked.map((s, i) => {
-    const avg = s.guests ? s.gross / s.guests : 0;
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${escapeHtml(s.store)}</td>
-      <td class="num">${money(s.gross)}</td>
-      <td class="num">${Math.round(s.guests).toLocaleString()}</td>
-      <td class="num">${money(avg)}</td>
-    </tr>`;
-  }).join('');
-}
-
-function renderOverviewEmpty() {
-  $('insightWinnerGrid').innerHTML = '';
-  $('storeLeaderboard').innerHTML =
-    `<tr><td colspan="5"><div class="empty-state" style="padding:24px 12px;">
-      <i class="bi bi-inbox"></i><h4>No data</h4><p>Select stores on the dashboard and apply filters.</p>
-    </div></td></tr>`;
-}
-
-/* ==========================================================
-   TAB: STORE VS STORE
-   ========================================================== */
-function renderInsightCompare(data) {
-  const stores = computeStoreTotals(data).sort((a,b)=> a.store.localeCompare(b.store));
-  if (!stores.length) return renderCompareEmpty();
-
-  const brandMap = new Map();
-  STORE_META.forEach(m => {
-    if (state.stores.has(m.name)) {
-      if (!brandMap.has(m.brand)) brandMap.set(m.brand, []);
-      brandMap.get(m.brand).push(m.name);
-    }
-  });
-  const brands = [...brandMap.keys()].sort();
-
-  $('compareBrandFilter').innerHTML = brands.map(b =>
-    `<button class="compare-brand-chip active" data-brand="${escapeHtml(b)}">${escapeHtml(b)}</button>`
-  ).join('');
-
-  $('compareBrandFilter').querySelectorAll('.compare-brand-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      chip.classList.toggle('active');
-      populateCompareSelects(stores, brandMap);
-    });
-  });
-
-  populateCompareSelects(stores, brandMap);
-
-  const ranked = [...stores].sort((a,b)=> b.gross - a.gross);
-  const selA = $('compareStoreA'), selB = $('compareStoreB');
-  if (ranked[0]) selA.value = ranked[0].store;
-  if (ranked[1]) selB.value = ranked[1].store;
-
-  [selA, selB, $('compareStoreC'), $('compareStoreD')].forEach(sel => {
-    if (!sel) return;
-    sel.onchange = () => drawCompareChart(stores);
-  });
-
-  $('addCompareStoreBtn').onclick = () => {
-    const c = $('compareExtraC');
-    const d = $('compareExtraD');
-    if (c.style.display === 'none') { c.style.display = 'flex'; }
-    else if (d.style.display === 'none') { d.style.display = 'flex'; }
-    [ $('compareStoreC'), $('compareStoreD') ].forEach(sel => {
-      if (!sel) return;
-      const cur = sel.value;
-      sel.innerHTML = '<option value="">—</option>' + stores.map(s =>
-        `<option value="${escapeHtml(s.store)}">${escapeHtml(s.store)}</option>`).join('');
-      if (cur) sel.value = cur;
-    });
-  };
-
-  drawCompareChart(stores);
-}
-
-function populateCompareSelects(stores, brandMap) {
-  const activeBrands = new Set(
-    [...$('compareBrandFilter').querySelectorAll('.compare-brand-chip.active')]
-      .map(c => c.dataset.brand)
-  );
-  const visible = stores.filter(s => activeBrands.has(STORE_META.find(m => m.name === s.store)?.brand));
-  const opts = visible.map(s => `<option value="${escapeHtml(s.store)}">${escapeHtml(s.store)}</option>`).join('');
-
-  ['compareStoreA','compareStoreB','compareStoreC','compareStoreD'].forEach(id => {
-    const sel = $(id);
-    if (!sel) return;
-    const cur = sel.value;
-    sel.innerHTML = (id === 'compareStoreC' || id === 'compareStoreD')
-      ? '<option value="">—</option>' + opts
-      : opts;
-    if (cur && [...sel.options].some(o => o.value === cur)) sel.value = cur;
-  });
-}
-
-function drawCompareChart(stores) {
-  const picks = ['compareStoreA','compareStoreB','compareStoreC','compareStoreD']
-    .map(id => $(id)?.value).filter(Boolean);
-  const chosen = stores.filter(s => picks.includes(s.store));
-  if (!chosen.length) return;
-
-  const metrics = [
-    { key:'gross', label:'Gross Sales', fmt: v => money(v) },
-    { key:'card',  label:'Card Sales',  fmt: v => money(v) },
-    { key:'cash',  label:'Cash Sales',  fmt: v => money(v) },
-    { key:'guests',label:'Guests',      fmt: v => Math.round(v).toLocaleString() },
-  ];
-  $('compareKpis').innerHTML = metrics.map(m => {
-    const rows = chosen.map(s =>
-      `<div class="compare-kpi__row"><span>${escapeHtml(s.store)}</span><span>${m.fmt(s[m.key])}</span></div>`
-    ).join('');
-    const winner = chosen.reduce((a,b)=> b[m.key] > a[m.key] ? b : a, chosen[0]);
-    return `<div class="compare-kpi">
-      <div class="compare-kpi__label">${m.label}</div>
-      ${rows}
-      <span class="compare-kpi__winner ${winner===chosen[0]?'a':winner===chosen[1]?'b':'tie'}">▲ ${escapeHtml(winner.store)}</span>
-    </div>`;
-  }).join('');
-
-  const labels = ['Gross','Card','Cash'];
-  const datasets = chosen.map((s, i) => ({
-    label: s.store,
-    data: [s.gross, s.card, s.cash],
-    backgroundColor: ['#2f74d0','#00a888','#f5a623','#8b5cf6'][i % 4] + 'cc',
-    borderColor: ['#2f74d0','#00a888','#f5a623','#8b5cf6'][i % 4],
-    borderWidth: 1.5, borderRadius: 4
-  }));
-
-  if (insightCharts.compare) insightCharts.compare.destroy();
-  insightCharts.compare = new Chart($('compareChart').getContext('2d'), {
-    type: 'bar',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: chartTheme.text, font: { family:'Inter', size:11 } } },
-        tooltip: { backgroundColor:'#0b1f3a', padding:10, cornerRadius:8,
-          callbacks: { label: c => ` ${c.dataset.label}: ${Number(c.parsed.y).toFixed(2)}` } }
-      },
-      scales: {
-        x: { grid:{display:false}, ticks:{ color: chartTheme.tick } },
-        y: { beginAtZero:true, grid:{color: chartTheme.grid},
-             ticks:{ color: chartTheme.tick, callback: v => v>=1000?(v/1000).toFixed(1)+'k':v } }
-      }
-    }
-  });
-}
-
-function renderCompareEmpty() {
-  $('compareKpis').innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:24px;"><i class="bi bi-inbox"></i><h4>No data</h4><p>Select stores on the dashboard.</p></div>';
-  if (insightCharts.compare) { insightCharts.compare.destroy(); insightCharts.compare = null; }
-}
-
-/* ==========================================================
-   TAB: AGGREGATOR BREAKDOWN (Gross basis + Direct)
-   ========================================================== */
-function renderInsightAggregators(data) {
-  const stores = computeStoreTotals(data);
-
-  // Inject Direct = Gross − Aggregators per store
-  stores.forEach(s => {
-    const aggSum = Object.values(s.aggs).reduce((a,b)=>a+b,0);
-    const direct = Math.max(0, s.gross - aggSum);
-    if (direct > 0) s.aggs['direct'] = (s.aggs['direct'] || 0) + direct;
-  });
-
-  const aggTotals = {};
-  stores.forEach(s => Object.entries(s.aggs).forEach(([k,v]) => {
-    aggTotals[k] = (aggTotals[k]||0) + v;
-  }));
-
-  const entries = Object.entries(aggTotals).filter(([,v]) => v > 0).sort((a,b)=> b[1]-a[1]);
-  const grandTotal = entries.reduce((a,[,v]) => a+v, 0) || 1;
-
-  if (insightCharts.aggTotal) insightCharts.aggTotal.destroy();
-  insightCharts.aggTotal = new Chart($('aggTotalChart').getContext('2d'), {
+  
+  const sorted = [...storeMap.entries()].sort((a,b) => b[1] - a[1]);
+  const labels = sorted.map(x => x[0]);
+  const data = sorted.map(x => x[1]);
+  
+  if (charts.total) charts.total.destroy();
+  
+  charts.total = new Chart($('totalSalesChart').getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: entries.map(([k]) => aggLabel(k)),
+      labels,
       datasets: [{
-        data: entries.map(([,v]) => v),
-        backgroundColor: entries.map(([k]) => AGG_COLORS[k] || '#8b5cf6'),
-        borderWidth: 2, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card').trim()
+        data,
+        backgroundColor: labels.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderWidth: 0,
+        hoverOffset: 10
       }]
     },
     options: {
-      responsive:true, maintainAspectRatio:false,
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
       plugins: {
-        legend: { position:'bottom', labels:{ color:chartTheme.text, font:{family:'Inter', size:11}, boxWidth:12 } },
-        tooltip: { callbacks: { label: c => ` ${c.label}: ${Number(c.parsed).toFixed(2)} (${(c.parsed/grandTotal*100).toFixed(1)}%)` } }
+        legend: { position: 'right', labels: { color: '#e2e8f0', font: { family: 'Plus Jakarta Sans', size: 12 }, padding: 20 } },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleColor: '#fff', bodyColor: '#cbd5e1',
+          callbacks: { label: (c) => ` ${c.label}: ${money(c.parsed)}` }
+        }
       }
     }
   });
+}
 
-  const storeNames = stores.map(s => s.store);
-  const aggKeys = entries.map(([k]) => k);
-  const datasetColors = aggKeys.map(k => AGG_COLORS[k] || '#8b5cf6');
+function renderBreakdown() {
+  const map = new Map();
+  FILTERED_DATA.forEach(r => {
+    if (!map.has(r.store)) map.set(r.store, { store: r.store, gross: 0, aggs: {} });
+    const s = map.get(r.store);
+    s.gross += num(r.gross);
+    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
+  });
 
-  if (insightCharts.aggGrouped) insightCharts.aggGrouped.destroy();
-  insightCharts.aggGrouped = new Chart($('aggGroupedChart').getContext('2d'), {
+  const html = [...map.values()].sort((a,b)=>b.gross-a.gross).map(s => {
+    const rows = Object.entries(s.aggs).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1])
+      .map(([k,v]) => `<div class="breakdown-row"><span>${AGG_LABELS[k]}</span><span>${money(v)}</span></div>`).join('');
+    return `
+      <div class="breakdown-card">
+        <div class="breakdown-header"><span>${s.store}</span></div>
+        ${rows || '<div class="text-muted" style="font-size:12px;">No aggregator data</div>'}
+        <div class="breakdown-total"><span>Gross Total</span><span>${money(s.gross)}</span></div>
+      </div>
+    `;
+  }).join('');
+  $('breakdownGrid').innerHTML = html || '<div class="p-4 text-muted">No data available</div>';
+}
+
+/* ==========================================================
+   FULL INSIGHTS RENDER
+   ========================================================== */
+function renderInsights() {
+  if (!FILTERED_DATA.length) {
+    $('ovLeaderboard').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No data loaded. Go to Dashboard and click Load Data.</td></tr>';
+    return;
+  }
+
+  const storeMap = new Map();
+  FILTERED_DATA.forEach(r => {
+    if (!storeMap.has(r.store)) storeMap.set(r.store, { store: r.store, gross: 0, guests: 0, card: 0, cash: 0, aggs: {} });
+    const s = storeMap.get(r.store);
+    s.gross += num(r.gross); s.guests += num(r.guests); s.card += num(r.card); s.cash += num(r.cash);
+    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
+  });
+  const stores = [...storeMap.values()];
+
+  // 1. Overview
+  const topGross = [...stores].sort((a,b)=>b.gross-a.gross)[0];
+  const topGuests = [...stores].sort((a,b)=>b.guests-a.guests)[0];
+  $('ovTopStore').textContent = topGross.store;
+  $('ovTopStoreVal').textContent = money(topGross.gross);
+  $('ovTopGuest').textContent = topGuests.store;
+  $('ovTopGuestVal').textContent = Math.round(topGuests.guests).toLocaleString() + ' guests';
+
+  $('ovLeaderboard').innerHTML = [...stores].sort((a,b)=>b.gross-a.gross).map((s,i) => {
+    const avg = s.guests ? s.gross / s.guests : 0;
+    return `<tr><td>${i+1}</td><td>${s.store}</td><td class="text-white">${money(s.gross)}</td><td>${Math.round(s.guests)}</td><td>${money(avg)}</td></tr>`;
+  }).join('');
+
+  // 2. Store vs Store Setup
+  const opts = stores.map(s => `<option value="${s.store}">${s.store}</option>`).join('');
+  $('cmpStoreA').innerHTML = opts;
+  $('cmpStoreB').innerHTML = opts;
+  $('cmpStoreA').onchange = drawCompareChart;
+  $('cmpStoreB').onchange = drawCompareChart;
+  drawCompareChart();
+
+  // 3. Aggregators
+  const aggTotals = {}; AGG_KEYS.forEach(k => aggTotals[k] = 0);
+  stores.forEach(s => AGG_KEYS.forEach(k => aggTotals[k] += s.aggs[k]));
+  const aggEntries = Object.entries(aggTotals).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const totalAgg = aggEntries.reduce((a,[,v])=>a+v, 0);
+
+  if (charts.aggTotal) charts.aggTotal.destroy();
+  if (charts.aggGrouped) charts.aggGrouped.destroy();
+
+  charts.aggTotal = new Chart($('aggTotalChart'), {
+    type: 'doughnut',
+    data: { labels: aggEntries.map(([k])=>AGG_LABELS[k]), datasets: [{ data: aggEntries.map(([,v])=>v), backgroundColor: CHART_COLORS }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e2e8f0' } } } }
+  });
+  charts.aggGrouped = new Chart($('aggGroupedChart'), {
+    type: 'bar',
+    data: { labels: stores.map(s=>s.store), datasets: aggEntries.map(([k], i) => ({ label: AGG_LABELS[k], data: stores.map(s=>s.aggs[k]), backgroundColor: CHART_COLORS[i % CHART_COLORS.length] })) },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e2e8f0' } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8' } }, y: { stacked: true, ticks: { color: '#94a3b8' } } } }
+  });
+  $('aggTableBody').innerHTML = aggEntries.map(([k,v]) => `<tr><td>${AGG_LABELS[k]}</td><td class="text-white">${money(v)}</td><td>${money(v/stores.length)}</td><td>${((v/totalAgg)*100).toFixed(1)}%</td></tr>`).join('');
+
+  // 4. Cash vs Card
+  if (charts.cash) charts.cash.destroy();
+  charts.cash = new Chart($('cashCardChart'), {
+    type: 'bar',
+    data: { labels: stores.map(s=>s.store), datasets: [
+      { label: 'Card', data: stores.map(s=>s.card), backgroundColor: '#3b82f6' },
+      { label: 'Cash', data: stores.map(s=>s.cash), backgroundColor: '#00c2a8' }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0' } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8' } }, y: { stacked: true, ticks: { color: '#94a3b8' } } } }
+  });
+  $('cashTableBody').innerHTML = stores.map(s => {
+    const ratio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
+    return `<tr><td>${s.store}</td><td>${money(s.card)}</td><td>${money(s.cash)}</td><td class="text-white">${money(s.gross)}</td><td>${ratio.toFixed(1)}%</td></tr>`;
+  }).join('');
+}
+
+function drawCompareChart() {
+  const storeMap = new Map();
+  FILTERED_DATA.forEach(r => {
+    if (!storeMap.has(r.store)) storeMap.set(r.store, { gross:0, card:0, cash:0, guests:0 });
+    const s = storeMap.get(r.store);
+    s.gross += num(r.gross); s.card += num(r.card); s.cash += num(r.cash); s.guests += num(r.guests);
+  });
+
+  const a = storeMap.get($('cmpStoreA').value);
+  const b = storeMap.get($('cmpStoreB').value);
+  if (!a || !b) return;
+
+  $('cmpValA').textContent = money(a.gross);
+  $('cmpValB').textContent = money(b.gross);
+
+  if (charts.compare) charts.compare.destroy();
+  charts.compare = new Chart($('compareChart'), {
     type: 'bar',
     data: {
-      labels: storeNames,
-      datasets: aggKeys.map((k, i) => ({
-        label: aggLabel(k),
-        data: storeNames.map(s => (stores.find(x => x.store === s)?.aggs[k]) || 0),
-        backgroundColor: datasetColors[i] + 'cc',
-        borderColor: datasetColors[i], borderWidth: 1, borderRadius: 3
-      }))
+      labels: ['Gross', 'Card', 'Cash', 'Guests'],
+      datasets: [
+        { label: $('cmpStoreA').value, data: [a.gross, a.card, a.cash, a.guests], backgroundColor: '#3b82f6' },
+        { label: $('cmpStoreB').value, data: [b.gross, b.card, b.cash, b.guests], backgroundColor: '#00c2a8' }
+      ]
     },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins: {
-        legend: { position:'bottom', labels:{ color:chartTheme.text, font:{family:'Inter', size:10}, boxWidth:10 } },
-        tooltip: { backgroundColor:'#0b1f3a', padding:10, cornerRadius:8 }
-      },
-      scales: {
-        x: { stacked:false, grid:{display:false}, ticks:{ color:chartTheme.tick, font:{size:9}, maxRotation:30 } },
-        y: { beginAtZero:true, grid:{color:chartTheme.grid}, ticks:{ color:chartTheme.tick, callback: v => v>=1000?(v/1000).toFixed(1)+'k':v } }
-      }
-    }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0' } } }, scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } } }
   });
-
-  const nStores = stores.length || 1;
-  $('aggCompareBody').innerHTML = entries.map(([k,v]) => `
-    <tr>
-      <td><span class="bd-agg-dot bd-agg-dot--${k}" style="display:inline-block;margin-right:6px;"></span>${escapeHtml(aggLabel(k))}</td>
-      <td class="num">${money(v)}</td>
-      <td class="num">${money(v / nStores)}</td>
-      <td class="num">${((v / grandTotal) * 100).toFixed(1)}%</td>
-    </tr>
-  `).join('') || `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No aggregator data</td></tr>`;
-
-  $('aggPerStoreGrid').innerHTML = stores.map(s => {
-    const aggEntries = Object.entries(s.aggs).filter(([,v]) => v>0).sort((a,b)=>b[1]-a[1]);
-    const total = aggEntries.reduce((a,[,v])=>a+v,0) || 1;
-    const rows = aggEntries.map(([k,v]) => `
-      <div class="agg-bar-row">
-        <div class="agg-bar-header"><span>${escapeHtml(aggLabel(k))}</span><span>${money(v)}</span></div>
-        <div class="agg-bar-track"><div class="agg-bar-fill" style="width:${(v/total*100).toFixed(1)}%;background-color:${AGG_COLORS[k]||'#8b5cf6'};"></div></div>
-      </div>
-    `).join('') || '<div style="font-size:11px;color:var(--muted);text-align:center;">No aggregator data</div>';
-
-    return `<div class="store-chart-card">
-      <div class="store-chart-card__head">
-        <h4 class="store-chart-card__title">${escapeHtml(s.store)}</h4>
-      </div>
-      <div class="agg-breakdown-bars">${rows}</div>
-    </div>`;
-  }).join('') || '<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-inbox"></i><h4>No data</h4></div>';
-}
-
-function renderAggEmpty() {
-  if (insightCharts.aggTotal)   { insightCharts.aggTotal.destroy();   insightCharts.aggTotal = null; }
-  if (insightCharts.aggGrouped) { insightCharts.aggGrouped.destroy(); insightCharts.aggGrouped = null; }
-  $('aggCompareBody').innerHTML = '';
-  $('aggPerStoreGrid').innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="bi bi-inbox"></i><h4>No data</h4><p>Select stores on the dashboard.</p></div>';
 }
 
 /* ==========================================================
-   TAB: CASH VS CARD
+   AI EVALUATOR
    ========================================================== */
-function renderInsightCashCard(data) {
-  const stores = computeStoreTotals(data).sort((a,b)=> b.gross - a.gross);
+async function loadAI() {
+  $('aiContent').innerHTML = '<div class="text-center text-muted py-5"><i class="bi bi-arrow-repeat spin" style="font-size:32px;"></i><br>Analyzing Data...</div>';
+  try {
+    const data = await apiGet({ action: 'managerial', startDate: getDateRange().from, endDate: getDateRange().to });
+    const topStore = data.stores[0] || { store: 'N/A', gross: 0 };
+    const topGuest = [...data.stores].sort((a,b)=>b.guests-a.guests)[0] || { store: 'N/A', guests: 0 };
+    const topMkt = [...data.stores].sort((a,b)=>b.marketing-a.marketing)[0] || { store:'N/A', marketing:0 };
+    
+    let topAgg = 'N/A', topAggVal = 0;
+    Object.entries(data.aggTotals || {}).forEach(([k,v]) => { if(v > topAggVal) { topAggVal = v; topAgg = AGG_LABELS[k] || k; } });
 
-  const labels = stores.map(s => s.store);
-  const datasets = [
-    { label:'Card', data: stores.map(s=>s.card), backgroundColor:'#2f74d0cc', borderColor:'#2f74d0', borderWidth:1, borderRadius:3, stack:'sales' },
-    { label:'Cash', data: stores.map(s=>s.cash), backgroundColor:'#00a888cc', borderColor:'#00a888', borderWidth:1, borderRadius:3, stack:'sales' }
-  ];
-
-  if (insightCharts.cashCard) insightCharts.cashCard.destroy();
-  insightCharts.cashCard = new Chart($('cashCardChart').getContext('2d'), {
-    type: 'bar',
-    data: { labels, datasets },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins: {
-        legend:{ position:'bottom', labels:{ color:chartTheme.text, font:{family:'Inter', size:11}, boxWidth:12 } },
-        tooltip:{ backgroundColor:'#0b1f3a', padding:10, cornerRadius:8,
-          callbacks:{ label: c => ` ${c.dataset.label}: ${Number(c.parsed.y).toFixed(2)}` } }
-      },
-      scales: {
-        x:{ stacked:true, grid:{display:false}, ticks:{ color:chartTheme.tick, maxRotation:30, font:{size:9} } },
-        y:{ stacked:true, beginAtZero:true, grid:{color:chartTheme.grid},
-            ticks:{ color:chartTheme.tick, callback: v => v>=1000?(v/1000).toFixed(1)+'k':v } }
-      }
-    }
-  });
-
-  $('cashCardBody').innerHTML = stores.map(s => {
-    const ratio = s.total ? (s.cash / s.total * 100) : 0;
-    const avg = s.guests ? s.gross / s.guests : 0;
-    const barColor = ratio > 60 ? '#f59e0b' : ratio > 40 ? '#f5a623' : '#00a888';
-    return `<tr>
-      <td>${escapeHtml(s.store)}</td>
-      <td class="num">${money(s.card)}</td>
-      <td class="num">${money(s.cash)}</td>
-      <td class="num">${money(s.gross)}</td>
-      <td class="num">${money(avg)}</td>
-      <td>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div style="flex:1;height:6px;border-radius:3px;background:var(--card-2);overflow:hidden;">
-            <div style="height:100%;width:${ratio.toFixed(1)}%;background:${barColor};border-radius:3px;"></div>
+    $('aiContent').innerHTML = `
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="p-4 rounded" style="background: rgba(59,130,246,0.1); border-left: 4px solid #3b82f6;">
+            <h5 class="text-white mb-2"><i class="bi bi-trophy"></i> Highest Revenue Outlet</h5>
+            <h3 class="text-white mb-0">${topStore.store}</h3>
+            <p class="text-muted mb-0">${money(topStore.gross)} Total Sales</p>
           </div>
-          <span style="font-size:11px;font-weight:600;min-width:36px;text-align:right;">${ratio.toFixed(1)}%</span>
         </div>
-      </td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">No data</td></tr>`;
-}
-
-function renderCashCardEmpty() {
-  if (insightCharts.cashCard) { insightCharts.cashCard.destroy(); insightCharts.cashCard = null; }
-  $('cashCardBody').innerHTML = '';
+        <div class="col-md-6">
+          <div class="p-4 rounded" style="background: rgba(139,92,246,0.1); border-left: 4px solid #8b5cf6;">
+            <h5 class="text-white mb-2"><i class="bi bi-people"></i> Most Guest Traffic</h5>
+            <h3 class="text-white mb-0">${topGuest.store}</h3>
+            <p class="text-muted mb-0">${Math.round(topGuest.guests).toLocaleString()} Guests</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-4 rounded" style="background: rgba(245,158,11,0.1); border-left: 4px solid #f59e0b;">
+            <h5 class="text-white mb-2"><i class="bi bi-megaphone"></i> Top Marketing/Partners</h5>
+            <h3 class="text-white mb-0">${topMkt.store}</h3>
+            <p class="text-muted mb-0">${money(topMkt.marketing)} Marketing Spend</p>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="p-4 rounded" style="background: rgba(0,194,168,0.1); border-left: 4px solid #00c2a8;">
+            <h5 class="text-white mb-2"><i class="bi bi-lightbulb"></i> Actionable Recommendation</h5>
+            <p class="text-white mb-0" style="font-size:15px;">Your top performing aggregator is <strong>${topAgg}</strong> (${money(topAggVal)}). Consider running an exclusive promotion on this platform at <strong>${topStore.store}</strong> to capitalize on high weekend volume.</p>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch(e) {
+    $('aiContent').innerHTML = `<div class="text-danger">Failed to load insights: ${e.message}</div>`;
+  }
 }
 
 /* ==========================================================
-   EVENT WIRING
+   DATA ENTRY (BULK)
    ========================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initCustomSelects();
-  initStoresDropdown();
-  initInsightTabs();
+function initEntryTable() {
+  const headRow = $('entryHeadRow');
+  const cols = (BULK_TEMPLATE && BULK_TEMPLATE.columns) || [];
+  headRow.innerHTML = `<th style="width:40px;"></th><th>Store</th>` + cols.map(c => `<th>${c.label}</th>`).join('');
+  addEntryRow();
+}
 
-  $('applyBtn').addEventListener('click', applyFilters);
-  $('resetBtn').addEventListener('click', resetFilters);
-
-  $('todayRefreshBtn').addEventListener('click', () => {
-    if (state.stores.size) applyFilters();
-  });
+function addEntryRow() {
+  const body = $('entryBody');
+  const cols = (BULK_TEMPLATE && BULK_TEMPLATE.columns) || [];
+  const tr = document.createElement('tr');
+  const opts = ['<option value="">— Select Store —</option>'].concat(ALL_STORES.map(s => `<option value="${s}">${s}</option>`)).join('');
   
-  $('todayExportBtn').addEventListener('click', () => exportToPDF('todayCard', 'today-entries.pdf', "Today's Entries"));
-  $('breakdownExportBtn').addEventListener('click', () => exportToPDF('breakdownCompactWrap', 'breakdown-by-store.pdf', "Breakdown by Store & Aggregator (Gross)"));
-  $('insightExportBtn')?.addEventListener('click', () => exportToPDF('insightsPanel', 'insights.pdf', "Insights & Comparisons"));
-  $('aggExportBtn')?.addEventListener('click', () => exportToPDF('aggPerStoreCard', 'aggregator-breakdown.pdf', "Aggregator Breakdown"));
+  tr.innerHTML = `
+    <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+    <td><select class="form-select" style="min-width:180px;">${opts}</select></td>
+    ${cols.map(c => `<td><input type="${c.type === 'text' ? 'text' : 'number'}" data-key="${c.key}" step="0.01" placeholder="0"></td>`).join('')}
+  `;
+  body.appendChild(tr);
+  tr.querySelector('.btn-remove').addEventListener('click', () => tr.remove());
+}
 
-  // Settings panel
-  const settingsPanel = $('settingsPanel');
-  const settingsUrlInput = $('settingsApiUrl');
-  if (settingsUrlInput) settingsUrlInput.value = API_URL;
+async function saveEntryData() {
+  const date = $('entryDate').value;
+  if (!date) return toast('Select a date', true);
 
-  $('settingsNavBtn')?.addEventListener('click', () => settingsPanel.classList.add('open'));
-  $('closeSettings')?.addEventListener('click', () => settingsPanel.classList.remove('open'));
-  $('saveSettingsBtn')?.addEventListener('click', () => {
-    const val = settingsUrlInput.value.trim();
-    if (!val) { toast('Enter a URL first.', 'error'); return; }
-    localStorage.setItem(API_URL_KEY, val);
-    API_URL = val;
-    toast('API URL saved.', 'success');
+  const rows = [];
+  $('entryBody').querySelectorAll('tr').forEach(tr => {
+    const store = tr.querySelector('select').value;
+    if (!store) return;
+    const cells = {};
+    tr.querySelectorAll('input[data-key]').forEach(inp => {
+      if (inp.value !== '') cells[inp.dataset.key] = inp.type === 'number' ? Number(inp.value) : String(inp.value);
+    });
+    if (Object.keys(cells).length) rows.push({ store, cells, tr });
   });
-  $('testConnectionBtn')?.addEventListener('click', async () => {
-    const status = $('settingsStatus');
-    status.className = 'settings-status show';
-    status.textContent = 'Testing…';
+
+  if (!rows.length) return toast('No valid rows to save', true);
+  
+  $('btnSaveData').disabled = true;
+  let ok = 0, fail = 0;
+  
+  for (let r of rows) {
+    r.tr.classList.add('row-saving');
     try {
-      const res = await fetch(API_URL + '?action=ping');
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      status.classList.add('ok');
-      status.textContent = 'Connection OK';
-    } catch (e) {
-      status.classList.add('err');
-      status.textContent = 'Connection failed: ' + e.message;
+      await apiPost({ action: 'save', store: r.store, date, cells: r.cells });
+      r.tr.classList.remove('row-saving');
+      r.tr.classList.add('row-saved');
+      ok++;
+    } catch(e) {
+      r.tr.classList.remove('row-saving');
+      r.tr.classList.add('row-invalid');
+      fail++;
     }
-  });
+  }
+  
+  $('btnSaveData').disabled = false;
+  toast(`Saved ${ok} rows${fail ? `, ${fail} failed` : ''}.`, fail > 0);
+}
 
-  // Insights panel — uses main dashboard's stores & dates
-  const insightsPanel = $('insightsPanel');
-  $('insightsNavBtn')?.addEventListener('click', () => {
-    insightsPanel.classList.add('open');
-    renderInsights();
-  });
-  $('closeInsights')?.addEventListener('click', () => insightsPanel.classList.remove('open'));
+/* ==========================================================
+   INITIALIZATION
+   ========================================================== */
+async function initApp() {
+  try {
+    const meta = await apiGet({ action: 'stores' });
+    ALL_STORES = meta.stores || [];
+    STORES_BY_BRAND = meta.brands || {};
+    
+    renderStoreAccordion();
+    
+    // Check first store by default
+    const first = document.querySelector('#brandAccordion input');
+    if (first) { first.checked = true; state.stores.add(first.value); }
+
+    BULK_TEMPLATE = await apiGet({ action: 'bulk_template' });
+    initEntryTable();
+    $('entryDate').value = todayStr();
+
+    // Pre-load Dashboard Data if stores exist
+    if (state.stores.size) loadDashboardData();
+
+  } catch(e) { toast('Failed to init app: ' + e.message, true); }
+}
+
+$('btnSelectAll').addEventListener('click', () => {
+  document.querySelectorAll('#brandAccordion input').forEach(cb => { cb.checked = true; state.stores.add(cb.value); });
 });
+$('btnApply').addEventListener('click', loadDashboardData);
+$('btnAddRow').addEventListener('click', addEntryRow);
+$('btnSaveData').addEventListener('click', saveEntryData);
+$('btnRefreshAI').addEventListener('click', loadAI);
+$('btnFillSelected').addEventListener('click', () => {
+  $('entryBody').innerHTML = '';
+  [...state.stores].forEach(s => {
+    addEntryRow();
+    const selects = $('entryBody').querySelectorAll('select');
+    selects[selects.length-1].value = s;
+  });
+});
+
+$('btnSaveSettings').addEventListener('click', () => {
+  const url = $('apiUrlInput').value.trim();
+  if (url) { localStorage.setItem('ws-api-url', url); API_URL = url; toast('Settings saved'); initApp(); }
+});
+
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>With Stand — Futuristic Sales Intelligence</title>
+<title>With Stand — Corporate Sales Intelligence</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,50 +12,46 @@
 
 <style>
 /* ==========================================================
-   FUTURISTIC NEON THEME TOKENS
+   CORPORATE THEME TOKENS
    ========================================================== */
 :root {
-  --bg-main: #070a12;
-  --bg-panel: #0c1120;
-  --bg-card: #111a2e;
-  --bg-elevated: #1a243c;
-  --border-soft: rgba(0, 240, 255, 0.10);
-  --border-strong: rgba(0, 240, 255, 0.22);
-  --border-accent: rgba(255, 0, 200, 0.35);
+  --bg-main: #0b1120;
+  --bg-panel: #111a2c;
+  --bg-card: #16213a;
+  --bg-elevated: #1b2942;
+  --border-soft: rgba(148, 163, 184, 0.12);
+  --border-strong: rgba(148, 163, 184, 0.22);
+  --border-accent: rgba(45, 212, 191, 0.35);
 
-  --text-primary: #eef7ff;
-  --text-secondary: #8ba2c0;
-  --text-muted: #5a6f8a;
+  --text-primary: #e8eef7;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
-  --brand-primary: #00f0ff;
-  --brand-accent: #ff00c8;
-  --brand-warning: #ffb800;
-  --brand-danger: #ff2e63;
-  --brand-violet: #a56eff;
-  --brand-pink: #ff5ec4;
-  --brand-cyan: #00e5ff;
-  --brand-lime: #a3ff3c;
+  --brand-primary: #4b8bff;
+  --brand-accent: #2dd4bf;
+  --brand-warning: #f2b84b;
+  --brand-danger: #f26b6b;
+  --brand-violet: #a78bfa;
 
-  --shadow-panel: 0 4px 30px rgba(0, 0, 0, 0.6);
-  --shadow-lift: 0 10px 50px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 35px rgba(0, 240, 255, 0.08);
+  --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.35);
 
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 7px;
 
   --font-main: 'Plus Jakarta Sans', sans-serif;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --topbar-height: 72px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --topbar-height: 68px;
 }
+
+[data-compact="true"] { --topbar-height: 56px; }
+[data-compact="true"] .app-container { padding: 14px; }
+[data-compact="true"] .kpi-card { padding: 14px; }
 
 * { box-sizing: border-box; }
 body {
   background: var(--bg-main);
-  background-image:
-    radial-gradient(ellipse at 15% 10%, rgba(0, 240, 255, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 90%, rgba(255, 0, 200, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(165, 110, 255, 0.02) 0%, transparent 70%);
   color: var(--text-primary);
   font-family: var(--font-main);
   margin: 0;
@@ -63,14 +59,13 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   user-select: none;
-  min-height: 100vh;
 }
 input, textarea, select { user-select: text; }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
-::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.25); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.5); }
+::-webkit-scrollbar-thumb { background: #2a3a55; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4d6d; }
 
 :focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
 
@@ -79,358 +74,327 @@ input, textarea, select { user-select: text; }
    ========================================================== */
 .topbar {
   position: sticky; top: 0; z-index: 1000;
-  background: rgba(7, 10, 18, 0.88);
-  backdrop-filter: blur(24px);
+  background: rgba(11, 17, 32, 0.88);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-soft);
-  padding: 0 24px;
+  padding: 0 22px;
   height: var(--topbar-height);
   display: flex; align-items: center; justify-content: space-between;
-  transition: height 0.3s ease;
+  transition: height 0.25s ease;
 }
-.logo-area { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-icon {
-  width: 42px; height: 42px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--brand-accent), var(--brand-primary));
-  display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #070a12;
-  box-shadow: 0 0 30px rgba(255, 0, 200, 0.3), 0 0 60px rgba(0, 240, 255, 0.1);
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--brand-accent), #1fa8a0);
+  display: grid; place-items: center; font-weight: 800; font-size: 16px; color: #04121a;
 }
-.logo-text h1 { margin: 0; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
-.logo-text p { margin: 0; font-size: 10px; font-weight: 700; color: var(--brand-primary); letter-spacing: 3px; text-transform: uppercase; }
+.logo-text h1 { margin: 0; font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+.logo-text p { margin: 0; font-size: 9.5px; font-weight: 700; color: var(--brand-accent); letter-spacing: 2px; text-transform: uppercase; }
 
-.main-nav { display: flex; gap: 6px; background: rgba(12, 17, 32, 0.8); padding: 5px; border-radius: 14px; border: 1px solid var(--border-soft); }
+.main-nav { display: flex; gap: 6px; background: var(--bg-panel); padding: 5px; border-radius: var(--radius-md); border: 1px solid var(--border-soft); }
 .nav-tab {
   position: relative;
-  padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 13px;
+  padding: 9px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 12.5px;
   color: var(--text-secondary); cursor: pointer; transition: var(--transition);
-  display: flex; align-items: center; gap: 8px; border: 1px solid transparent; background: transparent;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+  display: flex; align-items: center; gap: 7px; border: 1px solid transparent; background: transparent;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25);
   transform: translateY(0);
 }
-.nav-tab:hover { color: var(--text-primary); background: rgba(0, 240, 255, 0.06); border-color: var(--border-soft); }
-.nav-tab:active { transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
-.nav-tab.active {
-  background: linear-gradient(135deg, rgba(255, 0, 200, 0.15), rgba(0, 240, 255, 0.10));
-  color: var(--brand-primary); border-color: var(--border-accent);
-  box-shadow: 0 0 30px rgba(255, 0, 200, 0.08);
+.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); border-color: var(--border-soft); }
+.nav-tab:active { transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0.25); }
+.nav-tab.active { background: rgba(45, 212, 191, 0.12); color: var(--brand-accent); border-color: var(--border-accent); }
+.nav-tab.active::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 2px; border-radius: 2px;
+  background: var(--brand-accent);
 }
 
-.page-section { display: none; animation: fadeIn 0.4s ease-out forwards; }
+.btn-ghost:active, .btn-primary-glow:active { transform: translateY(2px) !important; filter: brightness(0.95); }
+
+.page-section { display: none; animation: fadeIn 0.3s ease-out forwards; }
 .page-section.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ==========================================================
-   LAYOUT
+   LAYOUT & PANELS
    ========================================================== */
-.app-container { max-width: 1700px; margin: 0 auto; padding: 24px; }
-.grid-layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
+.app-container { max-width: 1600px; margin: 0 auto; padding: 22px; }
+.grid-layout { display: grid; grid-template-columns: 290px 1fr; gap: 20px; align-items: start; }
 
 .panel {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-panel);
-  overflow: hidden; margin-bottom: 24px;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden; margin-bottom: 20px;
+  transition: box-shadow 0.25s ease;
 }
-.panel:hover { box-shadow: var(--shadow-lift); border-color: var(--border-strong); }
+.panel:hover { box-shadow: var(--shadow-lift); }
 .panel-header {
-  padding: 16px 20px;
+  padding: 13px 18px;
   border-bottom: 1px solid var(--border-soft);
   display: flex; align-items: center; justify-content: space-between;
-  background: linear-gradient(180deg, rgba(0, 240, 255, 0.03) 0%, transparent 100%);
+  background: rgba(0,0,0,0.18);
   cursor: pointer;
   user-select: none;
 }
 .panel-header.no-toggle { cursor: default; }
-.panel-title { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; }
-.panel-title i { color: var(--brand-accent); font-size: 16px; }
-.panel-toggle { color: var(--text-muted); font-size: 13px; transition: transform 0.3s ease; }
+.panel-title { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.panel-toggle { color: var(--text-muted); font-size: 13px; transition: transform 0.25s ease; }
 .panel.collapsed .panel-toggle { transform: rotate(-90deg); }
 .panel.collapsed .panel-body { display: none; }
 .panel.collapsed .panel-header { border-bottom: none; }
 
 /* ==========================================================
-   FILTERS
+   CONTROLS & FILTERS
    ========================================================== */
-.filter-group { margin-bottom: 20px; }
-.filter-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; display: block; }
+.filter-group { margin-bottom: 18px; }
+.filter-label { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; display: block; }
 .form-control, .form-select {
-  background: rgba(0,0,0,0.35); border: 1px solid var(--border-soft);
-  color: var(--text-primary); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px;
+  background: rgba(0,0,0,0.25); border: 1px solid var(--border-soft);
+  color: var(--text-primary); border-radius: var(--radius-sm); padding: 9px 13px; font-size: 12.5px;
   transition: var(--transition);
 }
-.form-control:focus, .form-select:focus { background: rgba(0,0,0,0.6); border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.10); color: #fff; }
+.form-control:focus, .form-select:focus { background: rgba(0,0,0,0.4); border-color: var(--brand-accent); box-shadow: 0 0 0 3px rgba(45,212,191,0.1); color: #fff; }
 
-.period-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.period-pills { display: flex; flex-wrap: wrap; gap: 6px; }
 .period-pill {
-  flex: 1 1 auto; padding: 8px 12px; border-radius: 999px;
-  border: 1px solid var(--border-soft); background: rgba(0,0,0,0.3);
-  color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer;
+  flex: 1 1 auto; padding: 7px 10px; border-radius: 999px;
+  border: 1px solid var(--border-soft); background: rgba(0,0,0,0.2);
+  color: var(--text-secondary); font-size: 11.5px; font-weight: 600; cursor: pointer;
   transition: var(--transition); white-space: nowrap;
 }
 .period-pill:hover { color: #fff; border-color: var(--border-strong); }
-.period-pill.active { background: rgba(255, 0, 200, 0.12); border-color: var(--brand-accent); color: var(--brand-accent); }
+.period-pill.active { background: rgba(45,212,191,0.15); border-color: var(--border-accent); color: var(--brand-accent); }
 
 .btn-primary-glow {
-  width: 100%; padding: 12px; border-radius: var(--radius-sm); border: none;
-  background: linear-gradient(135deg, var(--brand-accent), #a0007a);
-  color: #fff; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+  width: 100%; padding: 11px; border-radius: var(--radius-sm); border: none;
+  background: linear-gradient(135deg, var(--brand-accent), #1fa8a0);
+  color: #04121a; font-weight: 800; font-size: 12.5px; text-transform: uppercase; letter-spacing: 1px;
   cursor: pointer; transition: var(--transition);
 }
-.btn-primary-glow:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 4px 30px rgba(255, 0, 200, 0.3); }
+.btn-primary-glow:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .btn-primary-glow:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
 .btn-ghost {
   background: transparent; border: 1px solid var(--border-soft); color: var(--text-secondary);
-  padding: 7px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+  padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
   cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
 }
-.btn-ghost:hover { color: #fff; border-color: var(--border-strong); background: rgba(0, 240, 255, 0.05); }
+.btn-ghost:hover { color: #fff; border-color: var(--border-strong); background: rgba(255,255,255,0.03); }
 
-.store-search { position: relative; margin-bottom: 12px; }
-.store-search input { width: 100%; padding-left: 34px; }
-.store-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+.store-search { position: relative; margin-bottom: 10px; }
+.store-search input { width: 100%; padding-left: 30px; }
+.store-search i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px; }
 
-.store-scroll-area { max-height: 340px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; }
-.store-scroll-area::-webkit-scrollbar { width: 4px; }
-.store-scroll-area::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); border-radius: 3px; }
+.store-scroll-area { max-height: 320px; overflow-y: auto; padding-right: 4px; border-radius: var(--radius-sm); scrollbar-width: thin; }
+.store-scroll-area::-webkit-scrollbar { width: 6px; }
+.store-scroll-area::-webkit-scrollbar-thumb { background: #2a3a55; border-radius: 3px; }
 
-.brand-group { margin-bottom: 6px; border: 1px solid var(--border-soft); border-radius: var(--radius-sm); overflow: hidden; }
-.brand-header { padding: 10px 12px; background: rgba(0, 240, 255, 0.03); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; transition: background 0.2s; }
-.brand-header:hover { background: rgba(0, 240, 255, 0.07); }
-.brand-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.2); }
-.brand-group.expanded .brand-content { max-height: 340px; overflow-y: auto; border-top: 1px solid var(--border-soft); padding: 8px 10px; }
-.brand-group .chev { transition: transform 0.3s ease; font-size: 12px; }
+.brand-group { margin-bottom: 5px; border: 1px solid var(--border-soft); border-radius: var(--radius-sm); overflow: hidden; }
+.brand-header { padding: 9px 11px; background: rgba(255,255,255,0.025); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 600; transition: background 0.2s; }
+.brand-header:hover { background: rgba(255,255,255,0.05); }
+.brand-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.18); }
+.brand-group.expanded .brand-content { max-height: 320px; overflow-y: auto; border-top: 1px solid var(--border-soft); padding: 6px 8px; }
+.brand-group .chev { transition: transform 0.25s ease; font-size: 11px; }
 .brand-group.expanded .chev { transform: rotate(180deg); }
-.store-item { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
-.store-item:hover { background: rgba(0, 240, 255, 0.06); }
-.store-item input { accent-color: var(--brand-primary); width: 14px; height: 14px; }
-.store-item span { font-size: 12px; color: var(--text-secondary); }
+.store-item { display: flex; align-items: center; gap: 9px; padding: 5px 9px; border-radius: 5px; cursor: pointer; transition: background 0.15s; }
+.store-item:hover { background: rgba(255,255,255,0.05); }
+.store-item input { accent-color: var(--brand-accent); width: 13px; height: 13px; }
+.store-item span { font-size: 11.5px; color: var(--text-secondary); }
 .store-item.hidden { display: none; }
 
 /* ==========================================================
-   FUTURISTIC KPI
+   KPI ROW
    ========================================================== */
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
 .kpi-card {
   background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: var(--radius-lg);
-  padding: 20px; position: relative; overflow: hidden; cursor: pointer;
+  padding: 18px; position: relative; overflow: hidden; cursor: pointer;
   transition: var(--transition);
 }
-.kpi-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: var(--shadow-glow); }
+.kpi-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
 .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--kpi-color); }
-.kpi-card::after { content: ''; position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle, var(--kpi-color) 0%, transparent 70%); opacity: 0.06; pointer-events: none; }
-.kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
-.kpi-value { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-.kpi-delta { font-size: 12px; font-weight: 700; margin-top: 8px; display: inline-flex; align-items: center; gap: 4px; }
-.kpi-delta.up { color: #4aff8c; }
+.kpi-label { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.kpi-value { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.8px; line-height: 1.1; }
+.kpi-delta { font-size: 11px; font-weight: 700; margin-top: 6px; display: inline-flex; align-items: center; gap: 3px; }
+.kpi-delta.up { color: #4ade80; }
 .kpi-delta.down { color: var(--brand-danger); }
 .kpi-delta.flat { color: var(--text-muted); }
-.kpi-icon { position: absolute; right: 20px; bottom: 20px; font-size: 34px; color: var(--kpi-color); opacity: 0.10; }
+.kpi-icon { position: absolute; right: 18px; bottom: 18px; font-size: 30px; color: var(--kpi-color); opacity: 0.15; }
 
 /* ==========================================================
-   MULTI-CHART PER STORE GRID
+   COMPACT STORE CAROUSEL (The new solution)
    ========================================================== */
-.store-chart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(720px, 1fr));
-  gap: 28px;
-  padding: 24px;
-}
-.store-chart-card {
-  background: linear-gradient(160deg, rgba(17, 26, 46, 0.97), rgba(12, 17, 32, 0.99));
+.store-carousel-container {
+  background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.carousel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.carousel-title-area { display: flex; align-items: center; gap: 12px; }
+.carousel-title { font-size: 15px; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;}
+.carousel-controls { display: flex; align-items: center; gap: 8px; }
+.carousel-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3);
+  color: var(--brand-accent); display: grid; place-items: center;
+  cursor: pointer; transition: var(--transition); font-size: 14px;
+}
+.carousel-btn:hover { background: rgba(45, 212, 191, 0.2); transform: scale(1.05); }
+.carousel-btn:active { transform: scale(0.95); }
+.carousel-select {
+  background: var(--bg-elevated); color: #fff; border: 1px solid var(--border-soft);
+  padding: 8px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer;
+  min-width: 200px;
+}
+
+/* The single focused store card */
+.focused-store-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
   padding: 24px;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
+  animation: slideIn 0.4s ease-out;
 }
-.store-chart-card:hover {
-  border-color: var(--card-accent, var(--brand-primary));
-  box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 8px 50px rgba(0,0,0,0.6);
-  transform: translateY(-3px);
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+.focused-store-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  background: var(--card-accent, var(--brand-accent));
 }
-.store-chart-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--card-accent, var(--brand-primary)), transparent);
-  opacity: 0.8;
+.focused-store-info { padding-right: 20px; }
+.focused-store-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 10px;}
+.focused-store-title .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--card-accent, var(--brand-accent)); }
+.focused-store-metric { font-size: 28px; font-weight: 800; color: var(--brand-accent); margin-bottom: 8px; }
+.focused-store-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+
+.focused-store-details {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;
 }
-.store-chart-card::after {
-  content: ''; position: absolute; top: -60%; right: -60%; width: 280px; height: 280px;
-  background: radial-gradient(circle, var(--card-accent, var(--brand-primary)) 0%, transparent 70%);
-  opacity: 0.03; pointer-events: none;
+.detail-item {
+  background: rgba(255,255,255,0.02); padding: 10px; border-radius: 6px; border: 1px solid var(--border-soft);
+}
+.detail-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.detail-value { font-size: 14px; font-weight: 700; color: #fff; }
+
+.focused-store-chart {
+  height: 280px; position: relative;
 }
 
-.store-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
-.store-card-title { font-size: 18px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 12px; letter-spacing: -0.3px; }
-.store-card-title .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--card-accent, var(--brand-primary)); box-shadow: 0 0 16px var(--card-accent, var(--brand-primary)); }
-.store-card-badge { font-size: 9px; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(255, 0, 200, 0.10); color: var(--brand-accent); border: 1px solid rgba(255, 0, 200, 0.18); text-transform: uppercase; letter-spacing: 1.5px; }
-.store-card-metric { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.8px; }
-.store-card-sub { font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; }
-.store-card-sub strong { color: var(--text-secondary); font-weight: 600; }
-
-/* Multi-chart grid inside each store card */
-.store-multi-chart-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 18px;
+/* Compact summary table */
+.compact-summary-table {
+  width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 20px;
 }
-.store-chart-tile {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
+.compact-summary-table th {
+  text-align: left; padding: 10px 12px; color: var(--text-muted);
+  font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--border-soft); background: rgba(0,0,0,0.15);
 }
-.store-chart-tile:hover {
-  border-color: var(--border-strong);
-  background: rgba(0, 0, 0, 0.35);
-}
-.store-chart-tile .tile-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.store-chart-tile .tile-title i {
-  color: var(--card-accent, var(--brand-primary));
-  font-size: 12px;
-}
-.store-chart-tile .tile-canvas-wrap {
-  height: 150px;
-  position: relative;
-}
-
-/* Wide tile for the main comparison chart */
-.store-chart-tile.wide {
-  grid-column: 1 / -1;
-}
-.store-chart-tile.wide .tile-canvas-wrap {
-  height: 180px;
-}
-
-/* KPI strip inside card */
-.store-kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.store-kpi-item {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  text-align: center;
-  transition: var(--transition);
-}
-.store-kpi-item:hover {
-  border-color: var(--border-strong);
-  background: rgba(0, 0, 0, 0.4);
-}
-.store-kpi-item .kpi-mini-label {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-}
-.store-kpi-item .kpi-mini-value {
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.3px;
-}
-.store-kpi-item .kpi-mini-value.accent {
-  color: var(--card-accent, var(--brand-primary));
-}
-
-/* Insight chips */
-.store-insight-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-.store-chip {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(0, 240, 255, 0.06);
-  border: 1px solid rgba(0, 240, 255, 0.10);
+.compact-summary-table td {
+  padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04);
   color: var(--text-secondary);
 }
-.store-chip.good { background: rgba(74, 255, 140, 0.06); border-color: rgba(74, 255, 140, 0.14); color: #4aff8c; }
-.store-chip.warn { background: rgba(255, 184, 0, 0.06); border-color: rgba(255, 184, 0, 0.14); color: #ffb800; }
-.store-chip.bad { background: rgba(255, 46, 99, 0.06); border-color: rgba(255, 46, 99, 0.14); color: #ff2e63; }
+.compact-summary-table tbody tr { cursor: pointer; transition: background 0.2s; }
+.compact-summary-table tbody tr:hover td { background: rgba(45, 212, 191, 0.05); }
+.compact-summary-table tbody tr.active td { background: rgba(45, 212, 191, 0.1); color: #fff; border-left: 3px solid var(--brand-accent); }
+.compact-summary-table td:last-child { text-align: right; font-weight: 700; color: #fff; }
 
 /* ==========================================================
    DATA ENTRY
    ========================================================== */
 .table-responsive { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-.data-table th { background: rgba(0,0,0,0.5); padding: 12px 16px; text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 10; }
-.data-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.02); }
-.data-table tbody tr:hover td { background: rgba(0, 240, 255, 0.02); }
-.data-table input { width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-soft); border-radius: 5px; color: #fff; font-size: 12px; transition: 0.2s; }
-.data-table input:focus { border-color: var(--brand-primary); outline: none; background: rgba(0,0,0,0.6); }
-.data-table tr.row-saved { background: rgba(0, 240, 255, 0.06); }
-.data-table tr.row-invalid { background: rgba(255, 46, 99, 0.08); }
-.data-table tr.row-saving { background: rgba(255, 184, 0, 0.08); }
-.btn-remove { color: var(--brand-danger); background: none; border: none; cursor: pointer; padding: 5px; border-radius: 4px; }
-.btn-remove:hover { background: rgba(255, 46, 99, 0.12); }
+.data-table th {
+  background: rgba(0,0,0,0.3); padding: 11px 14px; text-align: left;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+  border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 10;
+}
+.data-table td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.data-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.data-table input {
+  width: 100%; padding: 7px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-soft);
+  border-radius: 4px; color: #fff; font-size: 11.5px; transition: 0.2s;
+}
+.data-table input:focus { border-color: var(--brand-accent); outline: none; background: rgba(0,0,0,0.4); }
+.data-table tr.row-saved { background: rgba(45, 212, 191, 0.1); }
+.data-table tr.row-invalid { background: rgba(242, 107, 107, 0.1); }
+.data-table tr.row-saving { background: rgba(242, 184, 75, 0.1); }
+.btn-remove { color: var(--brand-danger); background: none; border: none; cursor: pointer; padding: 4px; }
+.btn-remove:hover { background: rgba(242,107,107,0.1); border-radius: 4px; }
 
 /* ==========================================================
-   INSIGHTS
+   INSIGHTS & AI TABS
    ========================================================== */
-.insight-tabs { display: flex; gap: 8px; padding: 16px 20px 0; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
-.insight-tab { padding: 10px 18px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border: 1px solid transparent; border-bottom: none; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition); }
-.insight-tab:hover { color: #fff; background: rgba(0, 240, 255, 0.04); }
-.insight-tab.active { background: var(--bg-panel); border-color: var(--border-soft); border-bottom-color: var(--bg-panel); color: var(--brand-accent); transform: translateY(1px); }
-.insight-pane { display: none; padding: 24px; }
+.insight-tabs { display: flex; gap: 6px; padding: 14px 18px 0; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
+.insight-tab {
+  padding: 9px 15px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border: 1px solid transparent; border-bottom: none;
+  background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 12.5px; cursor: pointer;
+  transition: var(--transition);
+}
+.insight-tab:hover { color: #fff; background: rgba(255,255,255,0.03); }
+.insight-tab.active {
+  background: var(--bg-panel); border-color: var(--border-soft); border-bottom-color: var(--bg-panel);
+  color: var(--brand-accent); transform: translateY(1px);
+}
+.insight-pane { display: none; padding: 20px; }
 .insight-pane.active { display: block; }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.insight-tile { background: rgba(0,0,0,0.25); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 20px; border-left: 4px solid var(--tile-color); }
-.insight-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-.insight-value { font-size: 22px; font-weight: 800; color: #fff; margin: 0; }
-.insight-detail { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.insight-tile {
+  background: rgba(0,0,0,0.18); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md); padding: 18px; border-left: 4px solid var(--tile-color);
+}
+.insight-label { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+.insight-value { font-size: 20px; font-weight: 800; color: #fff; margin: 0; }
+.insight-detail { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
 
-.table-dark-custom { width: 100%; border-collapse: collapse; margin-top: 16px; }
-.table-dark-custom th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-soft); color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.8px; }
-.table-dark-custom td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.02); color: var(--text-secondary); font-size: 13px; }
-.table-dark-custom tbody tr:hover td { background: rgba(0, 240, 255, 0.03); }
+.table-dark-custom { width: 100%; border-collapse: collapse; margin-top: 14px; }
+.table-dark-custom th { text-align: left; padding: 11px; border-bottom: 1px solid var(--border-soft); color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.table-dark-custom td { padding: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 12.5px; }
+.table-dark-custom tbody tr:hover td { background: rgba(255,255,255,0.02); }
 
-.ai-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 22px; border-left: 4px solid var(--ai-color); margin-bottom: 16px; }
-.ai-card h5 { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.6px; }
-.ai-card .ai-value { font-size: 24px; font-weight: 800; color: #fff; margin: 0; }
-.ai-card .ai-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; }
-.ai-reco { padding: 18px 20px; border-radius: var(--radius-md); background: rgba(255, 0, 200, 0.06); border: 1px solid var(--border-accent); }
+.ai-card {
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md); padding: 20px; border-left: 4px solid var(--ai-color);
+  margin-bottom: 14px;
+}
+.ai-card h5 { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.ai-card .ai-value { font-size: 22px; font-weight: 800; color: #fff; margin: 0; }
+.ai-card .ai-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.ai-reco { padding: 16px 18px; border-radius: var(--radius-md); background: rgba(45,212,191,0.08); border: 1px solid var(--border-accent); }
 .ai-reco h5 { color: var(--brand-accent); }
 
-.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
-.toast { background: var(--bg-elevated); border-left: 4px solid var(--brand-primary); padding: 14px 18px; border-radius: var(--radius-sm); box-shadow: var(--shadow-lift); color: #fff; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: slideLeft 0.3s ease-out; cursor: pointer; max-width: 360px; }
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--bg-elevated); border-left: 4px solid var(--brand-accent);
+  padding: 12px 16px; border-radius: var(--radius-sm); box-shadow: var(--shadow-lift);
+  color: #fff; font-weight: 600; font-size: 12.5px;
+  display: flex; align-items: center; gap: 9px;
+  animation: slideLeft 0.3s ease-out; cursor: pointer; max-width: 340px;
+}
 .toast.error { border-left-color: var(--brand-danger); }
 @keyframes slideLeft { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-.app-footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border-soft); margin-top: 24px; }
-.app-footer a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
+.app-footer { text-align: center; padding: 18px; color: var(--text-muted); font-size: 11.5px; border-top: 1px solid var(--border-soft); margin-top: 20px; }
+.app-footer a { color: var(--brand-accent); text-decoration: none; font-weight: 600; }
 .app-footer a:hover { text-decoration: underline; }
 
-@media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } .store-chart-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } .focused-store-card { grid-template-columns: 1fr; } }
 @media (max-width: 1024px) {
   .grid-layout { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -438,11 +402,9 @@ input, textarea, select { user-select: text; }
 @media (max-width: 768px) {
   .topbar { padding: 0 14px; height: auto; flex-direction: column; gap: 12px; padding-bottom: 12px; }
   .main-nav { width: 100%; flex-wrap: wrap; justify-content: center; }
-  .nav-tab { flex: 1; justify-content: center; font-size: 12px; padding: 8px 10px; }
+  .nav-tab { flex: 1; justify-content: center; font-size: 11.5px; padding: 7px 8px; }
   .kpi-row { grid-template-columns: 1fr; }
-  .store-chart-grid { grid-template-columns: 1fr; padding: 12px; }
-  .store-multi-chart-grid { grid-template-columns: 1fr; }
-  .store-kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .chart-container { height: 280px; }
 }
 </style>
 </head>
@@ -453,7 +415,7 @@ input, textarea, select { user-select: text; }
     <div class="logo-icon">WS</div>
     <div class="logo-text">
       <h1>With Stand</h1>
-      <p>Futuristic Intel</p>
+      <p>Corporate Intel</p>
     </div>
   </a>
 
@@ -476,7 +438,7 @@ input, textarea, select { user-select: text; }
           <h2 class="panel-title"><i class="bi bi-funnel"></i> Filters</h2>
           <i class="bi bi-chevron-down panel-toggle"></i>
         </div>
-        <div class="panel-body" style="padding: 20px;">
+        <div class="panel-body" style="padding: 18px;">
           <div class="filter-group">
             <label class="filter-label">Time Period</label>
             <div class="period-pills" id="periodPills">
@@ -498,8 +460,8 @@ input, textarea, select { user-select: text; }
             <div class="d-flex justify-content-between align-items-center mb-2">
               <label class="filter-label mb-0">Stores</label>
               <div class="d-flex gap-1">
-                <button class="btn-ghost" style="font-size:10px; padding:3px 10px;" id="btnSelectAll">All</button>
-                <button class="btn-ghost" style="font-size:10px; padding:3px 10px;" id="btnClearAll">Clear</button>
+                <button class="btn-ghost" style="font-size:10px; padding:2px 8px;" id="btnSelectAll">All</button>
+                <button class="btn-ghost" style="font-size:10px; padding:2px 8px;" id="btnClearAll">Clear</button>
               </div>
             </div>
             <div class="store-search">
@@ -515,25 +477,25 @@ input, textarea, select { user-select: text; }
 
       <main>
         <div class="kpi-row">
-          <div class="kpi-card" style="--kpi-color: #00f0ff;" onclick="drillDown('gross')">
+          <div class="kpi-card" style="--kpi-color: #4b8bff;" onclick="drillDown('gross')">
             <div class="kpi-label">Total Gross Sales</div>
             <div class="kpi-value" id="kpiGross">0.00</div>
             <div class="kpi-delta flat" id="kpiGrossDelta"></div>
             <i class="bi bi-graph-up-arrow kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #ff00c8;" onclick="drillDown('card')">
+          <div class="kpi-card" style="--kpi-color: #2dd4bf;" onclick="drillDown('card')">
             <div class="kpi-label">Card Sales</div>
             <div class="kpi-value" id="kpiCard">0.00</div>
             <div class="kpi-delta flat" id="kpiCardDelta"></div>
             <i class="bi bi-credit-card kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #ffb800;" onclick="drillDown('cash')">
+          <div class="kpi-card" style="--kpi-color: #f2b84b;" onclick="drillDown('cash')">
             <div class="kpi-label">Cash Sales</div>
             <div class="kpi-value" id="kpiCash">0.00</div>
             <div class="kpi-delta flat" id="kpiCashDelta"></div>
             <i class="bi bi-cash-stack kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #a56eff;" onclick="drillDown('guests')">
+          <div class="kpi-card" style="--kpi-color: #a78bfa;" onclick="drillDown('guests')">
             <div class="kpi-label">Total Guests</div>
             <div class="kpi-value" id="kpiGuests">0</div>
             <div class="kpi-delta flat" id="kpiGuestsDelta"></div>
@@ -541,17 +503,51 @@ input, textarea, select { user-select: text; }
           </div>
         </div>
 
-        <!-- MULTI-CHART PER STORE GRID -->
-        <div class="panel" id="storeGridPanel">
-          <div class="panel-header no-toggle">
-            <h2 class="panel-title"><i class="bi bi-diagram-3"></i> Store Intelligence — Multi‑Chart Breakdown</h2>
-            <div class="d-flex gap-2">
-              <button class="btn-ghost" style="font-size:11px; padding:5px 12px;" id="btnExportCSV"><i class="bi bi-filetype-csv"></i> CSV</button>
-              <button class="btn-ghost" style="font-size:11px; padding:5px 12px;" id="btnExportPDF"><i class="bi bi-filetype-pdf"></i> PDF</button>
+        <!-- COMPACT STORE CAROUSEL -->
+        <div class="store-carousel-container">
+          <div class="carousel-header">
+            <div class="carousel-title-area">
+              <h2 class="carousel-title"><i class="bi bi-diagram-3"></i> Store Intelligence</h2>
+            </div>
+            <div class="carousel-controls">
+              <button class="carousel-btn" id="btnPrevStore" title="Previous Store"><i class="bi bi-chevron-left"></i></button>
+              <select class="carousel-select" id="storeSelector"></select>
+              <button class="carousel-btn" id="btnNextStore" title="Next Store"><i class="bi bi-chevron-right"></i></button>
+            </div>
+          </div>
+          
+          <div id="focusedStoreContainer">
+            <!-- Focused store card will be injected here -->
+          </div>
+
+          <!-- Compact Summary Table -->
+          <table class="compact-summary-table" id="summaryTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Store</th>
+                <th>Gross</th>
+                <th>Guests</th>
+                <th>Avg Check</th>
+                <th>Cash %</th>
+              </tr>
+            </thead>
+            <tbody id="summaryTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="panel" id="chartPanel">
+          <div class="panel-header" data-toggle="chartPanel">
+            <h2 class="panel-title"><i class="bi bi-pie-chart"></i> Total Sales Share (All Selected)</h2>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn-ghost" style="font-size:11px; padding:4px 10px;" id="btnExportChart"><i class="bi bi-download"></i> PNG</button>
+              <i class="bi bi-chevron-down panel-toggle"></i>
             </div>
           </div>
           <div class="panel-body">
-            <div class="store-chart-grid" id="storeChartGrid"></div>
+            <div class="chart-container" style="height: 300px; position: relative; padding: 20px;">
+              <canvas id="totalSalesChart"></canvas>
+            </div>
           </div>
         </div>
       </main>
@@ -570,7 +566,7 @@ input, textarea, select { user-select: text; }
           <button class="btn-ghost" id="btnAutoZero"><i class="bi bi-0-circle"></i> Auto (0)</button>
           <button class="btn-ghost" id="btnManualBlank"><i class="bi bi-eraser"></i> Manual (Blank)</button>
           <button class="btn-ghost" id="btnLoadEntryData"><i class="bi bi-cloud-download"></i> Load Data</button>
-          <button class="btn-primary-glow" style="width:auto; padding: 8px 20px; font-size:12px;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
+          <button class="btn-primary-glow" style="width:auto; padding: 7px 16px; font-size:12px;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
         </div>
       </div>
       <div class="table-responsive" style="max-height: 65vh;">
@@ -603,12 +599,12 @@ input, textarea, select { user-select: text; }
 
       <div class="insight-pane active" id="pane-ov">
         <div class="grid-2">
-          <div class="insight-tile" style="--tile-color: #00f0ff;">
+          <div class="insight-tile" style="--tile-color: #4b8bff;">
             <div class="insight-label"><i class="bi bi-trophy"></i> Top Gross Store</div>
             <div class="insight-value" id="ovTopStore">-</div>
             <div class="insight-detail" id="ovTopStoreVal">-</div>
           </div>
-          <div class="insight-tile" style="--tile-color: #a56eff;">
+          <div class="insight-tile" style="--tile-color: #a78bfa;">
             <div class="insight-label"><i class="bi bi-people"></i> Most Guests</div>
             <div class="insight-value" id="ovTopGuest">-</div>
             <div class="insight-detail" id="ovTopGuestVal">-</div>
@@ -659,8 +655,8 @@ input, textarea, select { user-select: text; }
         <h2 class="panel-title"><i class="bi bi-stars"></i> AI Evaluator & Recommendations</h2>
         <button class="btn-ghost" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
       </div>
-      <div class="modal-body" id="aiContent" style="padding: 30px;">
-        <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:44px;"></i><br>Initializing AI Analysis...</div>
+      <div class="modal-body" id="aiContent" style="padding: 28px;">
+        <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:40px;"></i><br>Initializing AI Analysis...</div>
       </div>
     </div>
   </section>
@@ -671,13 +667,13 @@ input, textarea, select { user-select: text; }
       <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-gear"></i> Settings</h2>
       </div>
-      <div class="modal-body" style="padding: 24px;">
+      <div class="modal-body" style="padding: 20px;">
         <div class="filter-group">
           <label class="filter-label">Google Apps Script Web App URL</label>
           <input type="text" id="apiUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
         <div class="d-flex gap-2 mt-4">
-          <button class="btn-primary-glow" style="width:auto; padding:12px 28px;" id="btnSaveSettings">Save Connection</button>
+          <button class="btn-primary-glow" style="width:auto; padding:10px 24px;" id="btnSaveSettings">Save Connection</button>
           <button class="btn-ghost" id="btnTestConnection">Test Connection</button>
         </div>
         <div id="settingsStatus" class="mt-3" style="display:none;"></div>
@@ -696,7 +692,7 @@ input, textarea, select { user-select: text; }
 
 <footer class="app-footer">
   Made by <a href="https://github.com/GHOSTKMR" target="_blank" rel="noopener">ghostkmr</a>
-  &nbsp;·&nbsp; With Stand Futuristic Sales Intelligence
+  &nbsp;·&nbsp; With Stand Corporate Sales Intelligence
 </footer>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -721,17 +717,16 @@ document.addEventListener('keydown', e => {
 /* ==========================================================
    CONFIG & STATE
    ========================================================== */
-const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwAj5M-ZKMfYiNXfNdbhOJjj5lN_bnL1p71nKs_FnSMuPPBkFcd4r0U3knELacC6L5i0A/exec';
+const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwAj5M-ZKMfYiYiNXfNdbhOJjj5lN_bnL1p71nKs_FnSMuPPBkFcd4r0U3knELacC6L5i0A/exec';
 let API_URL = localStorage.getItem('ws-api-url') || DEFAULT_API_URL;
 
 const AGG_KEYS = ['qlub','skipCash','beans','snoonu','talabat','rafeeq','keeta','roastery'];
 const AGG_LABELS = { qlub:'Qlub', skipCash:'Skip Cash', beans:'Beans', snoonu:'Snoonu', talabat:'Talabat', rafeeq:'Rafeeq', keeta:'Keeta', roastery:'Roastery' };
 
-/* Vibrant neon palette */
-const CHART_COLORS = [
-  '#00f0ff', '#ff00c8', '#ffb800', '#a56eff', '#ff5ec4',
-  '#00e5ff', '#a3ff3c', '#ff2e63', '#7c6eff', '#00ffb0',
-  '#ff8c00', '#c084fc', '#ff2e63', '#00e5ff', '#4aff8c'
+/* Corporate Palette - Unified across all charts */
+const CORPORATE_COLORS = [
+  '#4b8bff', '#2dd4bf', '#f2b84b', '#a78bfa', '#f26b6b',
+  '#60a5fa', '#34d399', '#fbbf24', '#c084fc', '#fb7185'
 ];
 
 const state = {
@@ -739,7 +734,8 @@ const state = {
   period: 'mtd',
   dateFrom: null,
   dateTo: null,
-  compact: localStorage.getItem('ws-compact') === 'true'
+  compact: localStorage.getItem('ws-compact') === 'true',
+  focusedStoreIndex: 0
 };
 
 let ALL_STORES = [];
@@ -747,7 +743,8 @@ let STORES_BY_BRAND = {};
 let FILTERED_DATA = [];
 let PREV_DATA = [];
 let BULK_TEMPLATE = null;
-const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null, storeCharts: [] };
+let AGGREGATED_STORES = [];
+const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null, focusedStore: null };
 
 /* ==========================================================
    HELPERS
@@ -940,11 +937,24 @@ async function loadDashboardData() {
       } catch { PREV_DATA = []; }
     }
 
+    aggregateData();
     renderKPIs();
-    renderStoreChartGrid();
+    renderTotalSalesChart();
+    initStoreCarousel();
     toast('Data loaded successfully');
   } catch(e) { toast(e.message, true); }
   finally { $('btnApply').disabled = false; $('btnApply').textContent = 'Load Data'; }
+}
+
+function aggregateData() {
+  const map = new Map();
+  FILTERED_DATA.forEach(r => {
+    if (!map.has(r.store)) map.set(r.store, { store: r.store, gross: 0, card: 0, cash: 0, guests: 0, aggs: {} });
+    const s = map.get(r.store);
+    s.gross += num(r.gross); s.card += num(r.card); s.cash += num(r.cash); s.guests += num(r.guests);
+    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k] || 0) + num(r[k]); });
+  });
+  AGGREGATED_STORES = [...map.values()].sort((a,b) => b.gross - a.gross);
 }
 
 function sumMetric(data, key) { return data.reduce((a, r) => a + num(r[key]), 0); }
@@ -993,220 +1003,227 @@ window.drillDown = function(metric) {
   if (tab) tab.click();
 };
 
-/* ==========================================================
-   MULTI-CHART PER STORE GRID
-   Each store card contains 4 different charts + KPI strip
-   ========================================================== */
-function renderStoreChartGrid() {
-  // Aggregate data per store
-  const storeMap = new Map();
-  FILTERED_DATA.forEach(r => {
-    if (!storeMap.has(r.store)) storeMap.set(r.store, {
-      store: r.store, gross: 0, card: 0, cash: 0, guests: 0, aggs: {}
-    });
-    const s = storeMap.get(r.store);
-    s.gross += num(r.gross);
-    s.card += num(r.card);
-    s.cash += num(r.cash);
-    s.guests += num(r.guests);
-    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k] || 0) + num(r[k]); });
-  });
+function renderTotalSalesChart() {
+  const sorted = AGGREGATED_STORES;
+  const labels = sorted.map(x => x.store);
+  const data = sorted.map(x => x.gross);
 
-  const stores = [...storeMap.values()].sort((a,b) => b.gross - a.gross);
+  if (charts.total) charts.total.destroy();
 
-  // Destroy previous store charts
-  charts.storeCharts.forEach(c => { try { c.destroy(); } catch(e) {} });
-  charts.storeCharts = [];
-
-  const grid = $('storeChartGrid');
-  grid.innerHTML = '';
-
-  if (!stores.length) {
-    grid.innerHTML = '<div class="p-4 text-muted text-center" style="grid-column:1/-1;">No data available. Load data from filters.</div>';
-    return;
-  }
-
-  stores.forEach((s, idx) => {
-    const color = CHART_COLORS[idx % CHART_COLORS.length];
-    const avgCheck = s.guests ? s.gross / s.guests : 0;
-    const cashRatio = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
-    const cardRatio = 100 - cashRatio;
-
-    // Insight chips
-    const chips = [];
-    if (cashRatio > 40) chips.push(`<span class="store-chip warn">High Cash ${cashRatio.toFixed(1)}%</span>`);
-    else if (cashRatio < 15) chips.push(`<span class="store-chip good">Digital ${cardRatio.toFixed(1)}%</span>`);
-    else chips.push(`<span class="store-chip">Balanced Mix</span>`);
-
-    if (avgCheck > 50) chips.push(`<span class="store-chip good">High Avg ${money(avgCheck)}</span>`);
-    else if (avgCheck < 15) chips.push(`<span class="store-chip bad">Low Avg ${money(avgCheck)}</span>`);
-
-    if (s.guests > 500) chips.push(`<span class="store-chip good">${Math.round(s.guests)} Guests</span>`);
-
-    // KPI strip values
-    const kpiStrip = `
-      <div class="store-kpi-strip">
-        <div class="store-kpi-item">
-          <div class="kpi-mini-label">Gross</div>
-          <div class="kpi-mini-value">${money(s.gross)}</div>
-        </div>
-        <div class="store-kpi-item">
-          <div class="kpi-mini-label">Card</div>
-          <div class="kpi-mini-value">${money(s.card)}</div>
-        </div>
-        <div class="store-kpi-item">
-          <div class="kpi-mini-label">Cash</div>
-          <div class="kpi-mini-value">${money(s.cash)}</div>
-        </div>
-        <div class="store-kpi-item">
-          <div class="kpi-mini-label">Guests</div>
-          <div class="kpi-mini-value accent">${Math.round(s.guests).toLocaleString()}</div>
-        </div>
-      </div>
-    `;
-
-    // Build the multi-chart card
-    const card = document.createElement('div');
-    card.className = 'store-chart-card';
-    card.style.setProperty('--card-accent', color);
-
-    const chartIdBase = `store_${idx}`;
-
-    card.innerHTML = `
-      <div class="store-card-header">
-        <div>
-          <div class="store-card-title">
-            <span class="dot"></span> ${s.store}
-          </div>
-          <div class="store-card-metric">${money(s.gross)}</div>
-          <div class="store-card-sub">
-            <strong>${Math.round(s.guests).toLocaleString()}</strong> guests &nbsp;·&nbsp;
-            avg <strong>${money(avgCheck)}</strong>
-          </div>
-        </div>
-        <span class="store-card-badge">MULTI-CHART</span>
-      </div>
-      <div class="store-insight-chips">${chips.join('')}</div>
-      ${kpiStrip}
-
-      <div class="store-multi-chart-grid">
-        <!-- Chart 1: Payment Mix Doughnut -->
-        <div class="store-chart-tile">
-          <div class="tile-title"><i class="bi bi-pie-chart"></i> Payment Mix</div>
-          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_pay"></canvas></div>
-        </div>
-
-        <!-- Chart 2: Aggregator Radar -->
-        <div class="store-chart-tile">
-          <div class="tile-title"><i class="bi bi-radar"></i> Aggregator Radar</div>
-          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_radar"></canvas></div>
-        </div>
-
-        <!-- Chart 3: Metrics Bar (Wide) -->
-        <div class="store-chart-tile wide">
-          <div class="tile-title"><i class="bi bi-bar-chart"></i> Core Metrics Breakdown</div>
-          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_bar"></canvas></div>
-        </div>
-      </div>
-    `;
-
-    grid.appendChild(card);
-
-    // ---- CHART 1: Payment Mix Doughnut ----
-    const payCanvas = document.getElementById(`${chartIdBase}_pay`);
-    if (payCanvas) {
-      const payChart = new Chart(payCanvas, {
-        type: 'doughnut',
-        data: {
-          labels: ['Card', 'Cash'],
-          datasets: [{
-            data: [s.card, s.cash],
-            backgroundColor: [color, '#ff00c8'],
-            borderWidth: 0,
-            hoverOffset: 12
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '65%',
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color: '#8ba2c0', font: { size: 10 }, padding: 8, boxWidth: 12 }
-            }
-          }
+  charts.total = new Chart($('totalSalesChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Gross Sales',
+        data,
+        backgroundColor: CORPORATE_COLORS[0], // Unified corporate blue
+        borderRadius: 6,
+        hoverBackgroundColor: CORPORATE_COLORS[1]
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.95)',
+          titleColor: '#fff', bodyColor: '#cbd5e1',
+          callbacks: { label: (c) => ` ${c.label}: ${money(c.parsed.y)}` }
         }
-      });
-      charts.storeCharts.push(payChart);
-    }
-
-    // ---- CHART 2: Aggregator Radar ----
-    const radarCanvas = document.getElementById(`${chartIdBase}_radar`);
-    if (radarCanvas) {
-      const aggKeys = AGG_KEYS.filter(k => s.aggs[k] > 0);
-      const aggVals = aggKeys.map(k => s.aggs[k]);
-      const radarChart = new Chart(radarCanvas, {
-        type: 'radar',
-        data: {
-          labels: aggKeys.map(k => AGG_LABELS[k]),
-          datasets: [{
-            label: s.store,
-            data: aggVals,
-            backgroundColor: color + '33',
-            borderColor: color,
-            borderWidth: 2,
-            pointBackgroundColor: color,
-            pointRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            r: {
-              angleLines: { color: 'rgba(255,255,255,0.04)' },
-              grid: { color: 'rgba(255,255,255,0.04)' },
-              pointLabels: { color: '#8ba2c0', font: { size: 8 } },
-              ticks: { display: false }
-            }
-          }
-        }
-      });
-      charts.storeCharts.push(radarChart);
-    }
-
-    // ---- CHART 3: Core Metrics Bar (wide) ----
-    const barCanvas = document.getElementById(`${chartIdBase}_bar`);
-    if (barCanvas) {
-      const barChart = new Chart(barCanvas, {
-        type: 'bar',
-        data: {
-          labels: ['Gross', 'Card', 'Cash', 'Guests'],
-          datasets: [{
-            label: s.store,
-            data: [s.gross, s.card, s.cash, s.guests],
-            backgroundColor: [color, '#ff00c8', '#ffb800', '#a56eff'],
-            borderColor: color,
-            borderWidth: 0,
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { color: '#5a6f8a', font: { size: 10 } }, grid: { display: false } },
-            y: { ticks: { color: '#5a6f8a', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
-          }
-        }
-      });
-      charts.storeCharts.push(barChart);
+      },
+      scales: {
+        x: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } },
+        y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      }
     }
   });
 }
+
+/* ==========================================================
+   COMPACT STORE CAROUSEL
+   ========================================================== */
+function initStoreCarousel() {
+  const selector = $('storeSelector');
+  selector.innerHTML = AGGREGATED_STORES.map((s, i) => `<option value="${i}">${s.store}</option>`).join('');
+  
+  state.focusedStoreIndex = 0;
+  if (AGGREGATED_STORES.length > 0) {
+    renderFocusedStore(0);
+  } else {
+    $('focusedStoreContainer').innerHTML = '<div class="p-4 text-muted text-center">No data available.</div>';
+  }
+
+  // Render summary table
+  $('summaryTableBody').innerHTML = AGGREGATED_STORES.map((s, i) => {
+    const avg = s.guests ? s.gross / s.guests : 0;
+    const cashPct = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
+    return `
+      <tr onclick="focusStore(${i})" id="summaryRow_${i}" class="${i === 0 ? 'active' : ''}">
+        <td>${i+1}</td>
+        <td class="fw-bold text-white">${s.store}</td>
+        <td>${money(s.gross)}</td>
+        <td>${Math.round(s.guests).toLocaleString()}</td>
+        <td>${money(avg)}</td>
+        <td>${cashPct.toFixed(1)}%</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+window.focusStore = function(index) {
+  if (index < 0) index = AGGREGATED_STORES.length - 1;
+  if (index >= AGGREGATED_STORES.length) index = 0;
+  
+  state.focusedStoreIndex = index;
+  $('storeSelector').value = index;
+  
+  // Update active row in summary
+  document.querySelectorAll('#summaryTableBody tr').forEach((tr, i) => {
+    tr.classList.toggle('active', i === index);
+  });
+
+  renderFocusedStore(index);
+};
+
+function renderFocusedStore(index) {
+  const s = AGGREGATED_STORES[index];
+  if (!s) return;
+
+  const avgCheck = s.guests ? s.gross / s.guests : 0;
+  const cashRatio = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
+  
+  // Cycle chart types based on index to keep the look varied but corporate
+  const chartType = index % 2 === 0 ? 'bar' : 'line';
+  const canvasId = 'focusedStoreCanvas';
+  
+  // Build chart data
+  let chartData, chartOptions;
+  
+  if (chartType === 'bar') {
+    chartData = {
+      labels: ['Gross', 'Card', 'Cash', 'Guests'],
+      datasets: [{
+        label: s.store,
+        data: [s.gross, s.card, s.cash, s.guests],
+        backgroundColor: [CORPORATE_COLORS[0], CORPORATE_COLORS[1], CORPORATE_COLORS[2], CORPORATE_COLORS[3]],
+        borderRadius: 4
+      }]
+    };
+    chartOptions = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { display: false } },
+        y: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    };
+  } else {
+    chartData = {
+      labels: ['Gross', 'Card', 'Cash', 'Guests'],
+      datasets: [{
+        label: s.store,
+        data: [s.gross, s.card, s.cash, s.guests],
+        borderColor: CORPORATE_COLORS[0],
+        backgroundColor: 'rgba(75, 139, 255, 0.1)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: CORPORATE_COLORS[0],
+        pointRadius: 5
+      }]
+    };
+    chartOptions = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { display: false } },
+        y: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    };
+  }
+
+  const container = $('focusedStoreContainer');
+  container.innerHTML = `
+    <div class="focused-store-card" style="--card-accent: ${CORPORATE_COLORS[0]};">
+      <div class="focused-store-info">
+        <div class="focused-store-title">
+          <span class="dot"></span> ${s.store}
+        </div>
+        <div class="focused-store-metric">${money(s.gross)}</div>
+        <div class="focused-store-sub">Total Gross Sales</div>
+        
+        <div class="focused-store-details">
+          <div class="detail-item">
+            <div class="detail-label">Card Sales</div>
+            <div class="detail-value">${money(s.card)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Cash Sales</div>
+            <div class="detail-value">${money(s.cash)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Guests</div>
+            <div class="detail-value">${Math.round(s.guests).toLocaleString()}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Avg Check</div>
+            <div class="detail-value">${money(avgCheck)}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Cash Ratio</div>
+            <div class="detail-value">${cashRatio.toFixed(1)}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="focused-store-chart">
+        <canvas id="${canvasId}"></canvas>
+      </div>
+    </div>
+  `;
+
+  // Destroy previous focused chart
+  if (charts.focusedStore) {
+    try { charts.focusedStore.destroy(); } catch(e) {}
+    charts.focusedStore = null;
+  }
+
+  // Create new chart
+  const canvas = document.getElementById(canvasId);
+  if (canvas) {
+    charts.focusedStore = new Chart(canvas.getContext('2d'), {
+      type: chartType,
+      data: chartData,
+      options: chartOptions
+    });
+  }
+}
+
+// Carousel Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const prevBtn = $('btnPrevStore');
+  const nextBtn = $('btnNextStore');
+  const selector = $('storeSelector');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (AGGREGATED_STORES.length > 0) focusStore(state.focusedStoreIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (AGGREGATED_STORES.length > 0) focusStore(state.focusedStoreIndex + 1);
+    });
+  }
+
+  if (selector) {
+    selector.addEventListener('change', (e) => {
+      focusStore(parseInt(e.target.value));
+    });
+  }
+});
 
 /* ==========================================================
    INSIGHTS
@@ -1217,14 +1234,7 @@ function renderInsights() {
     return;
   }
 
-  const storeMap = new Map();
-  FILTERED_DATA.forEach(r => {
-    if (!storeMap.has(r.store)) storeMap.set(r.store, { store: r.store, gross: 0, guests: 0, card: 0, cash: 0, aggs: {} });
-    const s = storeMap.get(r.store);
-    s.gross += num(r.gross); s.guests += num(r.guests); s.card += num(r.card); s.cash += num(r.cash);
-    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
-  });
-  const stores = [...storeMap.values()];
+  const stores = AGGREGATED_STORES;
 
   const topGross = [...stores].sort((a,b)=>b.gross-a.gross)[0];
   const topGuests = [...stores].sort((a,b)=>b.guests-a.guests)[0];
@@ -1259,13 +1269,13 @@ function renderInsights() {
 
   charts.aggTotal = new Chart($('aggTotalChart'), {
     type: 'doughnut',
-    data: { labels: aggEntries.map(([k])=>AGG_LABELS[k]), datasets: [{ data: aggEntries.map(([,v])=>v), backgroundColor: CHART_COLORS, borderWidth: 0 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#8ba2c0', font: { size: 11 } } } } }
+    data: { labels: aggEntries.map(([k])=>AGG_LABELS[k]), datasets: [{ data: aggEntries.map(([,v])=>v), backgroundColor: CORPORATE_COLORS, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 11 } } } } }
   });
   charts.aggGrouped = new Chart($('aggGroupedChart'), {
     type: 'bar',
-    data: { labels: stores.map(s=>s.store), datasets: aggEntries.map(([k], i) => ({ label: AGG_LABELS[k], data: stores.map(s=>s.aggs[k]), backgroundColor: CHART_COLORS[i % CHART_COLORS.length] })) },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8ba2c0', font: { size: 10 } } } }, scales: { x: { stacked: true, ticks: { color: '#8ba2c0', font: { size: 10 } } }, y: { stacked: true, ticks: { color: '#8ba2c0', font: { size: 10 } } } } }
+    data: { labels: stores.map(s=>s.store), datasets: aggEntries.map(([k], i) => ({ label: AGG_LABELS[k], data: stores.map(s=>s.aggs[k]), backgroundColor: CORPORATE_COLORS[i % CORPORATE_COLORS.length] })) },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { size: 10 } } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8', font: { size: 10 } } }, y: { stacked: true, ticks: { color: '#94a3b8', font: { size: 10 } } } } }
   });
   $('aggTableBody').innerHTML = aggEntries.map(([k,v]) => `<tr><td>${AGG_LABELS[k]}</td><td class="text-white">${money(v)}</td><td>${money(v/stores.length)}</td><td>${totalAgg ? ((v/totalAgg)*100).toFixed(1) : 0}%</td></tr>`).join('');
 
@@ -1273,10 +1283,10 @@ function renderInsights() {
   charts.cash = new Chart($('cashCardChart'), {
     type: 'bar',
     data: { labels: stores.map(s=>s.store), datasets: [
-      { label: 'Card', data: stores.map(s=>s.card), backgroundColor: '#00f0ff' },
-      { label: 'Cash', data: stores.map(s=>s.cash), backgroundColor: '#ff00c8' }
+      { label: 'Card', data: stores.map(s=>s.card), backgroundColor: CORPORATE_COLORS[0] },
+      { label: 'Cash', data: stores.map(s=>s.cash), backgroundColor: CORPORATE_COLORS[1] }
     ]},
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8ba2c0' } } }, scales: { x: { stacked: true, ticks: { color: '#8ba2c0' } }, y: { stacked: true, ticks: { color: '#8ba2c0' } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8' } }, y: { stacked: true, ticks: { color: '#94a3b8' } } } }
   });
   $('cashTableBody').innerHTML = stores.map(s => {
     const ratio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
@@ -1301,7 +1311,7 @@ function drawCompareChart() {
   });
 
   $('cmpSummary').innerHTML = data.map(d => `
-    <div class="insight-tile" style="--tile-color:#00f0ff">
+    <div class="insight-tile" style="--tile-color:${CORPORATE_COLORS[0]}">
       <div class="insight-label">${d.name}</div>
       <div class="insight-value">${money(d.gross)}</div>
       <div class="insight-detail">${Math.round(d.guests)} guests · avg ${money(d.guests?d.gross/d.guests:0)}</div>
@@ -1316,10 +1326,10 @@ function drawCompareChart() {
       datasets: data.map((d, i) => ({
         label: d.name,
         data: [d.gross, d.card, d.cash, d.guests],
-        backgroundColor: CHART_COLORS[i % CHART_COLORS.length]
+        backgroundColor: CORPORATE_COLORS[i % CORPORATE_COLORS.length]
       }))
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8ba2c0' } } }, scales: { x: { ticks: { color: '#8ba2c0' } }, y: { ticks: { color: '#8ba2c0' } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } } }
   });
 }
 
@@ -1391,7 +1401,7 @@ async function loadAI() {
       const storeCashRatio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
       return `
         <div class="col-md-6 col-xl-4">
-          <div class="ai-card" style="--ai-color:#00f0ff;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[0]};">
             <h5><i class="bi bi-shop"></i> ${s.store}</h5>
             <p class="ai-value" style="font-size:18px;">${money(s.gross)}</p>
             <p class="ai-sub">${Math.round(s.guests)} guests · avg ${money(s.guests?s.gross/s.guests:0)}</p>
@@ -1405,56 +1415,56 @@ async function loadAI() {
     $('aiContent').innerHTML = `
       <div class="row g-3">
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#00f0ff;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[0]};">
             <h5><i class="bi bi-trophy"></i> Highest Revenue Outlet</h5>
             <p class="ai-value">${topStore.store}</p>
             <p class="ai-sub">${money(topStore.gross)} total sales · ${Math.round(topStore.guests||0).toLocaleString()} guests</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#a56eff;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[3]};">
             <h5><i class="bi bi-people"></i> Most Guest Traffic</h5>
             <p class="ai-value">${topGuest.store}</p>
             <p class="ai-sub">${Math.round(topGuest.guests).toLocaleString()} guests</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#ffb800;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[2]};">
             <h5><i class="bi bi-megaphone"></i> Top Marketing/Partners</h5>
             <p class="ai-value">${topMkt.store}</p>
             <p class="ai-sub">${money(topMkt.marketing)} marketing spend</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#00e5ff;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[1]};">
             <h5><i class="bi bi-graph-up"></i> Avg Check (All Stores)</h5>
             <p class="ai-value">${money(avgCheck)}</p>
             <p class="ai-sub">Best: ${bestAvg.store} at ${money(bestAvg.avg)}</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#ff2e63;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[4]};">
             <h5><i class="bi bi-exclamation-triangle"></i> Performance Gap</h5>
             <p class="ai-value">${money(gap)}</p>
             <p class="ai-sub">Top vs bottom store gap (${gapPct.toFixed(1)}% of leader)</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#14b8a6;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[1]};">
             <h5><i class="bi bi-cash-coin"></i> Cash vs Card Mix</h5>
             <p class="ai-value">${cashRatio.toFixed(1)}%</p>
             <p class="ai-sub">Cash share of total payments</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#6366f1;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[0]};">
             <h5><i class="bi bi-database-check"></i> Data Completeness</h5>
             <p class="ai-value">${completeness}%</p>
             <p class="ai-sub">${activeStores} of ${ALL_STORES.length} stores reporting</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="ai-card" style="--ai-color:#ff5ec4;">
+          <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[3]};">
             <h5><i class="bi bi-graph-up-arrow"></i> 6‑Day Trend</h5>
             <p class="ai-value">${trendDelta > 0 ? '📈 Growing' : (trendDelta < 0 ? '📉 Dropping' : '➡️ Stable')}</p>
             <p class="ai-sub">${trendDelta > 0 ? '+' : ''}${trendDelta.toFixed(1)}% over last 6 days</p>
@@ -1464,18 +1474,18 @@ async function loadAI() {
         <div class="col-12 mt-3">
           <div class="ai-card ai-reco">
             <h5><i class="bi bi-lightbulb"></i> Actionable Recommendations</h5>
-            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:10px;">
               Your top performing aggregator is <strong>${topAgg}</strong> (${money(topAggVal)}). Consider running an exclusive promotion on this platform at <strong>${topStore.store}</strong> to capitalize on high volume.
             </p>
-            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:10px;">
               <strong>${bottomStore.store}</strong> is your lowest performer with ${money(bottomStore.gross)} — a gap of <strong>${money(gap)}</strong> vs the leader. Investigate staffing, local promotions, or aggregator visibility there.
             </p>
-            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:10px;">
               ${cashRatio > 30
                 ? `Cash ratio is <strong>${cashRatio.toFixed(1)}%</strong> — relatively high. Ensure cash handling controls and consider card incentives.`
                 : `Card dominates at <strong>${(100-cashRatio).toFixed(1)}%</strong> — healthy digital mix. Focus on aggregator commissions to protect margins.`}
             </p>
-            <p style="font-size:14px; line-height:1.7; margin-bottom:0;">
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:0;">
               <strong>Marketing partners / discount bills:</strong> ${partnerList}
             </p>
           </div>
@@ -1486,7 +1496,7 @@ async function loadAI() {
           <div class="row g-2">
             ${top10.map((s, i) => `
               <div class="col-md-6 col-xl-4">
-                <div class="ai-card" style="--ai-color:${CHART_COLORS[i % CHART_COLORS.length]}; padding:14px;">
+                <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[i % CORPORATE_COLORS.length]}; padding:14px;">
                   <h5 style="font-size:12px;">#${i+1} ${s.store}</h5>
                   <p class="ai-value" style="font-size:16px;">${money(s.gross)}</p>
                   <p class="ai-sub">${Math.round(s.guests)} guests · avg ${money(s.guests?s.gross/s.guests:0)}</p>
@@ -1501,7 +1511,7 @@ async function loadAI() {
           <div class="row g-2">
             ${Object.entries(brandAggMap).length ? Object.entries(brandAggMap).map(([brand, info]) => `
               <div class="col-md-6 col-xl-4">
-                <div class="ai-card" style="--ai-color:#14b8a6; padding:14px;">
+                <div class="ai-card" style="--ai-color:${CORPORATE_COLORS[1]}; padding:14px;">
                   <h5 style="font-size:12px;">${brand}</h5>
                   <p class="ai-value" style="font-size:16px;">${info.agg}</p>
                   <p class="ai-sub">Fastest at <strong>${info.store}</strong> — ${money(info.val)}</p>
@@ -1573,7 +1583,7 @@ $('btnExportPDF')?.addEventListener('click', () => {
     body,
     startY: 30,
     styles: { fontSize: 7, cellPadding: 2 },
-    headStyles: { fillColor: [0, 240, 255], textColor: 255 },
+    headStyles: { fillColor: [45, 212, 191], textColor: 255 },
     alternateRowStyles: { fillColor: [245, 247, 250] },
     margin: { left: 10, right: 10 },
     tableWidth: 'auto',

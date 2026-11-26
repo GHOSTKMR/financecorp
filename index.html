@@ -3,268 +3,457 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>With Stand — Sales Intelligence</title>
+<title>With Stand — Futuristic Sales Intelligence</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
 
 <style>
 /* ==========================================================
-   FUTURISTIC CORPORATE THEME TOKENS
+   FUTURISTIC NEON THEME TOKENS
    ========================================================== */
 :root {
-  --bg-main: #0a0f1c;
-  --bg-panel: #111827;
-  --bg-card: rgba(31, 41, 55, 0.6);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(0, 194, 168, 0.3);
-  
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  
-  --brand-primary: #3b82f6;
-  --brand-accent: #00c2a8;
-  --brand-warning: #f59e0b;
-  --brand-danger: #ef4444;
-  
-  --shadow-glow: 0 0 20px rgba(0, 194, 168, 0.15);
-  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.3);
-  
+  --bg-main: #070a12;
+  --bg-panel: #0c1120;
+  --bg-card: #111a2e;
+  --bg-elevated: #1a243c;
+  --border-soft: rgba(0, 240, 255, 0.10);
+  --border-strong: rgba(0, 240, 255, 0.22);
+  --border-accent: rgba(255, 0, 200, 0.35);
+
+  --text-primary: #eef7ff;
+  --text-secondary: #8ba2c0;
+  --text-muted: #5a6f8a;
+
+  --brand-primary: #00f0ff;
+  --brand-accent: #ff00c8;
+  --brand-warning: #ffb800;
+  --brand-danger: #ff2e63;
+  --brand-violet: #a56eff;
+  --brand-pink: #ff5ec4;
+  --brand-cyan: #00e5ff;
+  --brand-lime: #a3ff3c;
+
+  --shadow-panel: 0 4px 30px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 10px 50px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 35px rgba(0, 240, 255, 0.08);
+
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  
+
   --font-main: 'Plus Jakarta Sans', sans-serif;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --topbar-height: 72px;
 }
 
 * { box-sizing: border-box; }
-body { 
-  background: var(--bg-main); color: var(--text-primary); 
-  font-family: var(--font-main); margin: 0; font-size: 14px; 
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+body {
+  background: var(--bg-main);
+  background-image:
+    radial-gradient(ellipse at 15% 10%, rgba(0, 240, 255, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgba(255, 0, 200, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(165, 110, 255, 0.02) 0%, transparent 70%);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  margin: 0;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  user-select: none;
+  min-height: 100vh;
 }
+input, textarea, select { user-select: text; }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #475569; }
+::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.25); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.5); }
+
+:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 2px; }
 
 /* ==========================================================
-   TOP BAR & NAVIGATION
+   TOP BAR
    ========================================================== */
-.topbar { 
-  position: sticky; top: 0; z-index: 1000; 
-  background: rgba(10, 15, 28, 0.85); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-glass);
-  padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between;
+.topbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(7, 10, 18, 0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border-soft);
+  padding: 0 24px;
+  height: var(--topbar-height);
+  display: flex; align-items: center; justify-content: space-between;
+  transition: height 0.3s ease;
 }
-.logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-icon { 
-  width: 38px; height: 38px; border-radius: var(--radius-sm); 
-  background: linear-gradient(135deg, var(--brand-accent), #00a5b8); 
-  display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #000;
-  box-shadow: 0 0 15px rgba(0, 194, 168, 0.4);
+.logo-area { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.logo-icon {
+  width: 42px; height: 42px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-primary));
+  display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #070a12;
+  box-shadow: 0 0 30px rgba(255, 0, 200, 0.3), 0 0 60px rgba(0, 240, 255, 0.1);
 }
-.logo-text h1 { margin: 0; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-.logo-text p { margin: 0; font-size: 10px; font-weight: 600; color: var(--brand-accent); letter-spacing: 2px; text-transform: uppercase; }
+.logo-text h1 { margin: 0; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+.logo-text p { margin: 0; font-size: 10px; font-weight: 700; color: var(--brand-primary); letter-spacing: 3px; text-transform: uppercase; }
 
-/* Main Navigation Tabs */
-.main-nav { display: flex; gap: 8px; background: var(--bg-panel); padding: 6px; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); }
-.nav-tab { 
-  padding: 8px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 13px; 
+.main-nav { display: flex; gap: 6px; background: rgba(12, 17, 32, 0.8); padding: 5px; border-radius: 14px; border: 1px solid var(--border-soft); }
+.nav-tab {
+  position: relative;
+  padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 13px;
   color: var(--text-secondary); cursor: pointer; transition: var(--transition);
-  display: flex; align-items: center; gap: 8px; border: none; background: transparent;
+  display: flex; align-items: center; gap: 8px; border: 1px solid transparent; background: transparent;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+  transform: translateY(0);
 }
-.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
-.nav-tab.active { 
-  background: linear-gradient(135deg, rgba(0,194,168,0.15), rgba(59,130,246,0.15)); 
-  color: var(--brand-accent); box-shadow: inset 0 0 0 1px var(--border-highlight);
+.nav-tab:hover { color: var(--text-primary); background: rgba(0, 240, 255, 0.06); border-color: var(--border-soft); }
+.nav-tab:active { transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
+.nav-tab.active {
+  background: linear-gradient(135deg, rgba(255, 0, 200, 0.15), rgba(0, 240, 255, 0.10));
+  color: var(--brand-primary); border-color: var(--border-accent);
+  box-shadow: 0 0 30px rgba(255, 0, 200, 0.08);
 }
 
-/* Page Routing */
 .page-section { display: none; animation: fadeIn 0.4s ease-out forwards; }
 .page-section.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ==========================================================
-   LAYOUT & PANELS
+   LAYOUT
    ========================================================== */
-.app-container { max-width: 1600px; margin: 0 auto; padding: 24px; }
+.app-container { max-width: 1700px; margin: 0 auto; padding: 24px; }
 .grid-layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
 
-.panel { 
-  background: var(--bg-card); border: 1px solid var(--border-glass); 
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-panel);
-  backdrop-filter: blur(10px); overflow: hidden; margin-bottom: 24px;
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden; margin-bottom: 24px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.panel-header { 
-  padding: 16px 20px; border-bottom: 1px solid var(--border-glass); 
+.panel:hover { box-shadow: var(--shadow-lift); border-color: var(--border-strong); }
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-soft);
   display: flex; align-items: center; justify-content: space-between;
-  background: rgba(0,0,0,0.2);
+  background: linear-gradient(180deg, rgba(0, 240, 255, 0.03) 0%, transparent 100%);
+  cursor: pointer;
+  user-select: none;
 }
-.panel-title { margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.panel-header.no-toggle { cursor: default; }
+.panel-title { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; }
+.panel-title i { color: var(--brand-accent); font-size: 16px; }
+.panel-toggle { color: var(--text-muted); font-size: 13px; transition: transform 0.3s ease; }
+.panel.collapsed .panel-toggle { transform: rotate(-90deg); }
+.panel.collapsed .panel-body { display: none; }
+.panel.collapsed .panel-header { border-bottom: none; }
 
 /* ==========================================================
-   CONTROLS & FILTERS
+   FILTERS
    ========================================================== */
 .filter-group { margin-bottom: 20px; }
-.filter-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-.form-control, .form-select { 
-  background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); 
+.filter-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; display: block; }
+.form-control, .form-select {
+  background: rgba(0,0,0,0.35); border: 1px solid var(--border-soft);
   color: var(--text-primary); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px;
+  transition: var(--transition);
 }
-.form-control:focus, .form-select:focus { background: rgba(0,0,0,0.5); border-color: var(--brand-accent); box-shadow: 0 0 0 3px rgba(0,194,168,0.1); color: #fff; }
+.form-control:focus, .form-select:focus { background: rgba(0,0,0,0.6); border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.10); color: #fff; }
 
-.btn-primary-glow { 
+.period-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.period-pill {
+  flex: 1 1 auto; padding: 8px 12px; border-radius: 999px;
+  border: 1px solid var(--border-soft); background: rgba(0,0,0,0.3);
+  color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.period-pill:hover { color: #fff; border-color: var(--border-strong); }
+.period-pill.active { background: rgba(255, 0, 200, 0.12); border-color: var(--brand-accent); color: var(--brand-accent); }
+
+.btn-primary-glow {
   width: 100%; padding: 12px; border-radius: var(--radius-sm); border: none;
-  background: linear-gradient(135deg, var(--brand-accent), #00a5b8);
-  color: #000; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
-  cursor: pointer; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,194,168,0.3);
+  background: linear-gradient(135deg, var(--brand-accent), #a0007a);
+  color: #fff; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+  cursor: pointer; transition: var(--transition);
 }
-.btn-primary-glow:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,194,168,0.5); }
+.btn-primary-glow:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 4px 30px rgba(255, 0, 200, 0.3); }
+.btn-primary-glow:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
-/* Custom Dropdown */
-.custom-select { position: relative; }
-.custom-select-trigger { 
-  width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); 
-  border-radius: var(--radius-sm); color: var(--text-primary); font-size: 13px; font-weight: 600;
-  display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+.btn-ghost {
+  background: transparent; border: 1px solid var(--border-soft); color: var(--text-secondary);
+  padding: 7px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
 }
-.custom-select-options { 
-  position: absolute; top: calc(100% + 4px); left: 0; right: 0; 
-  background: var(--bg-panel); border: 1px solid var(--border-glass); 
-  border-radius: var(--radius-sm); box-shadow: var(--shadow-panel); z-index: 100; 
-  display: none; padding: 6px; 
-}
-.custom-select.open .custom-select-options { display: block; }
-.custom-option { padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--text-secondary); }
-.custom-option:hover { background: rgba(255,255,255,0.05); color: #fff; }
-.custom-option.selected { background: rgba(0,194,168,0.1); color: var(--brand-accent); font-weight: 600; }
+.btn-ghost:hover { color: #fff; border-color: var(--border-strong); background: rgba(0, 240, 255, 0.05); }
 
-/* Store Brand Accordion */
-.brand-group { margin-bottom: 6px; border: 1px solid var(--border-glass); border-radius: var(--radius-sm); overflow: hidden; }
-.brand-header { padding: 10px 12px; background: rgba(255,255,255,0.03); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
-.brand-header:hover { background: rgba(255,255,255,0.06); }
-.brand-content { display: none; padding: 8px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-glass); }
-.brand-group.expanded .brand-content { display: block; }
-.store-item { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
-.store-item:hover { background: rgba(255,255,255,0.05); }
-.store-item input { accent-color: var(--brand-accent); width: 14px; height: 14px; }
+.store-search { position: relative; margin-bottom: 12px; }
+.store-search input { width: 100%; padding-left: 34px; }
+.store-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+
+.store-scroll-area { max-height: 340px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; }
+.store-scroll-area::-webkit-scrollbar { width: 4px; }
+.store-scroll-area::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); border-radius: 3px; }
+
+.brand-group { margin-bottom: 6px; border: 1px solid var(--border-soft); border-radius: var(--radius-sm); overflow: hidden; }
+.brand-header { padding: 10px 12px; background: rgba(0, 240, 255, 0.03); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+.brand-header:hover { background: rgba(0, 240, 255, 0.07); }
+.brand-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.2); }
+.brand-group.expanded .brand-content { max-height: 340px; overflow-y: auto; border-top: 1px solid var(--border-soft); padding: 8px 10px; }
+.brand-group .chev { transition: transform 0.3s ease; font-size: 12px; }
+.brand-group.expanded .chev { transform: rotate(180deg); }
+.store-item { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+.store-item:hover { background: rgba(0, 240, 255, 0.06); }
+.store-item input { accent-color: var(--brand-primary); width: 14px; height: 14px; }
 .store-item span { font-size: 12px; color: var(--text-secondary); }
+.store-item.hidden { display: none; }
 
 /* ==========================================================
-   DASHBOARD VIEW
+   FUTURISTIC KPI
    ========================================================== */
 .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.kpi-card { 
-  background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
-  padding: 20px; position: relative; overflow: hidden;
+.kpi-card {
+  background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: var(--radius-lg);
+  padding: 20px; position: relative; overflow: hidden; cursor: pointer;
+  transition: var(--transition);
 }
+.kpi-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: var(--shadow-glow); }
 .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--kpi-color); }
-.kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.kpi-value { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -1px; }
-.kpi-icon { position: absolute; right: 20px; bottom: 20px; font-size: 32px; color: var(--kpi-color); opacity: 0.2; }
-
-/* Circular Chart */
-.chart-container { height: 400px; position: relative; display: flex; justify-content: center; align-items: center; padding: 20px; }
-#totalSalesChart { max-height: 100%; max-width: 100%; }
-
-/* Breakdown Cards */
-.breakdown-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 20px; }
-.breakdown-card { 
-  background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
-  border-radius: var(--radius-md); padding: 16px; 
-}
-.breakdown-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: #fff; }
-.breakdown-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
-.breakdown-row span:last-child { font-weight: 600; color: var(--text-primary); }
-.breakdown-total { border-top: 1px dashed var(--border-glass); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; font-size: 13px; color: var(--brand-accent); }
+.kpi-card::after { content: ''; position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle, var(--kpi-color) 0%, transparent 70%); opacity: 0.06; pointer-events: none; }
+.kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+.kpi-value { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1.1; }
+.kpi-delta { font-size: 12px; font-weight: 700; margin-top: 8px; display: inline-flex; align-items: center; gap: 4px; }
+.kpi-delta.up { color: #4aff8c; }
+.kpi-delta.down { color: var(--brand-danger); }
+.kpi-delta.flat { color: var(--text-muted); }
+.kpi-icon { position: absolute; right: 20px; bottom: 20px; font-size: 34px; color: var(--kpi-color); opacity: 0.10; }
 
 /* ==========================================================
-   DATA ENTRY VIEW
+   MULTI-CHART PER STORE GRID
+   ========================================================== */
+.store-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(720px, 1fr));
+  gap: 28px;
+  padding: 24px;
+}
+.store-chart-card {
+  background: linear-gradient(160deg, rgba(17, 26, 46, 0.97), rgba(12, 17, 32, 0.99));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+.store-chart-card:hover {
+  border-color: var(--card-accent, var(--brand-primary));
+  box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), 0 8px 50px rgba(0,0,0,0.6);
+  transform: translateY(-3px);
+}
+.store-chart-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, var(--brand-primary)), transparent);
+  opacity: 0.8;
+}
+.store-chart-card::after {
+  content: ''; position: absolute; top: -60%; right: -60%; width: 280px; height: 280px;
+  background: radial-gradient(circle, var(--card-accent, var(--brand-primary)) 0%, transparent 70%);
+  opacity: 0.03; pointer-events: none;
+}
+
+.store-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+.store-card-title { font-size: 18px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 12px; letter-spacing: -0.3px; }
+.store-card-title .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--card-accent, var(--brand-primary)); box-shadow: 0 0 16px var(--card-accent, var(--brand-primary)); }
+.store-card-badge { font-size: 9px; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(255, 0, 200, 0.10); color: var(--brand-accent); border: 1px solid rgba(255, 0, 200, 0.18); text-transform: uppercase; letter-spacing: 1.5px; }
+.store-card-metric { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.8px; }
+.store-card-sub { font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; }
+.store-card-sub strong { color: var(--text-secondary); font-weight: 600; }
+
+/* Multi-chart grid inside each store card */
+.store-multi-chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.store-chart-tile {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+}
+.store-chart-tile:hover {
+  border-color: var(--border-strong);
+  background: rgba(0, 0, 0, 0.35);
+}
+.store-chart-tile .tile-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.store-chart-tile .tile-title i {
+  color: var(--card-accent, var(--brand-primary));
+  font-size: 12px;
+}
+.store-chart-tile .tile-canvas-wrap {
+  height: 150px;
+  position: relative;
+}
+
+/* Wide tile for the main comparison chart */
+.store-chart-tile.wide {
+  grid-column: 1 / -1;
+}
+.store-chart-tile.wide .tile-canvas-wrap {
+  height: 180px;
+}
+
+/* KPI strip inside card */
+.store-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.store-kpi-item {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
+  transition: var(--transition);
+}
+.store-kpi-item:hover {
+  border-color: var(--border-strong);
+  background: rgba(0, 0, 0, 0.4);
+}
+.store-kpi-item .kpi-mini-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.store-kpi-item .kpi-mini-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.store-kpi-item .kpi-mini-value.accent {
+  color: var(--card-accent, var(--brand-primary));
+}
+
+/* Insight chips */
+.store-insight-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.store-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.10);
+  color: var(--text-secondary);
+}
+.store-chip.good { background: rgba(74, 255, 140, 0.06); border-color: rgba(74, 255, 140, 0.14); color: #4aff8c; }
+.store-chip.warn { background: rgba(255, 184, 0, 0.06); border-color: rgba(255, 184, 0, 0.14); color: #ffb800; }
+.store-chip.bad { background: rgba(255, 46, 99, 0.06); border-color: rgba(255, 46, 99, 0.14); color: #ff2e63; }
+
+/* ==========================================================
+   DATA ENTRY
    ========================================================== */
 .table-responsive { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-.data-table th { 
-  background: rgba(0,0,0,0.3); padding: 12px 16px; text-align: left; 
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
-  border-bottom: 1px solid var(--border-glass); position: sticky; top: 0; z-index: 10;
-}
-.data-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.data-table input { 
-  width: 100%; padding: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
-  border-radius: 4px; color: #fff; font-size: 12px; transition: 0.2s;
-}
-.data-table input:focus { border-color: var(--brand-accent); outline: none; background: rgba(0,0,0,0.4); }
-.data-table tr.row-saved { background: rgba(0, 194, 168, 0.1); }
-.data-table tr.row-invalid { background: rgba(239, 68, 68, 0.1); }
-.data-table tr.row-saving { background: rgba(245, 158, 11, 0.1); }
-.btn-remove { color: var(--brand-danger); background: none; border: none; cursor: pointer; padding: 4px; }
-.btn-remove:hover { background: rgba(239,68,68,0.1); border-radius: 4px; }
+.data-table th { background: rgba(0,0,0,0.5); padding: 12px 16px; text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 10; }
+.data-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.data-table tbody tr:hover td { background: rgba(0, 240, 255, 0.02); }
+.data-table input { width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-soft); border-radius: 5px; color: #fff; font-size: 12px; transition: 0.2s; }
+.data-table input:focus { border-color: var(--brand-primary); outline: none; background: rgba(0,0,0,0.6); }
+.data-table tr.row-saved { background: rgba(0, 240, 255, 0.06); }
+.data-table tr.row-invalid { background: rgba(255, 46, 99, 0.08); }
+.data-table tr.row-saving { background: rgba(255, 184, 0, 0.08); }
+.btn-remove { color: var(--brand-danger); background: none; border: none; cursor: pointer; padding: 5px; border-radius: 4px; }
+.btn-remove:hover { background: rgba(255, 46, 99, 0.12); }
 
 /* ==========================================================
-   INSIGHTS & AI TABS
+   INSIGHTS
    ========================================================== */
-.insight-tabs { display: flex; gap: 8px; padding: 16px 20px 0; border-bottom: 1px solid var(--border-glass); flex-wrap: wrap; }
-.insight-tab { 
-  padding: 10px 16px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border: 1px solid transparent; border-bottom: none;
-  background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 13px; cursor: pointer;
-}
-.insight-tab:hover { color: #fff; background: rgba(255,255,255,0.03); }
-.insight-tab.active { 
-  background: var(--bg-panel); border-color: var(--border-glass); border-bottom-color: var(--bg-panel); 
-  color: var(--brand-accent); transform: translateY(1px);
-}
+.insight-tabs { display: flex; gap: 8px; padding: 16px 20px 0; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
+.insight-tab { padding: 10px 18px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; border: 1px solid transparent; border-bottom: none; background: transparent; color: var(--text-secondary); font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition); }
+.insight-tab:hover { color: #fff; background: rgba(0, 240, 255, 0.04); }
+.insight-tab.active { background: var(--bg-panel); border-color: var(--border-soft); border-bottom-color: var(--bg-panel); color: var(--brand-accent); transform: translateY(1px); }
 .insight-pane { display: none; padding: 24px; }
 .insight-pane.active { display: block; }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.insight-tile { 
-  background: rgba(0,0,0,0.2); border: 1px solid var(--border-glass); 
-  border-radius: var(--radius-md); padding: 20px; border-left: 4px solid var(--tile-color);
-}
-.insight-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+.insight-tile { background: rgba(0,0,0,0.25); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 20px; border-left: 4px solid var(--tile-color); }
+.insight-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
 .insight-value { font-size: 22px; font-weight: 800; color: #fff; margin: 0; }
-.insight-detail { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.insight-detail { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
 
 .table-dark-custom { width: 100%; border-collapse: collapse; margin-top: 16px; }
-.table-dark-custom th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
-.table-dark-custom td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 13px; }
-.table-dark-custom tr:hover td { background: rgba(255,255,255,0.02); }
+.table-dark-custom th { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-soft); color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.8px; }
+.table-dark-custom td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.02); color: var(--text-secondary); font-size: 13px; }
+.table-dark-custom tbody tr:hover td { background: rgba(0, 240, 255, 0.03); }
 
-/* Toast */
+.ai-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: 22px; border-left: 4px solid var(--ai-color); margin-bottom: 16px; }
+.ai-card h5 { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.6px; }
+.ai-card .ai-value { font-size: 24px; font-weight: 800; color: #fff; margin: 0; }
+.ai-card .ai-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; }
+.ai-reco { padding: 18px 20px; border-radius: var(--radius-md); background: rgba(255, 0, 200, 0.06); border: 1px solid var(--border-accent); }
+.ai-reco h5 { color: var(--brand-accent); }
+
 .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
-.toast { background: var(--bg-panel); border-left: 4px solid var(--brand-accent); padding: 14px 20px; border-radius: var(--radius-sm); box-shadow: var(--shadow-panel); color: #fff; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: slideLeft 0.3s ease-out; }
+.toast { background: var(--bg-elevated); border-left: 4px solid var(--brand-primary); padding: 14px 18px; border-radius: var(--radius-sm); box-shadow: var(--shadow-lift); color: #fff; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 10px; animation: slideLeft 0.3s ease-out; cursor: pointer; max-width: 360px; }
 .toast.error { border-left-color: var(--brand-danger); }
-@keyframes slideLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slideLeft { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* Responsive */
-@media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } }
+.app-footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border-soft); margin-top: 24px; }
+.app-footer a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
+.app-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } .store-chart-grid { grid-template-columns: 1fr; } }
 @media (max-width: 1024px) {
   .grid-layout { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .topbar { padding: 0 16px; height: auto; flex-direction: column; gap: 16px; padding-bottom: 16px; }
+  .topbar { padding: 0 14px; height: auto; flex-direction: column; gap: 12px; padding-bottom: 12px; }
   .main-nav { width: 100%; flex-wrap: wrap; justify-content: center; }
   .nav-tab { flex: 1; justify-content: center; font-size: 12px; padding: 8px 10px; }
   .kpi-row { grid-template-columns: 1fr; }
-  .chart-container { height: 300px; }
+  .store-chart-grid { grid-template-columns: 1fr; padding: 12px; }
+  .store-multi-chart-grid { grid-template-columns: 1fr; }
+  .store-kpi-strip { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
 <body>
 
-<!-- TOP NAVIGATION -->
 <header class="topbar">
   <a href="#" class="logo-area">
     <div class="logo-icon">WS</div>
     <div class="logo-text">
       <h1>With Stand</h1>
-      <p>Corporate Intel</p>
+      <p>Futuristic Intel</p>
     </div>
   </a>
 
@@ -279,30 +468,23 @@ body {
 
 <div class="app-container">
 
-  <!-- ==========================================================
-       VIEW: DASHBOARD
-       ========================================================== -->
+  <!-- DASHBOARD -->
   <section id="view-dashboard" class="page-section active">
     <div class="grid-layout">
-      
-      <!-- LEFT: FILTERS -->
-      <aside class="panel">
-        <div class="panel-header">
+      <aside class="panel" id="filterPanel">
+        <div class="panel-header" data-toggle="filterPanel">
           <h2 class="panel-title"><i class="bi bi-funnel"></i> Filters</h2>
+          <i class="bi bi-chevron-down panel-toggle"></i>
         </div>
         <div class="panel-body" style="padding: 20px;">
-          
           <div class="filter-group">
             <label class="filter-label">Time Period</label>
-            <div class="custom-select" id="periodSelect">
-              <div class="custom-select-trigger"><span id="periodLabel">MTD (Month to Date)</span><i class="bi bi-chevron-down"></i></div>
-              <div class="custom-select-options">
-                <div class="custom-option selected" data-val="mtd">MTD (Month to Date)</div>
-                <div class="custom-option" data-val="today">Today</div>
-                <div class="custom-option" data-val="7d">Last 7 Days</div>
-                <div class="custom-option" data-val="30d">Last 30 Days</div>
-                <div class="custom-option" data-val="custom">Custom Range</div>
-              </div>
+            <div class="period-pills" id="periodPills">
+              <button class="period-pill" data-val="today">Today</button>
+              <button class="period-pill" data-val="7d">7D</button>
+              <button class="period-pill" data-val="30d">30D</button>
+              <button class="period-pill active" data-val="mtd">MTD</button>
+              <button class="period-pill" data-val="custom">Custom</button>
             </div>
           </div>
 
@@ -315,79 +497,80 @@ body {
           <div class="filter-group">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <label class="filter-label mb-0">Stores</label>
-              <button class="btn btn-sm btn-outline-light" style="font-size:10px; padding:2px 8px;" id="btnSelectAll">Select All</button>
+              <div class="d-flex gap-1">
+                <button class="btn-ghost" style="font-size:10px; padding:3px 10px;" id="btnSelectAll">All</button>
+                <button class="btn-ghost" style="font-size:10px; padding:3px 10px;" id="btnClearAll">Clear</button>
+              </div>
             </div>
-            <div id="brandAccordion">
-              <!-- Brands populated via JS -->
+            <div class="store-search">
+              <i class="bi bi-search"></i>
+              <input type="text" id="storeSearch" class="form-control" placeholder="Search stores...">
             </div>
+            <div class="store-scroll-area" id="brandAccordion"></div>
           </div>
 
-          <button class="btn-primary-glow mt-4" id="btnApply">Load Data</button>
+          <button class="btn-primary-glow mt-3" id="btnApply">Load Data</button>
         </div>
       </aside>
 
-      <!-- RIGHT: DATA -->
       <main>
-        <!-- KPIs -->
         <div class="kpi-row">
-          <div class="kpi-card" style="--kpi-color: #3b82f6;">
+          <div class="kpi-card" style="--kpi-color: #00f0ff;" onclick="drillDown('gross')">
             <div class="kpi-label">Total Gross Sales</div>
             <div class="kpi-value" id="kpiGross">0.00</div>
+            <div class="kpi-delta flat" id="kpiGrossDelta"></div>
             <i class="bi bi-graph-up-arrow kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #00c2a8;">
+          <div class="kpi-card" style="--kpi-color: #ff00c8;" onclick="drillDown('card')">
             <div class="kpi-label">Card Sales</div>
             <div class="kpi-value" id="kpiCard">0.00</div>
+            <div class="kpi-delta flat" id="kpiCardDelta"></div>
             <i class="bi bi-credit-card kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #f59e0b;">
+          <div class="kpi-card" style="--kpi-color: #ffb800;" onclick="drillDown('cash')">
             <div class="kpi-label">Cash Sales</div>
             <div class="kpi-value" id="kpiCash">0.00</div>
+            <div class="kpi-delta flat" id="kpiCashDelta"></div>
             <i class="bi bi-cash-stack kpi-icon"></i>
           </div>
-          <div class="kpi-card" style="--kpi-color: #8b5cf6;">
+          <div class="kpi-card" style="--kpi-color: #a56eff;" onclick="drillDown('guests')">
             <div class="kpi-label">Total Guests</div>
             <div class="kpi-value" id="kpiGuests">0</div>
+            <div class="kpi-delta flat" id="kpiGuestsDelta"></div>
             <i class="bi bi-people kpi-icon"></i>
           </div>
         </div>
 
-        <!-- Circular Chart -->
-        <div class="panel mb-4">
-          <div class="panel-header">
-            <h2 class="panel-title"><i class="bi bi-pie-chart"></i> Total Sales by Store</h2>
+        <!-- MULTI-CHART PER STORE GRID -->
+        <div class="panel" id="storeGridPanel">
+          <div class="panel-header no-toggle">
+            <h2 class="panel-title"><i class="bi bi-diagram-3"></i> Store Intelligence — Multi‑Chart Breakdown</h2>
+            <div class="d-flex gap-2">
+              <button class="btn-ghost" style="font-size:11px; padding:5px 12px;" id="btnExportCSV"><i class="bi bi-filetype-csv"></i> CSV</button>
+              <button class="btn-ghost" style="font-size:11px; padding:5px 12px;" id="btnExportPDF"><i class="bi bi-filetype-pdf"></i> PDF</button>
+            </div>
           </div>
-          <div class="chart-container">
-            <canvas id="totalSalesChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Breakdown by Store & Aggregator -->
-        <div class="panel">
-          <div class="panel-header">
-            <h2 class="panel-title"><i class="bi bi-list-columns-reverse"></i> Breakdown by Store & Aggregator</h2>
-          </div>
-          <div class="breakdown-grid" id="breakdownGrid">
-            <!-- Populated via JS -->
+          <div class="panel-body">
+            <div class="store-chart-grid" id="storeChartGrid"></div>
           </div>
         </div>
       </main>
-
     </div>
   </section>
 
-  <!-- ==========================================================
-       VIEW: DATA ENTRY
-       ========================================================== -->
+  <!-- DATA ENTRY -->
   <section id="view-entry" class="page-section">
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-pencil-square"></i> Bulk Data Entry</h2>
-        <div class="d-flex gap-2 align-items-center">
+        <div class="d-flex gap-2 align-items-center flex-wrap">
           <input type="date" id="entryDate" class="form-control form-control-sm" style="width: auto;">
-          <button class="btn btn-sm btn-outline-light" id="btnAddRow"><i class="bi bi-plus-lg"></i> Add Row</button>
-          <button class="btn btn-sm btn-outline-light" id="btnFillSelected"><i class="bi bi-shop"></i> Fill Selected</button>
-          <button class="btn-primary-glow" style="width:auto; padding: 6px 16px; font-size:12px; box-shadow:none;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
+          <button class="btn-ghost" id="btnAddRow"><i class="bi bi-plus-lg"></i> Add Row</button>
+          <button class="btn-ghost" id="btnFillSelected"><i class="bi bi-shop"></i> Fill Selected</button>
+          <button class="btn-ghost" id="btnAutoZero"><i class="bi bi-0-circle"></i> Auto (0)</button>
+          <button class="btn-ghost" id="btnManualBlank"><i class="bi bi-eraser"></i> Manual (Blank)</button>
+          <button class="btn-ghost" id="btnLoadEntryData"><i class="bi bi-cloud-download"></i> Load Data</button>
+          <button class="btn-primary-glow" style="width:auto; padding: 8px 20px; font-size:12px;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
         </div>
       </div>
       <div class="table-responsive" style="max-height: 65vh;">
@@ -396,26 +579,21 @@ body {
             <tr id="entryHeadRow">
               <th style="width: 40px;"></th>
               <th>Store</th>
-              <!-- Columns injected via JS -->
             </tr>
           </thead>
-          <tbody id="entryBody">
-            <!-- Rows injected via JS -->
-          </tbody>
+          <tbody id="entryBody"></tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================================
-       VIEW: INSIGHTS
-       ========================================================== -->
+  <!-- INSIGHTS -->
   <section id="view-insights" class="page-section">
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-lightning-charge"></i> Performance Insights</h2>
       </div>
-      
+
       <div class="insight-tabs">
         <button class="insight-tab active" data-pane="ov">Overview</button>
         <button class="insight-tab" data-pane="compare">Store vs Store</button>
@@ -423,15 +601,14 @@ body {
         <button class="insight-tab" data-pane="cash">Cash vs Card</button>
       </div>
 
-      <!-- Pane: Overview -->
       <div class="insight-pane active" id="pane-ov">
         <div class="grid-2">
-          <div class="insight-tile" style="--tile-color: #3b82f6;">
+          <div class="insight-tile" style="--tile-color: #00f0ff;">
             <div class="insight-label"><i class="bi bi-trophy"></i> Top Gross Store</div>
             <div class="insight-value" id="ovTopStore">-</div>
             <div class="insight-detail" id="ovTopStoreVal">-</div>
           </div>
-          <div class="insight-tile" style="--tile-color: #8b5cf6;">
+          <div class="insight-tile" style="--tile-color: #a56eff;">
             <div class="insight-label"><i class="bi bi-people"></i> Most Guests</div>
             <div class="insight-value" id="ovTopGuest">-</div>
             <div class="insight-detail" id="ovTopGuestVal">-</div>
@@ -443,24 +620,17 @@ body {
         </table>
       </div>
 
-      <!-- Pane: Store vs Store -->
       <div class="insight-pane" id="pane-compare">
-        <div class="d-flex gap-3 mb-4">
-          <select id="cmpStoreA" class="form-select w-50"></select>
-          <select id="cmpStoreB" class="form-select w-50"></select>
+        <div class="d-flex gap-3 mb-4 flex-wrap">
+          <select id="cmpStoreA" class="form-select w-25" style="min-width:150px;"></select>
+          <select id="cmpStoreB" class="form-select w-25" style="min-width:150px;"></select>
+          <select id="cmpStoreC" class="form-select w-25" style="min-width:150px;"></select>
+          <select id="cmpStoreD" class="form-select w-25" style="min-width:150px;"></select>
         </div>
-        <div class="grid-2">
-          <div class="insight-tile" style="--tile-color:#3b82f6">
-            <div class="insight-label">Store A Gross</div><div class="insight-value" id="cmpValA">0</div>
-          </div>
-          <div class="insight-tile" style="--tile-color:#00c2a8">
-            <div class="insight-label">Store B Gross</div><div class="insight-value" id="cmpValB">0</div>
-          </div>
-        </div>
+        <div class="grid-2" id="cmpSummary"></div>
         <div class="chart-container" style="height: 300px; margin-top:20px;"><canvas id="compareChart"></canvas></div>
       </div>
 
-      <!-- Pane: Aggregators -->
       <div class="insight-pane" id="pane-agg">
         <div class="grid-2">
           <div class="chart-container" style="height: 250px;"><canvas id="aggTotalChart"></canvas></div>
@@ -472,7 +642,6 @@ body {
         </table>
       </div>
 
-      <!-- Pane: Cash vs Card -->
       <div class="insight-pane" id="pane-cash">
         <div class="chart-container" style="height: 300px;"><canvas id="cashCardChart"></canvas></div>
         <table class="table-dark-custom mt-4">
@@ -483,44 +652,52 @@ body {
     </div>
   </section>
 
-  <!-- ==========================================================
-       VIEW: AI EVALUATOR
-       ========================================================== -->
+  <!-- AI -->
   <section id="view-ai" class="page-section">
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-stars"></i> AI Evaluator & Recommendations</h2>
-        <button class="btn btn-sm btn-outline-light" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
+        <button class="btn-ghost" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
       </div>
-      <div class="modal-body" id="aiContent" style="padding: 32px;">
-        <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:40px;"></i><br>Initializing AI Analysis...</div>
+      <div class="modal-body" id="aiContent" style="padding: 30px;">
+        <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:44px;"></i><br>Initializing AI Analysis...</div>
       </div>
     </div>
   </section>
 
-  <!-- ==========================================================
-       VIEW: SETTINGS
-       ========================================================== -->
+  <!-- SETTINGS -->
   <section id="view-settings" class="page-section">
     <div class="panel" style="max-width: 600px;">
-      <div class="panel-header">
+      <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-gear"></i> Settings</h2>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding: 24px;">
         <div class="filter-group">
           <label class="filter-label">Google Apps Script Web App URL</label>
           <input type="text" id="apiUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
         <div class="d-flex gap-2 mt-4">
-          <button class="btn-primary-glow" style="width:auto; padding:10px 24px;" id="btnSaveSettings">Save Connection</button>
-          <button class="btn btn-outline-light" id="btnTestConnection">Test Connection</button>
+          <button class="btn-primary-glow" style="width:auto; padding:12px 28px;" id="btnSaveSettings">Save Connection</button>
+          <button class="btn-ghost" id="btnTestConnection">Test Connection</button>
         </div>
-        <div id="settingsStatus" class="mt-3 font-weight-bold text-success" style="display:none;"></div>
+        <div id="settingsStatus" class="mt-3" style="display:none;"></div>
+
+        <div class="filter-group mt-4">
+          <label class="filter-label">Display</label>
+          <div class="d-flex gap-2">
+            <button class="btn-ghost" id="btnCompact"><i class="bi bi-arrows-angle-contract"></i> Compact Mode</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
 </div>
+
+<footer class="app-footer">
+  Made by <a href="https://github.com/GHOSTKMR" target="_blank" rel="noopener">ghostkmr</a>
+  &nbsp;·&nbsp; With Stand Futuristic Sales Intelligence
+</footer>
 
 <div class="toast-container" id="toastContainer"></div>
 
@@ -529,6 +706,19 @@ body {
 
 <script>
 /* ==========================================================
+   SECURITY
+   ========================================================== */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if (e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(k)) ||
+      (e.ctrlKey && k === 'u')) {
+    e.preventDefault();
+  }
+});
+
+/* ==========================================================
    CONFIG & STATE
    ========================================================== */
 const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwAj5M-ZKMfYiNXfNdbhOJjj5lN_bnL1p71nKs_FnSMuPPBkFcd4r0U3knELacC6L5i0A/exec';
@@ -536,20 +726,28 @@ let API_URL = localStorage.getItem('ws-api-url') || DEFAULT_API_URL;
 
 const AGG_KEYS = ['qlub','skipCash','beans','snoonu','talabat','rafeeq','keeta','roastery'];
 const AGG_LABELS = { qlub:'Qlub', skipCash:'Skip Cash', beans:'Beans', snoonu:'Snoonu', talabat:'Talabat', rafeeq:'Rafeeq', keeta:'Keeta', roastery:'Roastery' };
-const CHART_COLORS = ['#3b82f6', '#00c2a8', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#10b981'];
+
+/* Vibrant neon palette */
+const CHART_COLORS = [
+  '#00f0ff', '#ff00c8', '#ffb800', '#a56eff', '#ff5ec4',
+  '#00e5ff', '#a3ff3c', '#ff2e63', '#7c6eff', '#00ffb0',
+  '#ff8c00', '#c084fc', '#ff2e63', '#00e5ff', '#4aff8c'
+];
 
 const state = {
   stores: new Set(),
   period: 'mtd',
   dateFrom: null,
-  dateTo: null
+  dateTo: null,
+  compact: localStorage.getItem('ws-compact') === 'true'
 };
 
 let ALL_STORES = [];
 let STORES_BY_BRAND = {};
 let FILTERED_DATA = [];
+let PREV_DATA = [];
 let BULK_TEMPLATE = null;
-const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null };
+const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null, storeCharts: [] };
 
 /* ==========================================================
    HELPERS
@@ -560,9 +758,10 @@ function num(n) { return Number(n || 0); }
 function toast(msg, isError = false) {
   const el = document.createElement('div');
   el.className = 'toast' + (isError ? ' error' : '');
-  el.innerHTML = `<i class="bi ${isError ? 'bi-exclamation-circle' : 'bi-check-circle'}"></i> ${msg}`;
+  el.innerHTML = `<i class="bi ${isError ? 'bi-exclamation-circle' : 'bi-check-circle'}"></i><span>${msg}</span>`;
+  el.addEventListener('click', () => el.remove());
   $('toastContainer').appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3500);
 }
 function getBusinessDate() {
   const now = new Date();
@@ -587,7 +786,24 @@ async function apiPost(payload) {
 }
 
 /* ==========================================================
-   NAVIGATION & UI LOGIC
+   PANEL TOGGLES
+   ========================================================== */
+function initPanelToggles() {
+  document.querySelectorAll('.panel-header[data-toggle]').forEach(header => {
+    const id = header.dataset.toggle;
+    const panel = $(id);
+    if (!panel) return;
+    if (localStorage.getItem('ws-panel-' + id) === '1') panel.classList.add('collapsed');
+    header.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      panel.classList.toggle('collapsed');
+      localStorage.setItem('ws-panel-' + id, panel.classList.contains('collapsed') ? '1' : '0');
+    });
+  });
+}
+
+/* ==========================================================
+   NAVIGATION
    ========================================================== */
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -595,30 +811,22 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     $(tab.dataset.target).classList.add('active');
-    
+
     if (tab.dataset.target === 'view-insights') renderInsights();
     if (tab.dataset.target === 'view-ai') loadAI();
     if (tab.dataset.target === 'view-settings') $('apiUrlInput').value = API_URL;
   });
 });
 
-// Custom Select
-const selectTrigger = document.querySelector('#periodSelect .custom-select-trigger');
-const selectOptions = document.querySelectorAll('#periodSelect .custom-option');
-selectTrigger.addEventListener('click', () => $('periodSelect').classList.toggle('open'));
-document.addEventListener('click', e => { if (!e.target.closest('#periodSelect')) $('periodSelect').classList.remove('open'); });
-selectOptions.forEach(opt => {
-  opt.addEventListener('click', () => {
-    selectOptions.forEach(o => o.classList.remove('selected'));
-    opt.classList.add('selected');
-    state.period = opt.dataset.val;
-    $('periodLabel').textContent = opt.textContent;
+document.querySelectorAll('.period-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.period-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    state.period = pill.dataset.val;
     $('customDateWrap').style.display = state.period === 'custom' ? 'block' : 'none';
-    $('periodSelect').classList.remove('open');
   });
 });
 
-// Insight Tabs
 document.querySelectorAll('.insight-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.insight-tab').forEach(t => t.classList.remove('active'));
@@ -640,24 +848,33 @@ function getDateRange() {
   }
 }
 
+function getPrevDateRange(range) {
+  if (!range.from || !range.to) return null;
+  const from = new Date(range.from); const to = new Date(range.to);
+  const days = Math.max(1, Math.round((to - from) / 86400000) + 1);
+  const prevTo = new Date(from); prevTo.setDate(prevTo.getDate() - 1);
+  const prevFrom = new Date(prevTo); prevFrom.setDate(prevFrom.getDate() - days + 1);
+  return { from: iso(prevFrom), to: iso(prevTo) };
+}
+
 /* ==========================================================
-   STORE DROPDOWN & ACCORDION
+   STORE ACCORDION
    ========================================================== */
 function renderStoreAccordion() {
   const container = $('brandAccordion');
   const brands = Object.keys(STORES_BY_BRAND).sort();
-  
+
   container.innerHTML = brands.map(brand => {
     const stores = STORES_BY_BRAND[brand];
     return `
       <div class="brand-group" data-brand="${brand}">
         <div class="brand-header" onclick="toggleBrand(this)">
           <span>${brand}</span>
-          <i class="bi bi-chevron-down" style="font-size:12px; transition:0.2s;"></i>
+          <i class="bi bi-chevron-down chev"></i>
         </div>
         <div class="brand-content">
           ${stores.map(s => `
-            <label class="store-item">
+            <label class="store-item" data-name="${s.toLowerCase()}">
               <input type="checkbox" value="${s}" onchange="updateStoreSelection(this)">
               <span>${s}</span>
             </label>
@@ -671,8 +888,6 @@ function renderStoreAccordion() {
 window.toggleBrand = function(header) {
   const group = header.closest('.brand-group');
   group.classList.toggle('expanded');
-  const icon = header.querySelector('i');
-  icon.style.transform = group.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0)';
 };
 
 window.updateStoreSelection = function(cb) {
@@ -680,8 +895,27 @@ window.updateStoreSelection = function(cb) {
   else state.stores.delete(cb.value);
 };
 
+document.addEventListener('DOMContentLoaded', () => {
+  const search = $('storeSearch');
+  if (search) {
+    search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      document.querySelectorAll('#brandAccordion .brand-group').forEach(g => {
+        let any = false;
+        g.querySelectorAll('.store-item').forEach(item => {
+          const match = !q || item.dataset.name.includes(q);
+          item.classList.toggle('hidden', !match);
+          if (match) any = true;
+        });
+        if (q && any) g.classList.add('expanded');
+        else if (q) g.classList.remove('expanded');
+      });
+    });
+  }
+});
+
 /* ==========================================================
-   DASHBOARD DATA & RENDER
+   DASHBOARD DATA
    ========================================================== */
 async function loadDashboardData() {
   if (!state.stores.size) return toast('Select at least one store', true);
@@ -689,92 +923,293 @@ async function loadDashboardData() {
   if (state.period === 'custom' && (!range.from || !range.to)) return toast('Select custom dates', true);
 
   $('btnApply').disabled = true;
-  $('btnApply').textContent = 'Loading...';
+  $('btnApply').innerHTML = '<i class="bi bi-arrow-repeat"></i> Loading...';
 
   try {
-    const res = await apiGet({ action: 'batch', startDate: range.from, endDate: range.to, stores: [...state.stores].join(',') });
+    const storesParam = [...state.stores].join(',');
+    const [res, prevRange] = await Promise.all([
+      apiGet({ action: 'batch', startDate: range.from, endDate: range.to, stores: storesParam }),
+      Promise.resolve(getPrevDateRange(range))
+    ]);
     FILTERED_DATA = res.rows || [];
+
+    if (prevRange) {
+      try {
+        const prev = await apiGet({ action: 'batch', startDate: prevRange.from, endDate: prevRange.to, stores: storesParam });
+        PREV_DATA = prev.rows || [];
+      } catch { PREV_DATA = []; }
+    }
+
     renderKPIs();
-    renderTotalSalesChart();
-    renderBreakdown();
+    renderStoreChartGrid();
     toast('Data loaded successfully');
   } catch(e) { toast(e.message, true); }
   finally { $('btnApply').disabled = false; $('btnApply').textContent = 'Load Data'; }
 }
 
+function sumMetric(data, key) { return data.reduce((a, r) => a + num(r[key]), 0); }
+
 function renderKPIs() {
-  let g=0, c=0, ca=0, gu=0;
-  FILTERED_DATA.forEach(r => { g += num(r.gross); c += num(r.card); ca += num(r.cash); gu += num(r.guests); });
+  const g = sumMetric(FILTERED_DATA, 'gross');
+  const c = sumMetric(FILTERED_DATA, 'card');
+  const ca = sumMetric(FILTERED_DATA, 'cash');
+  const gu = sumMetric(FILTERED_DATA, 'guests');
+
   $('kpiGross').textContent = money(g);
   $('kpiCard').textContent = money(c);
   $('kpiCash').textContent = money(ca);
   $('kpiGuests').textContent = Math.round(gu).toLocaleString();
+
+  if (PREV_DATA.length) {
+    const pg = sumMetric(PREV_DATA, 'gross');
+    const pc = sumMetric(PREV_DATA, 'card');
+    const pca = sumMetric(PREV_DATA, 'cash');
+    const pgu = sumMetric(PREV_DATA, 'guests');
+    setDelta('kpiGrossDelta', g, pg);
+    setDelta('kpiCardDelta', c, pc);
+    setDelta('kpiCashDelta', ca, pca);
+    setDelta('kpiGuestsDelta', gu, pgu);
+  } else {
+    ['kpiGrossDelta','kpiCardDelta','kpiCashDelta','kpiGuestsDelta'].forEach(id => {
+      $(id).className = 'kpi-delta flat';
+      $(id).textContent = '—';
+    });
+  }
 }
 
-function renderTotalSalesChart() {
+function setDelta(id, curr, prev) {
+  const el = $(id);
+  if (!prev) { el.className = 'kpi-delta flat'; el.textContent = '—'; return; }
+  const pct = ((curr - prev) / prev) * 100;
+  const up = pct >= 0;
+  el.className = 'kpi-delta ' + (Math.abs(pct) < 0.1 ? 'flat' : (up ? 'up' : 'down'));
+  el.innerHTML = `${up ? '▲' : '▼'} ${Math.abs(pct).toFixed(1)}% vs prev`;
+}
+
+window.drillDown = function(metric) {
+  toast(`Showing ${metric} breakdown — see Insights tab`);
+  document.querySelector('.nav-tab[data-target="view-insights"]').click();
+  const tab = document.querySelector('.insight-tab[data-pane="ov"]');
+  if (tab) tab.click();
+};
+
+/* ==========================================================
+   MULTI-CHART PER STORE GRID
+   Each store card contains 4 different charts + KPI strip
+   ========================================================== */
+function renderStoreChartGrid() {
+  // Aggregate data per store
   const storeMap = new Map();
   FILTERED_DATA.forEach(r => {
-    storeMap.set(r.store, (storeMap.get(r.store) || 0) + num(r.gross));
+    if (!storeMap.has(r.store)) storeMap.set(r.store, {
+      store: r.store, gross: 0, card: 0, cash: 0, guests: 0, aggs: {}
+    });
+    const s = storeMap.get(r.store);
+    s.gross += num(r.gross);
+    s.card += num(r.card);
+    s.cash += num(r.cash);
+    s.guests += num(r.guests);
+    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k] || 0) + num(r[k]); });
   });
-  
-  const sorted = [...storeMap.entries()].sort((a,b) => b[1] - a[1]);
-  const labels = sorted.map(x => x[0]);
-  const data = sorted.map(x => x[1]);
-  
-  if (charts.total) charts.total.destroy();
-  
-  charts.total = new Chart($('totalSalesChart').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        backgroundColor: labels.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
-        borderWidth: 0,
-        hoverOffset: 10
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '65%',
-      plugins: {
-        legend: { position: 'right', labels: { color: '#e2e8f0', font: { family: 'Plus Jakarta Sans', size: 12 }, padding: 20 } },
-        tooltip: {
-          backgroundColor: 'rgba(15, 23, 42, 0.9)',
-          titleColor: '#fff', bodyColor: '#cbd5e1',
-          callbacks: { label: (c) => ` ${c.label}: ${money(c.parsed)}` }
+
+  const stores = [...storeMap.values()].sort((a,b) => b.gross - a.gross);
+
+  // Destroy previous store charts
+  charts.storeCharts.forEach(c => { try { c.destroy(); } catch(e) {} });
+  charts.storeCharts = [];
+
+  const grid = $('storeChartGrid');
+  grid.innerHTML = '';
+
+  if (!stores.length) {
+    grid.innerHTML = '<div class="p-4 text-muted text-center" style="grid-column:1/-1;">No data available. Load data from filters.</div>';
+    return;
+  }
+
+  stores.forEach((s, idx) => {
+    const color = CHART_COLORS[idx % CHART_COLORS.length];
+    const avgCheck = s.guests ? s.gross / s.guests : 0;
+    const cashRatio = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
+    const cardRatio = 100 - cashRatio;
+
+    // Insight chips
+    const chips = [];
+    if (cashRatio > 40) chips.push(`<span class="store-chip warn">High Cash ${cashRatio.toFixed(1)}%</span>`);
+    else if (cashRatio < 15) chips.push(`<span class="store-chip good">Digital ${cardRatio.toFixed(1)}%</span>`);
+    else chips.push(`<span class="store-chip">Balanced Mix</span>`);
+
+    if (avgCheck > 50) chips.push(`<span class="store-chip good">High Avg ${money(avgCheck)}</span>`);
+    else if (avgCheck < 15) chips.push(`<span class="store-chip bad">Low Avg ${money(avgCheck)}</span>`);
+
+    if (s.guests > 500) chips.push(`<span class="store-chip good">${Math.round(s.guests)} Guests</span>`);
+
+    // KPI strip values
+    const kpiStrip = `
+      <div class="store-kpi-strip">
+        <div class="store-kpi-item">
+          <div class="kpi-mini-label">Gross</div>
+          <div class="kpi-mini-value">${money(s.gross)}</div>
+        </div>
+        <div class="store-kpi-item">
+          <div class="kpi-mini-label">Card</div>
+          <div class="kpi-mini-value">${money(s.card)}</div>
+        </div>
+        <div class="store-kpi-item">
+          <div class="kpi-mini-label">Cash</div>
+          <div class="kpi-mini-value">${money(s.cash)}</div>
+        </div>
+        <div class="store-kpi-item">
+          <div class="kpi-mini-label">Guests</div>
+          <div class="kpi-mini-value accent">${Math.round(s.guests).toLocaleString()}</div>
+        </div>
+      </div>
+    `;
+
+    // Build the multi-chart card
+    const card = document.createElement('div');
+    card.className = 'store-chart-card';
+    card.style.setProperty('--card-accent', color);
+
+    const chartIdBase = `store_${idx}`;
+
+    card.innerHTML = `
+      <div class="store-card-header">
+        <div>
+          <div class="store-card-title">
+            <span class="dot"></span> ${s.store}
+          </div>
+          <div class="store-card-metric">${money(s.gross)}</div>
+          <div class="store-card-sub">
+            <strong>${Math.round(s.guests).toLocaleString()}</strong> guests &nbsp;·&nbsp;
+            avg <strong>${money(avgCheck)}</strong>
+          </div>
+        </div>
+        <span class="store-card-badge">MULTI-CHART</span>
+      </div>
+      <div class="store-insight-chips">${chips.join('')}</div>
+      ${kpiStrip}
+
+      <div class="store-multi-chart-grid">
+        <!-- Chart 1: Payment Mix Doughnut -->
+        <div class="store-chart-tile">
+          <div class="tile-title"><i class="bi bi-pie-chart"></i> Payment Mix</div>
+          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_pay"></canvas></div>
+        </div>
+
+        <!-- Chart 2: Aggregator Radar -->
+        <div class="store-chart-tile">
+          <div class="tile-title"><i class="bi bi-radar"></i> Aggregator Radar</div>
+          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_radar"></canvas></div>
+        </div>
+
+        <!-- Chart 3: Metrics Bar (Wide) -->
+        <div class="store-chart-tile wide">
+          <div class="tile-title"><i class="bi bi-bar-chart"></i> Core Metrics Breakdown</div>
+          <div class="tile-canvas-wrap"><canvas id="${chartIdBase}_bar"></canvas></div>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+
+    // ---- CHART 1: Payment Mix Doughnut ----
+    const payCanvas = document.getElementById(`${chartIdBase}_pay`);
+    if (payCanvas) {
+      const payChart = new Chart(payCanvas, {
+        type: 'doughnut',
+        data: {
+          labels: ['Card', 'Cash'],
+          datasets: [{
+            data: [s.card, s.cash],
+            backgroundColor: [color, '#ff00c8'],
+            borderWidth: 0,
+            hoverOffset: 12
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#8ba2c0', font: { size: 10 }, padding: 8, boxWidth: 12 }
+            }
+          }
         }
-      }
+      });
+      charts.storeCharts.push(payChart);
+    }
+
+    // ---- CHART 2: Aggregator Radar ----
+    const radarCanvas = document.getElementById(`${chartIdBase}_radar`);
+    if (radarCanvas) {
+      const aggKeys = AGG_KEYS.filter(k => s.aggs[k] > 0);
+      const aggVals = aggKeys.map(k => s.aggs[k]);
+      const radarChart = new Chart(radarCanvas, {
+        type: 'radar',
+        data: {
+          labels: aggKeys.map(k => AGG_LABELS[k]),
+          datasets: [{
+            label: s.store,
+            data: aggVals,
+            backgroundColor: color + '33',
+            borderColor: color,
+            borderWidth: 2,
+            pointBackgroundColor: color,
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255,255,255,0.04)' },
+              grid: { color: 'rgba(255,255,255,0.04)' },
+              pointLabels: { color: '#8ba2c0', font: { size: 8 } },
+              ticks: { display: false }
+            }
+          }
+        }
+      });
+      charts.storeCharts.push(radarChart);
+    }
+
+    // ---- CHART 3: Core Metrics Bar (wide) ----
+    const barCanvas = document.getElementById(`${chartIdBase}_bar`);
+    if (barCanvas) {
+      const barChart = new Chart(barCanvas, {
+        type: 'bar',
+        data: {
+          labels: ['Gross', 'Card', 'Cash', 'Guests'],
+          datasets: [{
+            label: s.store,
+            data: [s.gross, s.card, s.cash, s.guests],
+            backgroundColor: [color, '#ff00c8', '#ffb800', '#a56eff'],
+            borderColor: color,
+            borderWidth: 0,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#5a6f8a', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#5a6f8a', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+          }
+        }
+      });
+      charts.storeCharts.push(barChart);
     }
   });
 }
 
-function renderBreakdown() {
-  const map = new Map();
-  FILTERED_DATA.forEach(r => {
-    if (!map.has(r.store)) map.set(r.store, { store: r.store, gross: 0, aggs: {} });
-    const s = map.get(r.store);
-    s.gross += num(r.gross);
-    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
-  });
-
-  const html = [...map.values()].sort((a,b)=>b.gross-a.gross).map(s => {
-    const rows = Object.entries(s.aggs).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1])
-      .map(([k,v]) => `<div class="breakdown-row"><span>${AGG_LABELS[k]}</span><span>${money(v)}</span></div>`).join('');
-    return `
-      <div class="breakdown-card">
-        <div class="breakdown-header"><span>${s.store}</span></div>
-        ${rows || '<div class="text-muted" style="font-size:12px;">No aggregator data</div>'}
-        <div class="breakdown-total"><span>Gross Total</span><span>${money(s.gross)}</span></div>
-      </div>
-    `;
-  }).join('');
-  $('breakdownGrid').innerHTML = html || '<div class="p-4 text-muted">No data available</div>';
-}
-
 /* ==========================================================
-   FULL INSIGHTS RENDER
+   INSIGHTS
    ========================================================== */
 function renderInsights() {
   if (!FILTERED_DATA.length) {
@@ -791,7 +1226,6 @@ function renderInsights() {
   });
   const stores = [...storeMap.values()];
 
-  // 1. Overview
   const topGross = [...stores].sort((a,b)=>b.gross-a.gross)[0];
   const topGuests = [...stores].sort((a,b)=>b.guests-a.guests)[0];
   $('ovTopStore').textContent = topGross.store;
@@ -804,15 +1238,17 @@ function renderInsights() {
     return `<tr><td>${i+1}</td><td>${s.store}</td><td class="text-white">${money(s.gross)}</td><td>${Math.round(s.guests)}</td><td>${money(avg)}</td></tr>`;
   }).join('');
 
-  // 2. Store vs Store Setup
   const opts = stores.map(s => `<option value="${s.store}">${s.store}</option>`).join('');
-  $('cmpStoreA').innerHTML = opts;
-  $('cmpStoreB').innerHTML = opts;
-  $('cmpStoreA').onchange = drawCompareChart;
-  $('cmpStoreB').onchange = drawCompareChart;
+  ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD'].forEach((id, idx) => {
+    const el = $(id);
+    el.innerHTML = opts;
+    if (stores[idx]) el.value = stores[idx].store;
+  });
+  ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD'].forEach(id => {
+    $(id).onchange = drawCompareChart;
+  });
   drawCompareChart();
 
-  // 3. Aggregators
   const aggTotals = {}; AGG_KEYS.forEach(k => aggTotals[k] = 0);
   stores.forEach(s => AGG_KEYS.forEach(k => aggTotals[k] += s.aggs[k]));
   const aggEntries = Object.entries(aggTotals).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
@@ -823,25 +1259,24 @@ function renderInsights() {
 
   charts.aggTotal = new Chart($('aggTotalChart'), {
     type: 'doughnut',
-    data: { labels: aggEntries.map(([k])=>AGG_LABELS[k]), datasets: [{ data: aggEntries.map(([,v])=>v), backgroundColor: CHART_COLORS }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e2e8f0' } } } }
+    data: { labels: aggEntries.map(([k])=>AGG_LABELS[k]), datasets: [{ data: aggEntries.map(([,v])=>v), backgroundColor: CHART_COLORS, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#8ba2c0', font: { size: 11 } } } } }
   });
   charts.aggGrouped = new Chart($('aggGroupedChart'), {
     type: 'bar',
     data: { labels: stores.map(s=>s.store), datasets: aggEntries.map(([k], i) => ({ label: AGG_LABELS[k], data: stores.map(s=>s.aggs[k]), backgroundColor: CHART_COLORS[i % CHART_COLORS.length] })) },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e2e8f0' } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8' } }, y: { stacked: true, ticks: { color: '#94a3b8' } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8ba2c0', font: { size: 10 } } } }, scales: { x: { stacked: true, ticks: { color: '#8ba2c0', font: { size: 10 } } }, y: { stacked: true, ticks: { color: '#8ba2c0', font: { size: 10 } } } } }
   });
-  $('aggTableBody').innerHTML = aggEntries.map(([k,v]) => `<tr><td>${AGG_LABELS[k]}</td><td class="text-white">${money(v)}</td><td>${money(v/stores.length)}</td><td>${((v/totalAgg)*100).toFixed(1)}%</td></tr>`).join('');
+  $('aggTableBody').innerHTML = aggEntries.map(([k,v]) => `<tr><td>${AGG_LABELS[k]}</td><td class="text-white">${money(v)}</td><td>${money(v/stores.length)}</td><td>${totalAgg ? ((v/totalAgg)*100).toFixed(1) : 0}%</td></tr>`).join('');
 
-  // 4. Cash vs Card
   if (charts.cash) charts.cash.destroy();
   charts.cash = new Chart($('cashCardChart'), {
     type: 'bar',
     data: { labels: stores.map(s=>s.store), datasets: [
-      { label: 'Card', data: stores.map(s=>s.card), backgroundColor: '#3b82f6' },
-      { label: 'Cash', data: stores.map(s=>s.cash), backgroundColor: '#00c2a8' }
+      { label: 'Card', data: stores.map(s=>s.card), backgroundColor: '#00f0ff' },
+      { label: 'Cash', data: stores.map(s=>s.cash), backgroundColor: '#ff00c8' }
     ]},
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0' } } }, scales: { x: { stacked: true, ticks: { color: '#94a3b8' } }, y: { stacked: true, ticks: { color: '#94a3b8' } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8ba2c0' } } }, scales: { x: { stacked: true, ticks: { color: '#8ba2c0' } }, y: { stacked: true, ticks: { color: '#8ba2c0' } } } }
   });
   $('cashTableBody').innerHTML = stores.map(s => {
     const ratio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
@@ -857,24 +1292,34 @@ function drawCompareChart() {
     s.gross += num(r.gross); s.card += num(r.card); s.cash += num(r.cash); s.guests += num(r.guests);
   });
 
-  const a = storeMap.get($('cmpStoreA').value);
-  const b = storeMap.get($('cmpStoreB').value);
-  if (!a || !b) return;
+  const selected = ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD']
+    .map(id => $(id).value).filter(Boolean);
 
-  $('cmpValA').textContent = money(a.gross);
-  $('cmpValB').textContent = money(b.gross);
+  const data = selected.map(name => {
+    const s = storeMap.get(name);
+    return s ? { name, ...s } : { name, gross:0, card:0, cash:0, guests:0 };
+  });
+
+  $('cmpSummary').innerHTML = data.map(d => `
+    <div class="insight-tile" style="--tile-color:#00f0ff">
+      <div class="insight-label">${d.name}</div>
+      <div class="insight-value">${money(d.gross)}</div>
+      <div class="insight-detail">${Math.round(d.guests)} guests · avg ${money(d.guests?d.gross/d.guests:0)}</div>
+    </div>
+  `).join('');
 
   if (charts.compare) charts.compare.destroy();
   charts.compare = new Chart($('compareChart'), {
     type: 'bar',
     data: {
       labels: ['Gross', 'Card', 'Cash', 'Guests'],
-      datasets: [
-        { label: $('cmpStoreA').value, data: [a.gross, a.card, a.cash, a.guests], backgroundColor: '#3b82f6' },
-        { label: $('cmpStoreB').value, data: [b.gross, b.card, b.cash, b.guests], backgroundColor: '#00c2a8' }
-      ]
+      datasets: data.map((d, i) => ({
+        label: d.name,
+        data: [d.gross, d.card, d.cash, d.guests],
+        backgroundColor: CHART_COLORS[i % CHART_COLORS.length]
+      }))
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e2e8f0' } } }, scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } } }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8ba2c0' } } }, scales: { x: { ticks: { color: '#8ba2c0' } }, y: { ticks: { color: '#8ba2c0' } } } }
   });
 }
 
@@ -882,43 +1327,194 @@ function drawCompareChart() {
    AI EVALUATOR
    ========================================================== */
 async function loadAI() {
-  $('aiContent').innerHTML = '<div class="text-center text-muted py-5"><i class="bi bi-arrow-repeat spin" style="font-size:32px;"></i><br>Analyzing Data...</div>';
+  $('aiContent').innerHTML = '<div class="text-center text-muted py-5"><i class="bi bi-arrow-repeat" style="font-size:32px;"></i><br>Analyzing Data...</div>';
   try {
-    const data = await apiGet({ action: 'managerial', startDate: getDateRange().from, endDate: getDateRange().to });
-    const topStore = data.stores[0] || { store: 'N/A', gross: 0 };
-    const topGuest = [...data.stores].sort((a,b)=>b.guests-a.guests)[0] || { store: 'N/A', guests: 0 };
-    const topMkt = [...data.stores].sort((a,b)=>b.marketing-a.marketing)[0] || { store:'N/A', marketing:0 };
-    
+    const range = getDateRange();
+    const data = await apiGet({ action: 'managerial', startDate: range.from, endDate: range.to });
+
+    if (!data.stores || !data.stores.length) {
+      $('aiContent').innerHTML = '<div class="text-muted text-center py-5">No data available for this period.</div>';
+      return;
+    }
+
+    const stores = [...data.stores].sort((a,b)=>b.gross-a.gross);
+    const topStore = stores[0];
+    const bottomStore = stores[stores.length - 1];
+    const topGuest = [...data.stores].sort((a,b)=>b.guests-a.guests)[0];
+    const topMkt = [...data.stores].sort((a,b)=>b.marketing-a.marketing)[0];
+
     let topAgg = 'N/A', topAggVal = 0;
     Object.entries(data.aggTotals || {}).forEach(([k,v]) => { if(v > topAggVal) { topAggVal = v; topAgg = AGG_LABELS[k] || k; } });
 
+    const brandAggMap = {};
+    if (data.brandAggData) {
+      Object.entries(data.brandAggData).forEach(([brand, storeAgg]) => {
+        let bestStore = '', bestAgg = '', bestVal = 0;
+        Object.entries(storeAgg).forEach(([store, aggs]) => {
+          Object.entries(aggs).forEach(([agg, val]) => {
+            if (val > bestVal) { bestVal = val; bestStore = store; bestAgg = AGG_LABELS[agg] || agg; }
+          });
+        });
+        if (bestStore) brandAggMap[brand] = { store: bestStore, agg: bestAgg, val: bestVal };
+      });
+    }
+
+    const totalGross = stores.reduce((a,s)=>a+num(s.gross),0);
+    const totalGuests = stores.reduce((a,s)=>a+num(s.guests),0);
+    const avgCheck = totalGuests ? totalGross / totalGuests : 0;
+
+    const gap = topStore && bottomStore ? (topStore.gross - bottomStore.gross) : 0;
+    const gapPct = topStore && topStore.gross ? (gap / topStore.gross) * 100 : 0;
+
+    const totalCard = stores.reduce((a,s)=>a+num(s.card),0);
+    const totalCash = stores.reduce((a,s)=>a+num(s.cash),0);
+    const cashRatio = (totalCard + totalCash) ? (totalCash/(totalCard+totalCash))*100 : 0;
+
+    const bestAvg = stores.map(s => ({ store: s.store, avg: s.guests ? s.gross/s.guests : 0 }))
+                          .sort((a,b)=>b.avg-a.avg)[0];
+
+    const activeStores = stores.filter(s => num(s.gross) > 0).length;
+    const completeness = Math.round((activeStores / Math.max(1, ALL_STORES.length)) * 100);
+
+    const top10 = [...stores].sort((a,b)=>b.gross-a.gross).slice(0,10);
+
+    const dailyTrend = data.dailyTrend || [];
+    const last6 = dailyTrend.slice(-6);
+    const trendDelta = last6.length >= 2 ? ((last6[last6.length-1].gross - last6[0].gross) / (last6[0].gross||1)) * 100 : 0;
+
+    const marketingPartners = data.marketingPartners || [];
+    const partnerList = marketingPartners.length
+      ? marketingPartners.map(p => `<span class="badge bg-secondary me-1 mb-1">${p}</span>`).join('')
+      : '<span class="text-muted">No partner data</span>';
+
+    const storeDetailCards = stores.map(s => {
+      const storeCashRatio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
+      return `
+        <div class="col-md-6 col-xl-4">
+          <div class="ai-card" style="--ai-color:#00f0ff;">
+            <h5><i class="bi bi-shop"></i> ${s.store}</h5>
+            <p class="ai-value" style="font-size:18px;">${money(s.gross)}</p>
+            <p class="ai-sub">${Math.round(s.guests)} guests · avg ${money(s.guests?s.gross/s.guests:0)}</p>
+            <p class="ai-sub">Card ${money(s.card)} · Cash ${money(s.cash)} (${storeCashRatio.toFixed(1)}% cash)</p>
+            <p class="ai-sub">Marketing ${money(s.marketing)}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+
     $('aiContent').innerHTML = `
-      <div class="row g-4">
+      <div class="row g-3">
         <div class="col-md-6">
-          <div class="p-4 rounded" style="background: rgba(59,130,246,0.1); border-left: 4px solid #3b82f6;">
-            <h5 class="text-white mb-2"><i class="bi bi-trophy"></i> Highest Revenue Outlet</h5>
-            <h3 class="text-white mb-0">${topStore.store}</h3>
-            <p class="text-muted mb-0">${money(topStore.gross)} Total Sales</p>
+          <div class="ai-card" style="--ai-color:#00f0ff;">
+            <h5><i class="bi bi-trophy"></i> Highest Revenue Outlet</h5>
+            <p class="ai-value">${topStore.store}</p>
+            <p class="ai-sub">${money(topStore.gross)} total sales · ${Math.round(topStore.guests||0).toLocaleString()} guests</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="p-4 rounded" style="background: rgba(139,92,246,0.1); border-left: 4px solid #8b5cf6;">
-            <h5 class="text-white mb-2"><i class="bi bi-people"></i> Most Guest Traffic</h5>
-            <h3 class="text-white mb-0">${topGuest.store}</h3>
-            <p class="text-muted mb-0">${Math.round(topGuest.guests).toLocaleString()} Guests</p>
+          <div class="ai-card" style="--ai-color:#a56eff;">
+            <h5><i class="bi bi-people"></i> Most Guest Traffic</h5>
+            <p class="ai-value">${topGuest.store}</p>
+            <p class="ai-sub">${Math.round(topGuest.guests).toLocaleString()} guests</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="p-4 rounded" style="background: rgba(245,158,11,0.1); border-left: 4px solid #f59e0b;">
-            <h5 class="text-white mb-2"><i class="bi bi-megaphone"></i> Top Marketing/Partners</h5>
-            <h3 class="text-white mb-0">${topMkt.store}</h3>
-            <p class="text-muted mb-0">${money(topMkt.marketing)} Marketing Spend</p>
+          <div class="ai-card" style="--ai-color:#ffb800;">
+            <h5><i class="bi bi-megaphone"></i> Top Marketing/Partners</h5>
+            <p class="ai-value">${topMkt.store}</p>
+            <p class="ai-sub">${money(topMkt.marketing)} marketing spend</p>
           </div>
         </div>
-        <div class="col-md-12">
-          <div class="p-4 rounded" style="background: rgba(0,194,168,0.1); border-left: 4px solid #00c2a8;">
-            <h5 class="text-white mb-2"><i class="bi bi-lightbulb"></i> Actionable Recommendation</h5>
-            <p class="text-white mb-0" style="font-size:15px;">Your top performing aggregator is <strong>${topAgg}</strong> (${money(topAggVal)}). Consider running an exclusive promotion on this platform at <strong>${topStore.store}</strong> to capitalize on high weekend volume.</p>
+        <div class="col-md-6">
+          <div class="ai-card" style="--ai-color:#00e5ff;">
+            <h5><i class="bi bi-graph-up"></i> Avg Check (All Stores)</h5>
+            <p class="ai-value">${money(avgCheck)}</p>
+            <p class="ai-sub">Best: ${bestAvg.store} at ${money(bestAvg.avg)}</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="ai-card" style="--ai-color:#ff2e63;">
+            <h5><i class="bi bi-exclamation-triangle"></i> Performance Gap</h5>
+            <p class="ai-value">${money(gap)}</p>
+            <p class="ai-sub">Top vs bottom store gap (${gapPct.toFixed(1)}% of leader)</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="ai-card" style="--ai-color:#14b8a6;">
+            <h5><i class="bi bi-cash-coin"></i> Cash vs Card Mix</h5>
+            <p class="ai-value">${cashRatio.toFixed(1)}%</p>
+            <p class="ai-sub">Cash share of total payments</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="ai-card" style="--ai-color:#6366f1;">
+            <h5><i class="bi bi-database-check"></i> Data Completeness</h5>
+            <p class="ai-value">${completeness}%</p>
+            <p class="ai-sub">${activeStores} of ${ALL_STORES.length} stores reporting</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="ai-card" style="--ai-color:#ff5ec4;">
+            <h5><i class="bi bi-graph-up-arrow"></i> 6‑Day Trend</h5>
+            <p class="ai-value">${trendDelta > 0 ? '📈 Growing' : (trendDelta < 0 ? '📉 Dropping' : '➡️ Stable')}</p>
+            <p class="ai-sub">${trendDelta > 0 ? '+' : ''}${trendDelta.toFixed(1)}% over last 6 days</p>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <div class="ai-card ai-reco">
+            <h5><i class="bi bi-lightbulb"></i> Actionable Recommendations</h5>
+            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+              Your top performing aggregator is <strong>${topAgg}</strong> (${money(topAggVal)}). Consider running an exclusive promotion on this platform at <strong>${topStore.store}</strong> to capitalize on high volume.
+            </p>
+            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+              <strong>${bottomStore.store}</strong> is your lowest performer with ${money(bottomStore.gross)} — a gap of <strong>${money(gap)}</strong> vs the leader. Investigate staffing, local promotions, or aggregator visibility there.
+            </p>
+            <p style="font-size:14px; line-height:1.7; margin-bottom:10px;">
+              ${cashRatio > 30
+                ? `Cash ratio is <strong>${cashRatio.toFixed(1)}%</strong> — relatively high. Ensure cash handling controls and consider card incentives.`
+                : `Card dominates at <strong>${(100-cashRatio).toFixed(1)}%</strong> — healthy digital mix. Focus on aggregator commissions to protect margins.`}
+            </p>
+            <p style="font-size:14px; line-height:1.7; margin-bottom:0;">
+              <strong>Marketing partners / discount bills:</strong> ${partnerList}
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <h5 class="text-muted mb-3"><i class="bi bi-bar-chart-line"></i> Top 10 Store Analysis</h5>
+          <div class="row g-2">
+            ${top10.map((s, i) => `
+              <div class="col-md-6 col-xl-4">
+                <div class="ai-card" style="--ai-color:${CHART_COLORS[i % CHART_COLORS.length]}; padding:14px;">
+                  <h5 style="font-size:12px;">#${i+1} ${s.store}</h5>
+                  <p class="ai-value" style="font-size:16px;">${money(s.gross)}</p>
+                  <p class="ai-sub">${Math.round(s.guests)} guests · avg ${money(s.guests?s.gross/s.guests:0)}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <h5 class="text-muted mb-3"><i class="bi bi-diagram-3"></i> Fastest Aggregator by Brand</h5>
+          <div class="row g-2">
+            ${Object.entries(brandAggMap).length ? Object.entries(brandAggMap).map(([brand, info]) => `
+              <div class="col-md-6 col-xl-4">
+                <div class="ai-card" style="--ai-color:#14b8a6; padding:14px;">
+                  <h5 style="font-size:12px;">${brand}</h5>
+                  <p class="ai-value" style="font-size:16px;">${info.agg}</p>
+                  <p class="ai-sub">Fastest at <strong>${info.store}</strong> — ${money(info.val)}</p>
+                </div>
+              </div>
+            `).join('') : '<div class="col-12 text-muted">No brand‑aggregator data available.</div>'}
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <h5 class="text-muted mb-3"><i class="bi bi-list-check"></i> Store‑by‑Store Details</h5>
+          <div class="row g-2">
+            ${storeDetailCards}
           </div>
         </div>
       </div>
@@ -929,7 +1525,67 @@ async function loadAI() {
 }
 
 /* ==========================================================
-   DATA ENTRY (BULK)
+   EXPORTS
+   ========================================================== */
+$('btnExportCSV')?.addEventListener('click', () => {
+  if (!FILTERED_DATA.length) return toast('No data to export', true);
+  const headers = ['store','gross','card','cash','guests', ...AGG_KEYS];
+  const rows = FILTERED_DATA.map(r => [r.store, r.gross||0, r.card||0, r.cash||0, r.guests||0, ...AGG_KEYS.map(k=>r[k]||0)]);
+  const csv = [headers.join(','), ...rows.map(r => r.map(x => `"${x}"`).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'sales-data.csv'; a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV downloaded');
+});
+
+$('btnExportPDF')?.addEventListener('click', () => {
+  if (!FILTERED_DATA.length) return toast('No data to export', true);
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+  doc.setFontSize(16);
+  doc.text('Breakdown by Store & Aggregator', 14, 18);
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  const range = getDateRange();
+  doc.text(`Period: ${range.from} to ${range.to}`, 14, 24);
+
+  const storeMap = new Map();
+  FILTERED_DATA.forEach(r => {
+    if (!storeMap.has(r.store)) storeMap.set(r.store, { store: r.store, gross: 0, aggs: {} });
+    const s = storeMap.get(r.store);
+    s.gross += num(r.gross);
+    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
+  });
+  const sorted = [...storeMap.values()].sort((a,b)=>b.gross-a.gross);
+
+  const head = [['Store', 'Gross Total', ...AGG_KEYS.map(k => AGG_LABELS[k])]];
+  const body = sorted.map(s => [
+    s.store,
+    money(s.gross),
+    ...AGG_KEYS.map(k => money(s.aggs[k]))
+  ]);
+
+  doc.autoTable({
+    head,
+    body,
+    startY: 30,
+    styles: { fontSize: 7, cellPadding: 2 },
+    headStyles: { fillColor: [0, 240, 255], textColor: 255 },
+    alternateRowStyles: { fillColor: [245, 247, 250] },
+    margin: { left: 10, right: 10 },
+    tableWidth: 'auto',
+    theme: 'grid'
+  });
+
+  doc.save('breakdown-by-store.pdf');
+  toast('PDF downloaded');
+});
+
+/* ==========================================================
+   DATA ENTRY
    ========================================================== */
 function initEntryTable() {
   const headRow = $('entryHeadRow');
@@ -943,7 +1599,7 @@ function addEntryRow() {
   const cols = (BULK_TEMPLATE && BULK_TEMPLATE.columns) || [];
   const tr = document.createElement('tr');
   const opts = ['<option value="">— Select Store —</option>'].concat(ALL_STORES.map(s => `<option value="${s}">${s}</option>`)).join('');
-  
+
   tr.innerHTML = `
     <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
     <td><select class="form-select" style="min-width:180px;">${opts}</select></td>
@@ -969,10 +1625,10 @@ async function saveEntryData() {
   });
 
   if (!rows.length) return toast('No valid rows to save', true);
-  
+
   $('btnSaveData').disabled = true;
   let ok = 0, fail = 0;
-  
+
   for (let r of rows) {
     r.tr.classList.add('row-saving');
     try {
@@ -986,23 +1642,59 @@ async function saveEntryData() {
       fail++;
     }
   }
-  
+
   $('btnSaveData').disabled = false;
   toast(`Saved ${ok} rows${fail ? `, ${fail} failed` : ''}.`, fail > 0);
 }
 
+async function loadEntryDataForDate() {
+  const date = $('entryDate').value;
+  if (!date) return toast('Select a date first', true);
+
+  $('btnLoadEntryData').disabled = true;
+  $('btnLoadEntryData').innerHTML = '<i class="bi bi-arrow-repeat"></i> Loading...';
+
+  try {
+    const res = await apiGet({ action: 'batch', startDate: date, endDate: date, stores: [...state.stores].join(',') });
+    const rows = res.rows || [];
+
+    $('entryBody').innerHTML = '';
+    const cols = (BULK_TEMPLATE && BULK_TEMPLATE.columns) || [];
+    const opts = ALL_STORES.map(s => `<option value="${s}">${s}</option>`).join('');
+
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+        <td><select class="form-select" style="min-width:180px;">${opts}</select></td>
+        ${cols.map(c => `<td><input type="${c.type === 'text' ? 'text' : 'number'}" data-key="${c.key}" step="0.01" value="${r[c.key] !== undefined ? r[c.key] : ''}"></td>`).join('')}
+      `;
+      $('entryBody').appendChild(tr);
+      tr.querySelector('select').value = r.store || '';
+      tr.querySelector('.btn-remove').addEventListener('click', () => tr.remove());
+    });
+
+    if (!rows.length) addEntryRow();
+    toast(`Loaded ${rows.length} rows for ${date}`);
+  } catch(e) {
+    toast(e.message, true);
+  } finally {
+    $('btnLoadEntryData').disabled = false;
+    $('btnLoadEntryData').innerHTML = '<i class="bi bi-cloud-download"></i> Load Data';
+  }
+}
+
 /* ==========================================================
-   INITIALIZATION
+   INIT
    ========================================================== */
 async function initApp() {
   try {
     const meta = await apiGet({ action: 'stores' });
     ALL_STORES = meta.stores || [];
     STORES_BY_BRAND = meta.brands || {};
-    
+
     renderStoreAccordion();
-    
-    // Check first store by default
+
     const first = document.querySelector('#brandAccordion input');
     if (first) { first.checked = true; state.stores.add(first.value); }
 
@@ -1010,14 +1702,20 @@ async function initApp() {
     initEntryTable();
     $('entryDate').value = todayStr();
 
-    // Pre-load Dashboard Data if stores exist
     if (state.stores.size) loadDashboardData();
 
   } catch(e) { toast('Failed to init app: ' + e.message, true); }
 }
 
+/* ==========================================================
+   EVENT BINDINGS
+   ========================================================== */
 $('btnSelectAll').addEventListener('click', () => {
   document.querySelectorAll('#brandAccordion input').forEach(cb => { cb.checked = true; state.stores.add(cb.value); });
+});
+$('btnClearAll').addEventListener('click', () => {
+  document.querySelectorAll('#brandAccordion input').forEach(cb => { cb.checked = false; });
+  state.stores.clear();
 });
 $('btnApply').addEventListener('click', loadDashboardData);
 $('btnAddRow').addEventListener('click', addEntryRow);
@@ -1032,12 +1730,54 @@ $('btnFillSelected').addEventListener('click', () => {
   });
 });
 
+$('btnAutoZero').addEventListener('click', () => {
+  $('entryBody').querySelectorAll('input[data-key]').forEach(inp => {
+    if (inp.value === '') inp.value = '0';
+  });
+  toast('All empty cells filled with 0');
+});
+$('btnManualBlank').addEventListener('click', () => {
+  $('entryBody').querySelectorAll('input[data-key]').forEach(inp => {
+    inp.value = '';
+  });
+  toast('All cells cleared');
+});
+
+$('btnLoadEntryData').addEventListener('click', loadEntryDataForDate);
+
 $('btnSaveSettings').addEventListener('click', () => {
   const url = $('apiUrlInput').value.trim();
   if (url) { localStorage.setItem('ws-api-url', url); API_URL = url; toast('Settings saved'); initApp(); }
 });
 
-document.addEventListener('DOMContentLoaded', initApp);
+$('btnTestConnection').addEventListener('click', async () => {
+  const url = $('apiUrlInput').value.trim() || API_URL;
+  const statusEl = $('settingsStatus');
+  statusEl.style.display = 'block';
+  statusEl.className = 'mt-3 text-warning';
+  statusEl.textContent = 'Testing...';
+  try {
+    const res = await fetch(url + '?action=stores');
+    const json = await res.json();
+    if (json.success) { statusEl.className = 'mt-3 text-success'; statusEl.textContent = '✓ Connection OK'; }
+    else { statusEl.className = 'mt-3 text-danger'; statusEl.textContent = '✗ ' + (json.message || 'Failed'); }
+  } catch(e) { statusEl.className = 'mt-3 text-danger'; statusEl.textContent = '✗ ' + e.message; }
+});
+
+$('btnCompact').addEventListener('click', () => {
+  state.compact = !state.compact;
+  document.documentElement.setAttribute('data-compact', state.compact ? 'true' : 'false');
+  localStorage.setItem('ws-compact', state.compact);
+  toast(state.compact ? 'Compact mode on' : 'Compact mode off');
+});
+
+if (state.compact) document.documentElement.setAttribute('data-compact', 'true');
+
+document.addEventListener('DOMContentLoaded', () => {
+  initPanelToggles();
+  initApp();
+});
 </script>
+
 </body>
 </html>

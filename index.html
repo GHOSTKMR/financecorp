@@ -110,7 +110,13 @@ input, textarea, select { user-select: text; }
   background: var(--brand-accent);
 }
 
-.btn-ghost:active, .btn-primary-glow:active { transform: translateY(2px) !important; filter: brightness(0.95); }
+/* Universal button press effect */
+.btn-ghost:active, .btn-primary-glow:active, .carousel-btn:active, .period-pill:active,
+.insight-tab:active, .nav-tab:active, .btn-remove:active, .btn-press:active {
+  transform: translateY(2px) !important;
+  filter: brightness(0.9) !important;
+  transition: transform 0.08s, filter 0.08s !important;
+}
 
 .page-section { display: none; animation: fadeIn 0.3s ease-out forwards; }
 .page-section.active { display: block; }
@@ -225,7 +231,7 @@ input, textarea, select { user-select: text; }
 .kpi-icon { position: absolute; right: 18px; bottom: 18px; font-size: 30px; color: var(--kpi-color); opacity: 0.15; }
 
 /* ==========================================================
-   COMPACT STORE CAROUSEL (The new solution)
+   STORE CAROUSEL
    ========================================================== */
 .store-carousel-container {
   background: var(--bg-card);
@@ -257,7 +263,7 @@ input, textarea, select { user-select: text; }
   min-width: 200px;
 }
 
-/* The single focused store card */
+/* Unified focused store card — ALL stores use the same chart pattern */
 .focused-store-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -296,7 +302,6 @@ input, textarea, select { user-select: text; }
   height: 280px; position: relative;
 }
 
-/* Compact summary table */
 .compact-summary-table {
   width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 20px;
 }
@@ -394,6 +399,45 @@ input, textarea, select { user-select: text; }
 .app-footer a { color: var(--brand-accent); text-decoration: none; font-weight: 600; }
 .app-footer a:hover { text-decoration: underline; }
 
+/* ==========================================================
+   UNIFIED POPUP (marketing, discounts, top visitors)
+   ========================================================== */
+.info-popup {
+  position: fixed; bottom: 80px; right: 24px; z-index: 2500;
+  background: var(--bg-elevated); border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-lift);
+  padding: 20px; max-width: 440px; width: calc(100vw - 48px);
+  animation: slideLeft 0.3s ease-out; display: none;
+}
+.info-popup.open { display: block; }
+.info-popup h4 { font-size: 14px; font-weight: 800; color: var(--brand-accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.info-popup .popup-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+.info-popup .popup-section { margin-bottom: 14px; }
+.info-popup .popup-section-title { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.info-popup .popup-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.info-popup .popup-tag {
+  background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.25);
+  color: var(--brand-accent); padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+}
+.info-popup .popup-tag.warn { background: rgba(242,184,75,0.1); border-color: rgba(242,184,75,0.25); color: var(--brand-warning); }
+
+/* Floating visitor button */
+.floating-visitor-btn {
+  position: fixed; bottom: 20px; left: 20px; z-index: 2400;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-primary), #3a6fd8);
+  border: none; color: #fff; font-size: 22px;
+  display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 6px 20px rgba(75, 139, 255, 0.45);
+  transition: var(--transition);
+}
+.floating-visitor-btn:hover { transform: scale(1.08); box-shadow: 0 8px 26px rgba(75, 139, 255, 0.6); }
+.floating-visitor-btn:active { transform: scale(0.95); }
+.floating-visitor-btn .badge-dot {
+  position: absolute; top: 2px; right: 2px; width: 12px; height: 12px;
+  background: var(--brand-accent); border-radius: 50%; border: 2px solid var(--bg-main);
+}
+
 @media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } .focused-store-card { grid-template-columns: 1fr; } }
 @media (max-width: 1024px) {
   .grid-layout { grid-template-columns: 1fr; }
@@ -405,6 +449,7 @@ input, textarea, select { user-select: text; }
   .nav-tab { flex: 1; justify-content: center; font-size: 11.5px; padding: 7px 8px; }
   .kpi-row { grid-template-columns: 1fr; }
   .chart-container { height: 280px; }
+  .info-popup { right: 12px; bottom: 90px; }
 }
 </style>
 </head>
@@ -420,11 +465,11 @@ input, textarea, select { user-select: text; }
   </a>
 
   <nav class="main-nav">
-    <button class="nav-tab active" data-target="view-dashboard"><i class="bi bi-grid-1x2-fill"></i> Dashboard</button>
-    <button class="nav-tab" data-target="view-entry"><i class="bi bi-pencil-square"></i> Data Entry</button>
-    <button class="nav-tab" data-target="view-insights"><i class="bi bi-lightning-charge-fill"></i> Insights</button>
-    <button class="nav-tab" data-target="view-ai"><i class="bi bi-stars"></i> AI Evaluator</button>
-    <button class="nav-tab" data-target="view-settings"><i class="bi bi-gear-fill"></i> Settings</button>
+    <button class="nav-tab active btn-press" data-target="view-dashboard"><i class="bi bi-grid-1x2-fill"></i> Dashboard</button>
+    <button class="nav-tab btn-press" data-target="view-entry"><i class="bi bi-pencil-square"></i> Data Entry</button>
+    <button class="nav-tab btn-press" data-target="view-insights"><i class="bi bi-lightning-charge-fill"></i> Insights</button>
+    <button class="nav-tab btn-press" data-target="view-ai"><i class="bi bi-stars"></i> AI Evaluator</button>
+    <button class="nav-tab btn-press" data-target="view-settings"><i class="bi bi-gear-fill"></i> Settings</button>
   </nav>
 </header>
 
@@ -442,11 +487,11 @@ input, textarea, select { user-select: text; }
           <div class="filter-group">
             <label class="filter-label">Time Period</label>
             <div class="period-pills" id="periodPills">
-              <button class="period-pill" data-val="today">Today</button>
-              <button class="period-pill" data-val="7d">7D</button>
-              <button class="period-pill" data-val="30d">30D</button>
-              <button class="period-pill active" data-val="mtd">MTD</button>
-              <button class="period-pill" data-val="custom">Custom</button>
+              <button class="period-pill btn-press" data-val="today">Today</button>
+              <button class="period-pill btn-press" data-val="7d">7D</button>
+              <button class="period-pill btn-press" data-val="30d">30D</button>
+              <button class="period-pill active btn-press" data-val="mtd">MTD</button>
+              <button class="period-pill btn-press" data-val="custom">Custom</button>
             </div>
           </div>
 
@@ -460,8 +505,8 @@ input, textarea, select { user-select: text; }
             <div class="d-flex justify-content-between align-items-center mb-2">
               <label class="filter-label mb-0">Stores</label>
               <div class="d-flex gap-1">
-                <button class="btn-ghost" style="font-size:10px; padding:2px 8px;" id="btnSelectAll">All</button>
-                <button class="btn-ghost" style="font-size:10px; padding:2px 8px;" id="btnClearAll">Clear</button>
+                <button class="btn-ghost btn-press" style="font-size:10px; padding:2px 8px;" id="btnSelectAll">All</button>
+                <button class="btn-ghost btn-press" style="font-size:10px; padding:2px 8px;" id="btnClearAll">Clear</button>
               </div>
             </div>
             <div class="store-search">
@@ -471,7 +516,7 @@ input, textarea, select { user-select: text; }
             <div class="store-scroll-area" id="brandAccordion"></div>
           </div>
 
-          <button class="btn-primary-glow mt-3" id="btnApply">Load Data</button>
+          <button class="btn-primary-glow mt-3 btn-press" id="btnApply">Load Data</button>
         </div>
       </aside>
 
@@ -503,16 +548,16 @@ input, textarea, select { user-select: text; }
           </div>
         </div>
 
-        <!-- COMPACT STORE CAROUSEL -->
+        <!-- STORE CAROUSEL -->
         <div class="store-carousel-container">
           <div class="carousel-header">
             <div class="carousel-title-area">
               <h2 class="carousel-title"><i class="bi bi-diagram-3"></i> Store Intelligence</h2>
             </div>
             <div class="carousel-controls">
-              <button class="carousel-btn" id="btnPrevStore" title="Previous Store"><i class="bi bi-chevron-left"></i></button>
+              <button class="carousel-btn btn-press" id="btnPrevStore" title="Previous Store"><i class="bi bi-chevron-left"></i></button>
               <select class="carousel-select" id="storeSelector"></select>
-              <button class="carousel-btn" id="btnNextStore" title="Next Store"><i class="bi bi-chevron-right"></i></button>
+              <button class="carousel-btn btn-press" id="btnNextStore" title="Next Store"><i class="bi bi-chevron-right"></i></button>
             </div>
           </div>
           
@@ -520,7 +565,6 @@ input, textarea, select { user-select: text; }
             <!-- Focused store card will be injected here -->
           </div>
 
-          <!-- Compact Summary Table -->
           <table class="compact-summary-table" id="summaryTable">
             <thead>
               <tr>
@@ -540,7 +584,7 @@ input, textarea, select { user-select: text; }
           <div class="panel-header" data-toggle="chartPanel">
             <h2 class="panel-title"><i class="bi bi-pie-chart"></i> Total Sales Share (All Selected)</h2>
             <div class="d-flex align-items-center gap-2">
-              <button class="btn-ghost" style="font-size:11px; padding:4px 10px;" id="btnExportChart"><i class="bi bi-download"></i> PNG</button>
+              <button class="btn-ghost btn-press" style="font-size:11px; padding:4px 10px;" id="btnExportChart"><i class="bi bi-download"></i> PNG</button>
               <i class="bi bi-chevron-down panel-toggle"></i>
             </div>
           </div>
@@ -561,12 +605,11 @@ input, textarea, select { user-select: text; }
         <h2 class="panel-title"><i class="bi bi-pencil-square"></i> Bulk Data Entry</h2>
         <div class="d-flex gap-2 align-items-center flex-wrap">
           <input type="date" id="entryDate" class="form-control form-control-sm" style="width: auto;">
-          <button class="btn-ghost" id="btnAddRow"><i class="bi bi-plus-lg"></i> Add Row</button>
-          <button class="btn-ghost" id="btnFillSelected"><i class="bi bi-shop"></i> Fill Selected</button>
-          <button class="btn-ghost" id="btnAutoZero"><i class="bi bi-0-circle"></i> Auto (0)</button>
-          <button class="btn-ghost" id="btnManualBlank"><i class="bi bi-eraser"></i> Manual (Blank)</button>
-          <button class="btn-ghost" id="btnLoadEntryData"><i class="bi bi-cloud-download"></i> Load Data</button>
-          <button class="btn-primary-glow" style="width:auto; padding: 7px 16px; font-size:12px;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
+          <button class="btn-ghost btn-press" id="btnAddRow"><i class="bi bi-plus-lg"></i> Add Row</button>
+          <button class="btn-ghost btn-press" id="btnFillSelected"><i class="bi bi-shop"></i> Fill Selected</button>
+          <button class="btn-ghost btn-press" id="btnAutoZero"><i class="bi bi-0-circle"></i> Auto (0)</button>
+          <button class="btn-ghost btn-press" id="btnManualBlank"><i class="bi bi-eraser"></i> Manual (Blank)</button>
+          <button class="btn-primary-glow btn-press" style="width:auto; padding: 7px 16px; font-size:12px;" id="btnSaveData"><i class="bi bi-cloud-upload"></i> Save All</button>
         </div>
       </div>
       <div class="table-responsive" style="max-height: 65vh;">
@@ -591,10 +634,10 @@ input, textarea, select { user-select: text; }
       </div>
 
       <div class="insight-tabs">
-        <button class="insight-tab active" data-pane="ov">Overview</button>
-        <button class="insight-tab" data-pane="compare">Store vs Store</button>
-        <button class="insight-tab" data-pane="agg">Aggregator Breakdown</button>
-        <button class="insight-tab" data-pane="cash">Cash vs Card</button>
+        <button class="insight-tab active btn-press" data-pane="ov">Overview</button>
+        <button class="insight-tab btn-press" data-pane="compare">Store vs Store</button>
+        <button class="insight-tab btn-press" data-pane="agg">Aggregator Breakdown</button>
+        <button class="insight-tab btn-press" data-pane="cash">Cash vs Card</button>
       </div>
 
       <div class="insight-pane active" id="pane-ov">
@@ -617,12 +660,10 @@ input, textarea, select { user-select: text; }
       </div>
 
       <div class="insight-pane" id="pane-compare">
-        <div class="d-flex gap-3 mb-4 flex-wrap">
-          <select id="cmpStoreA" class="form-select w-25" style="min-width:150px;"></select>
-          <select id="cmpStoreB" class="form-select w-25" style="min-width:150px;"></select>
-          <select id="cmpStoreC" class="form-select w-25" style="min-width:150px;"></select>
-          <select id="cmpStoreD" class="form-select w-25" style="min-width:150px;"></select>
+        <div class="d-flex gap-3 mb-4 flex-wrap align-items-center" id="compareStoreSelectors">
+          <!-- Dynamically generated store selectors -->
         </div>
+        <button class="btn-ghost btn-press mb-3" id="btnAddCompareStore"><i class="bi bi-plus-lg"></i> Add Store</button>
         <div class="grid-2" id="cmpSummary"></div>
         <div class="chart-container" style="height: 300px; margin-top:20px;"><canvas id="compareChart"></canvas></div>
       </div>
@@ -653,7 +694,7 @@ input, textarea, select { user-select: text; }
     <div class="panel">
       <div class="panel-header no-toggle">
         <h2 class="panel-title"><i class="bi bi-stars"></i> AI Evaluator & Recommendations</h2>
-        <button class="btn-ghost" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
+        <button class="btn-ghost btn-press" id="btnRefreshAI"><i class="bi bi-arrow-clockwise"></i> Refresh Analysis</button>
       </div>
       <div class="modal-body" id="aiContent" style="padding: 28px;">
         <div class="text-center text-muted py-5"><i class="bi bi-cpu" style="font-size:40px;"></i><br>Initializing AI Analysis...</div>
@@ -673,15 +714,15 @@ input, textarea, select { user-select: text; }
           <input type="text" id="apiUrlInput" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
         <div class="d-flex gap-2 mt-4">
-          <button class="btn-primary-glow" style="width:auto; padding:10px 24px;" id="btnSaveSettings">Save Connection</button>
-          <button class="btn-ghost" id="btnTestConnection">Test Connection</button>
+          <button class="btn-primary-glow btn-press" style="width:auto; padding:10px 24px;" id="btnSaveSettings">Save Connection</button>
+          <button class="btn-ghost btn-press" id="btnTestConnection">Test Connection</button>
         </div>
         <div id="settingsStatus" class="mt-3" style="display:none;"></div>
 
         <div class="filter-group mt-4">
           <label class="filter-label">Display</label>
           <div class="d-flex gap-2">
-            <button class="btn-ghost" id="btnCompact"><i class="bi bi-arrows-angle-contract"></i> Compact Mode</button>
+            <button class="btn-ghost btn-press" id="btnCompact"><i class="bi bi-arrows-angle-contract"></i> Compact Mode</button>
           </div>
         </div>
       </div>
@@ -694,6 +735,30 @@ input, textarea, select { user-select: text; }
   Made by <a href="https://github.com/GHOSTKMR" target="_blank" rel="noopener">ghostkmr</a>
   &nbsp;·&nbsp; With Stand Corporate Sales Intelligence
 </footer>
+
+<!-- Floating visitor button (always visible, opens popup with most-visited store & chart) -->
+<button class="floating-visitor-btn" id="floatingVisitorBtn" title="Who visited the most?">
+  <i class="bi bi-person-check"></i>
+  <span class="badge-dot"></span>
+</button>
+
+<!-- Unified popup: marketing, discounts, top visitors -->
+<div class="info-popup" id="infoPopup">
+  <button class="popup-close" id="popupCloseBtn">&times;</button>
+  <h4><i class="bi bi-megaphone"></i> Marketing & Partners</h4>
+  <div class="popup-section" id="popupMarketingSection">
+    <div class="popup-section-title">Marketing Spend / Partners</div>
+    <div class="popup-list" id="popupMarketingList"></div>
+  </div>
+  <div class="popup-section" id="popupDiscountsSection">
+    <div class="popup-section-title">Discounts / Discount Bills</div>
+    <div class="popup-list" id="popupDiscountsList"></div>
+  </div>
+  <div class="popup-section">
+    <div class="popup-section-title"><i class="bi bi-bar-chart"></i> Top Visiting Store (Guests)</div>
+    <div style="height: 160px; position: relative;"><canvas id="popupVisitorChart"></canvas></div>
+  </div>
+</div>
 
 <div class="toast-container" id="toastContainer"></div>
 
@@ -723,7 +788,6 @@ let API_URL = localStorage.getItem('ws-api-url') || DEFAULT_API_URL;
 const AGG_KEYS = ['qlub','skipCash','beans','snoonu','talabat','rafeeq','keeta','roastery'];
 const AGG_LABELS = { qlub:'Qlub', skipCash:'Skip Cash', beans:'Beans', snoonu:'Snoonu', talabat:'Talabat', rafeeq:'Rafeeq', keeta:'Keeta', roastery:'Roastery' };
 
-/* Corporate Palette - Unified across all charts */
 const CORPORATE_COLORS = [
   '#4b8bff', '#2dd4bf', '#f2b84b', '#a78bfa', '#f26b6b',
   '#60a5fa', '#34d399', '#fbbf24', '#c084fc', '#fb7185'
@@ -735,7 +799,9 @@ const state = {
   dateFrom: null,
   dateTo: null,
   compact: localStorage.getItem('ws-compact') === 'true',
-  focusedStoreIndex: 0
+  focusedStoreIndex: 0,
+  compareStores: [],
+  aiData: null
 };
 
 let ALL_STORES = [];
@@ -744,7 +810,7 @@ let FILTERED_DATA = [];
 let PREV_DATA = [];
 let BULK_TEMPLATE = null;
 let AGGREGATED_STORES = [];
-const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null, focusedStore: null };
+const charts = { total: null, compare: null, aggTotal: null, aggGrouped: null, cash: null, focusedStore: null, popupVisitor: null };
 
 /* ==========================================================
    HELPERS
@@ -912,6 +978,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================
+   CONNECTION TEST & INITIAL LOAD
+   ========================================================== */
+async function testConnectionAndLoad() {
+  try {
+    const meta = await apiGet({ action: 'stores' });
+    ALL_STORES = meta.stores || [];
+    STORES_BY_BRAND = meta.brands || {};
+
+    toast('Connection OK — Loaded Store Metadata');
+
+    renderStoreAccordion();
+
+    const first = document.querySelector('#brandAccordion input');
+    if (first) { first.checked = true; state.stores.add(first.value); }
+
+    BULK_TEMPLATE = await apiGet({ action: 'bulk_template' });
+    initEntryTable();
+    $('entryDate').value = todayStr();
+
+    state.compareStores = ALL_STORES.slice(0, 3);
+
+    if (state.stores.size) loadDashboardData();
+
+  } catch(e) {
+    toast('Connection test failed: ' + e.message, true);
+    $('kpiGross').textContent = '—';
+    $('kpiCard').textContent = '—';
+    $('kpiCash').textContent = '—';
+    $('kpiGuests').textContent = '—';
+  }
+}
+
+/* ==========================================================
    DASHBOARD DATA
    ========================================================== */
 async function loadDashboardData() {
@@ -1017,7 +1116,7 @@ function renderTotalSalesChart() {
       datasets: [{
         label: 'Gross Sales',
         data,
-        backgroundColor: CORPORATE_COLORS[0], // Unified corporate blue
+        backgroundColor: CORPORATE_COLORS[0],
         borderRadius: 6,
         hoverBackgroundColor: CORPORATE_COLORS[1]
       }]
@@ -1042,7 +1141,7 @@ function renderTotalSalesChart() {
 }
 
 /* ==========================================================
-   COMPACT STORE CAROUSEL
+   STORE CAROUSEL
    ========================================================== */
 function initStoreCarousel() {
   const selector = $('storeSelector');
@@ -1055,7 +1154,6 @@ function initStoreCarousel() {
     $('focusedStoreContainer').innerHTML = '<div class="p-4 text-muted text-center">No data available.</div>';
   }
 
-  // Render summary table
   $('summaryTableBody').innerHTML = AGGREGATED_STORES.map((s, i) => {
     const avg = s.guests ? s.gross / s.guests : 0;
     const cashPct = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
@@ -1079,7 +1177,6 @@ window.focusStore = function(index) {
   state.focusedStoreIndex = index;
   $('storeSelector').value = index;
   
-  // Update active row in summary
   document.querySelectorAll('#summaryTableBody tr').forEach((tr, i) => {
     tr.classList.toggle('active', i === index);
   });
@@ -1094,55 +1191,25 @@ function renderFocusedStore(index) {
   const avgCheck = s.guests ? s.gross / s.guests : 0;
   const cashRatio = (s.card + s.cash) ? (s.cash / (s.card + s.cash)) * 100 : 0;
   
-  // Cycle chart types based on index to keep the look varied but corporate
-  const chartType = index % 2 === 0 ? 'bar' : 'line';
   const canvasId = 'focusedStoreCanvas';
-  
-  // Build chart data
-  let chartData, chartOptions;
-  
-  if (chartType === 'bar') {
-    chartData = {
-      labels: ['Gross', 'Card', 'Cash', 'Guests'],
-      datasets: [{
-        label: s.store,
-        data: [s.gross, s.card, s.cash, s.guests],
-        backgroundColor: [CORPORATE_COLORS[0], CORPORATE_COLORS[1], CORPORATE_COLORS[2], CORPORATE_COLORS[3]],
-        borderRadius: 4
-      }]
-    };
-    chartOptions = {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { display: false } },
-        y: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
-      }
-    };
-  } else {
-    chartData = {
-      labels: ['Gross', 'Card', 'Cash', 'Guests'],
-      datasets: [{
-        label: s.store,
-        data: [s.gross, s.card, s.cash, s.guests],
-        borderColor: CORPORATE_COLORS[0],
-        backgroundColor: 'rgba(75, 139, 255, 0.1)',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true,
-        pointBackgroundColor: CORPORATE_COLORS[0],
-        pointRadius: 5
-      }]
-    };
-    chartOptions = {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { display: false } },
-        y: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
-      }
-    };
-  }
+
+  const chartData = {
+    labels: ['Gross', 'Card', 'Cash', 'Guests'],
+    datasets: [{
+      label: s.store,
+      data: [s.gross, s.card, s.cash, s.guests],
+      backgroundColor: [CORPORATE_COLORS[0], CORPORATE_COLORS[1], CORPORATE_COLORS[2], CORPORATE_COLORS[3]],
+      borderRadius: 4
+    }]
+  };
+  const chartOptions = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { display: false } },
+      y: { ticks: { color: '#64748b', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  };
 
   const container = $('focusedStoreContainer');
   container.innerHTML = `
@@ -1183,24 +1250,21 @@ function renderFocusedStore(index) {
     </div>
   `;
 
-  // Destroy previous focused chart
   if (charts.focusedStore) {
     try { charts.focusedStore.destroy(); } catch(e) {}
     charts.focusedStore = null;
   }
 
-  // Create new chart
   const canvas = document.getElementById(canvasId);
   if (canvas) {
     charts.focusedStore = new Chart(canvas.getContext('2d'), {
-      type: chartType,
+      type: 'bar',
       data: chartData,
       options: chartOptions
     });
   }
 }
 
-// Carousel Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = $('btnPrevStore');
   const nextBtn = $('btnNextStore');
@@ -1211,13 +1275,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (AGGREGATED_STORES.length > 0) focusStore(state.focusedStoreIndex - 1);
     });
   }
-
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       if (AGGREGATED_STORES.length > 0) focusStore(state.focusedStoreIndex + 1);
     });
   }
-
   if (selector) {
     selector.addEventListener('change', (e) => {
       focusStore(parseInt(e.target.value));
@@ -1248,15 +1310,7 @@ function renderInsights() {
     return `<tr><td>${i+1}</td><td>${s.store}</td><td class="text-white">${money(s.gross)}</td><td>${Math.round(s.guests)}</td><td>${money(avg)}</td></tr>`;
   }).join('');
 
-  const opts = stores.map(s => `<option value="${s.store}">${s.store}</option>`).join('');
-  ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD'].forEach((id, idx) => {
-    const el = $(id);
-    el.innerHTML = opts;
-    if (stores[idx]) el.value = stores[idx].store;
-  });
-  ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD'].forEach(id => {
-    $(id).onchange = drawCompareChart;
-  });
+  renderCompareSelectors();
   drawCompareChart();
 
   const aggTotals = {}; AGG_KEYS.forEach(k => aggTotals[k] = 0);
@@ -1294,6 +1348,43 @@ function renderInsights() {
   }).join('');
 }
 
+function renderCompareSelectors() {
+  const container = $('compareStoreSelectors');
+  const availableStores = AGGREGATED_STORES.map(s => s.store);
+  
+  if (state.compareStores.length < 2 && availableStores.length >= 2) {
+    state.compareStores = availableStores.slice(0, 2);
+  }
+
+  container.innerHTML = state.compareStores.map((storeName, idx) => {
+    const opts = availableStores.map(s => `<option value="${s}" ${s === storeName ? 'selected' : ''}>${s}</option>`).join('');
+    return `
+      <div class="d-flex align-items-center gap-2">
+        <select class="form-select compare-store-select" data-index="${idx}" style="min-width:150px;">
+          ${opts}
+        </select>
+        ${state.compareStores.length > 2 ? `<button class="btn-ghost btn-press compare-remove-btn" data-index="${idx}" style="padding:4px 8px;"><i class="bi bi-x-lg"></i></button>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.compare-store-select').forEach(sel => {
+    sel.addEventListener('change', (e) => {
+      const idx = parseInt(e.target.dataset.index);
+      state.compareStores[idx] = e.target.value;
+      drawCompareChart();
+    });
+  });
+  container.querySelectorAll('.compare-remove-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.target.closest('button').dataset.index);
+      state.compareStores.splice(idx, 1);
+      renderCompareSelectors();
+      drawCompareChart();
+    });
+  });
+}
+
 function drawCompareChart() {
   const storeMap = new Map();
   FILTERED_DATA.forEach(r => {
@@ -1302,8 +1393,12 @@ function drawCompareChart() {
     s.gross += num(r.gross); s.card += num(r.card); s.cash += num(r.cash); s.guests += num(r.guests);
   });
 
-  const selected = ['cmpStoreA','cmpStoreB','cmpStoreC','cmpStoreD']
-    .map(id => $(id).value).filter(Boolean);
+  if (state.compareStores.length < 2 && AGGREGATED_STORES.length >= 2) {
+    state.compareStores = AGGREGATED_STORES.slice(0, 2).map(s => s.store);
+    renderCompareSelectors();
+  }
+
+  const selected = state.compareStores.filter(Boolean);
 
   const data = selected.map(name => {
     const s = storeMap.get(name);
@@ -1341,6 +1436,7 @@ async function loadAI() {
   try {
     const range = getDateRange();
     const data = await apiGet({ action: 'managerial', startDate: range.from, endDate: range.to });
+    state.aiData = data;
 
     if (!data.stores || !data.stores.length) {
       $('aiContent').innerHTML = '<div class="text-muted text-center py-5">No data available for this period.</div>';
@@ -1393,9 +1489,14 @@ async function loadAI() {
     const trendDelta = last6.length >= 2 ? ((last6[last6.length-1].gross - last6[0].gross) / (last6[0].gross||1)) * 100 : 0;
 
     const marketingPartners = data.marketingPartners || [];
+    const discountBills = data.discountBills || [];
+
     const partnerList = marketingPartners.length
-      ? marketingPartners.map(p => `<span class="badge bg-secondary me-1 mb-1">${p}</span>`).join('')
+      ? marketingPartners.map(p => `<span class="badge bg-secondary me-1 mb-1">${p.name || p}</span>`).join('')
       : '<span class="text-muted">No partner data</span>';
+    const discountList = discountBills.length
+      ? discountBills.map(d => `<span class="badge bg-secondary me-1 mb-1">${d.name || d}</span>`).join('')
+      : '<span class="text-muted">No discount data</span>';
 
     const storeDetailCards = stores.map(s => {
       const storeCashRatio = (s.card + s.cash) ? (s.cash/(s.card+s.cash))*100 : 0;
@@ -1485,8 +1586,11 @@ async function loadAI() {
                 ? `Cash ratio is <strong>${cashRatio.toFixed(1)}%</strong> — relatively high. Ensure cash handling controls and consider card incentives.`
                 : `Card dominates at <strong>${(100-cashRatio).toFixed(1)}%</strong> — healthy digital mix. Focus on aggregator commissions to protect margins.`}
             </p>
-            <p style="font-size:13.5px; line-height:1.7; margin-bottom:0;">
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:10px;">
               <strong>Marketing partners / discount bills:</strong> ${partnerList}
+            </p>
+            <p style="font-size:13.5px; line-height:1.7; margin-bottom:0;">
+              <strong>Discounts applied:</strong> ${discountList}
             </p>
           </div>
         </div>
@@ -1535,63 +1639,118 @@ async function loadAI() {
 }
 
 /* ==========================================================
-   EXPORTS
+   FLOATING VISITOR BUTTON & POPUP (with water-drop sound)
    ========================================================== */
-$('btnExportCSV')?.addEventListener('click', () => {
-  if (!FILTERED_DATA.length) return toast('No data to export', true);
-  const headers = ['store','gross','card','cash','guests', ...AGG_KEYS];
-  const rows = FILTERED_DATA.map(r => [r.store, r.gross||0, r.card||0, r.cash||0, r.guests||0, ...AGG_KEYS.map(k=>r[k]||0)]);
-  const csv = [headers.join(','), ...rows.map(r => r.map(x => `"${x}"`).join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'sales-data.csv'; a.click();
-  URL.revokeObjectURL(url);
-  toast('CSV downloaded');
-});
+let currentVisitorChart = null;
 
-$('btnExportPDF')?.addEventListener('click', () => {
-  if (!FILTERED_DATA.length) return toast('No data to export', true);
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+function playWaterDropSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.15);
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  } catch (e) {
+    // Audio not supported or blocked
+  }
+}
 
-  doc.setFontSize(16);
-  doc.text('Breakdown by Store & Aggregator', 14, 18);
-  doc.setFontSize(9);
-  doc.setTextColor(100);
-  const range = getDateRange();
-  doc.text(`Period: ${range.from} to ${range.to}`, 14, 24);
+async function openVisitorPopup() {
+  playWaterDropSound();
+  const popup = $('infoPopup');
+  popup.classList.add('open');
 
-  const storeMap = new Map();
-  FILTERED_DATA.forEach(r => {
-    if (!storeMap.has(r.store)) storeMap.set(r.store, { store: r.store, gross: 0, aggs: {} });
-    const s = storeMap.get(r.store);
-    s.gross += num(r.gross);
-    AGG_KEYS.forEach(k => { s.aggs[k] = (s.aggs[k]||0) + num(r[k]); });
+  if (!state.aiData) {
+    try {
+      const range = getDateRange();
+      state.aiData = await apiGet({ action: 'managerial', startDate: range.from, endDate: range.to });
+    } catch(e) {
+      $('popupMarketingList').innerHTML = '<span class="text-muted">Could not load data.</span>';
+      $('popupDiscountsList').innerHTML = '<span class="text-muted">Could not load data.</span>';
+      return;
+    }
+  }
+
+  const data = state.aiData;
+
+  const marketingList = $('popupMarketingList');
+  const partners = data.marketingPartners || [];
+  if (partners.length) {
+    marketingList.innerHTML = partners.map(p => {
+      const name = typeof p === 'object' ? (p.name || p.partner || JSON.stringify(p)) : p;
+      const amount = typeof p === 'object' && p.amount ? ` (${money(p.amount)})` : '';
+      return `<span class="popup-tag">${name}${amount}</span>`;
+    }).join('');
+  } else {
+    marketingList.innerHTML = '<span class="text-muted">No partner data</span>';
+  }
+
+  const discountsList = $('popupDiscountsList');
+  const discounts = data.discountBills || [];
+  if (discounts.length) {
+    discountsList.innerHTML = discounts.map(d => {
+      const name = typeof d === 'object' ? (d.name || d.discount || JSON.stringify(d)) : d;
+      const amount = typeof d === 'object' && d.amount ? ` (${money(d.amount)})` : '';
+      return `<span class="popup-tag warn">${name}${amount}</span>`;
+    }).join('');
+  } else {
+    discountsList.innerHTML = '<span class="text-muted">No discount data</span>';
+  }
+
+  const stores = data.stores || [];
+  const topByGuests = [...stores].sort((a,b) => num(b.guests) - num(a.guests)).slice(0, 5);
+
+  if (currentVisitorChart) {
+    try { currentVisitorChart.destroy(); } catch(e) {}
+    currentVisitorChart = null;
+  }
+
+  const canvas = $('popupVisitorChart');
+  if (canvas && topByGuests.length) {
+    currentVisitorChart = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: topByGuests.map(s => s.store),
+        datasets: [{
+          label: 'Guests',
+          data: topByGuests.map(s => num(s.guests)),
+          backgroundColor: CORPORATE_COLORS[0],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } },
+          y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  $('floatingVisitorBtn').addEventListener('click', openVisitorPopup);
+  $('popupCloseBtn').addEventListener('click', () => {
+    $('infoPopup').classList.remove('open');
   });
-  const sorted = [...storeMap.values()].sort((a,b)=>b.gross-a.gross);
-
-  const head = [['Store', 'Gross Total', ...AGG_KEYS.map(k => AGG_LABELS[k])]];
-  const body = sorted.map(s => [
-    s.store,
-    money(s.gross),
-    ...AGG_KEYS.map(k => money(s.aggs[k]))
-  ]);
-
-  doc.autoTable({
-    head,
-    body,
-    startY: 30,
-    styles: { fontSize: 7, cellPadding: 2 },
-    headStyles: { fillColor: [45, 212, 191], textColor: 255 },
-    alternateRowStyles: { fillColor: [245, 247, 250] },
-    margin: { left: 10, right: 10 },
-    tableWidth: 'auto',
-    theme: 'grid'
+  document.addEventListener('click', (e) => {
+    const popup = $('infoPopup');
+    const btn = $('floatingVisitorBtn');
+    if (popup.classList.contains('open') && !popup.contains(e.target) && !btn.contains(e.target)) {
+      popup.classList.remove('open');
+    }
   });
-
-  doc.save('breakdown-by-store.pdf');
-  toast('PDF downloaded');
 });
 
 /* ==========================================================
@@ -1611,7 +1770,7 @@ function addEntryRow() {
   const opts = ['<option value="">— Select Store —</option>'].concat(ALL_STORES.map(s => `<option value="${s}">${s}</option>`)).join('');
 
   tr.innerHTML = `
-    <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+    <td><button class="btn-remove btn-press"><i class="bi bi-x-lg"></i></button></td>
     <td><select class="form-select" style="min-width:180px;">${opts}</select></td>
     ${cols.map(c => `<td><input type="${c.type === 'text' ? 'text' : 'number'}" data-key="${c.key}" step="0.01" placeholder="0"></td>`).join('')}
   `;
@@ -1657,64 +1816,11 @@ async function saveEntryData() {
   toast(`Saved ${ok} rows${fail ? `, ${fail} failed` : ''}.`, fail > 0);
 }
 
-async function loadEntryDataForDate() {
-  const date = $('entryDate').value;
-  if (!date) return toast('Select a date first', true);
-
-  $('btnLoadEntryData').disabled = true;
-  $('btnLoadEntryData').innerHTML = '<i class="bi bi-arrow-repeat"></i> Loading...';
-
-  try {
-    const res = await apiGet({ action: 'batch', startDate: date, endDate: date, stores: [...state.stores].join(',') });
-    const rows = res.rows || [];
-
-    $('entryBody').innerHTML = '';
-    const cols = (BULK_TEMPLATE && BULK_TEMPLATE.columns) || [];
-    const opts = ALL_STORES.map(s => `<option value="${s}">${s}</option>`).join('');
-
-    rows.forEach(r => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
-        <td><select class="form-select" style="min-width:180px;">${opts}</select></td>
-        ${cols.map(c => `<td><input type="${c.type === 'text' ? 'text' : 'number'}" data-key="${c.key}" step="0.01" value="${r[c.key] !== undefined ? r[c.key] : ''}"></td>`).join('')}
-      `;
-      $('entryBody').appendChild(tr);
-      tr.querySelector('select').value = r.store || '';
-      tr.querySelector('.btn-remove').addEventListener('click', () => tr.remove());
-    });
-
-    if (!rows.length) addEntryRow();
-    toast(`Loaded ${rows.length} rows for ${date}`);
-  } catch(e) {
-    toast(e.message, true);
-  } finally {
-    $('btnLoadEntryData').disabled = false;
-    $('btnLoadEntryData').innerHTML = '<i class="bi bi-cloud-download"></i> Load Data';
-  }
-}
-
 /* ==========================================================
    INIT
    ========================================================== */
 async function initApp() {
-  try {
-    const meta = await apiGet({ action: 'stores' });
-    ALL_STORES = meta.stores || [];
-    STORES_BY_BRAND = meta.brands || {};
-
-    renderStoreAccordion();
-
-    const first = document.querySelector('#brandAccordion input');
-    if (first) { first.checked = true; state.stores.add(first.value); }
-
-    BULK_TEMPLATE = await apiGet({ action: 'bulk_template' });
-    initEntryTable();
-    $('entryDate').value = todayStr();
-
-    if (state.stores.size) loadDashboardData();
-
-  } catch(e) { toast('Failed to init app: ' + e.message, true); }
+  await testConnectionAndLoad();
 }
 
 /* ==========================================================
@@ -1753,8 +1859,6 @@ $('btnManualBlank').addEventListener('click', () => {
   toast('All cells cleared');
 });
 
-$('btnLoadEntryData').addEventListener('click', loadEntryDataForDate);
-
 $('btnSaveSettings').addEventListener('click', () => {
   const url = $('apiUrlInput').value.trim();
   if (url) { localStorage.setItem('ws-api-url', url); API_URL = url; toast('Settings saved'); initApp(); }
@@ -1779,6 +1883,18 @@ $('btnCompact').addEventListener('click', () => {
   document.documentElement.setAttribute('data-compact', state.compact ? 'true' : 'false');
   localStorage.setItem('ws-compact', state.compact);
   toast(state.compact ? 'Compact mode on' : 'Compact mode off');
+});
+
+$('btnAddCompareStore').addEventListener('click', () => {
+  const available = AGGREGATED_STORES.map(s => s.store);
+  const notSelected = available.filter(s => !state.compareStores.includes(s));
+  if (notSelected.length === 0) {
+    toast('All stores already added', true);
+    return;
+  }
+  state.compareStores.push(notSelected[0]);
+  renderCompareSelectors();
+  drawCompareChart();
 });
 
 if (state.compact) document.documentElement.setAttribute('data-compact', 'true');
